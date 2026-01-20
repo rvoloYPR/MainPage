@@ -1,0 +1,4138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yorkshire Property Report - Your Guide to Finding the Perfect Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --midnight: #202320;
+            --charcoal: #2c2c2c;
+            --warm-charcoal: #3a3a3a;
+            --warm-cream: #E8EDE8;
+            --sage-green: #a00d2e;
+            --muted-sage: #850b27;
+            --accent-gold: #a00d2e;
+            --soft-brown: #5e615e;
+            --paper-white: #f5f7f5;
+            --subtle-shadow: rgba(0, 0, 0, 0.12);
+        }
+
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--warm-cream) 0%, #d8ddd8 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-logo {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--sage-green);
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 0.2s forwards;
+            letter-spacing: 0.1em;
+        }
+
+        .loading-animation {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .loading-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid rgba(160, 13, 46, 0.2);
+            border-top: 4px solid var(--sage-green);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .loading-inner-circle {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            width: calc(100% - 24px);
+            height: calc(100% - 24px);
+            border: 3px solid rgba(160, 13, 46, 0.3);
+            border-right: 3px solid var(--accent-gold);
+            border-radius: 50%;
+            animation: spin 2s linear infinite reverse;
+        }
+
+        .loading-center-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            background: var(--sage-green);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Payment Loading Text Transitions */
+        #loadingText {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--charcoal);
+            background-color: var(--warm-cream);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        body.loading {
+            overflow: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(232, 237, 232, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(94, 97, 94, 0.1);
+        }
+
+        nav.scrolled {
+            padding: 1rem 0;
+            background: rgba(232, 237, 232, 0.98);
+            box-shadow: 0 4px 20px var(--subtle-shadow);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 4vw, 4rem);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            color: var(--charcoal);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--sage-green);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-size: 0.95rem;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--sage-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--sage-green);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Basket Dropdown */
+        .basket-container {
+            position: relative;
+        }
+
+        .basket-button {
+            background: var(--sage-green);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .basket-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .basket-button:hover {
+            transform: translateY(-3px);
+            background: var(--muted-sage);
+            box-shadow: 0 12px 30px rgba(160, 13, 46, 0.4);
+        }
+
+        .basket-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent-gold);
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            min-width: 22px;
+            border: 2px solid var(--paper-white);
+        }
+
+        .basket-dropdown {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            background: var(--paper-white);
+            border-left: 1px solid rgba(94, 97, 94, 0.15);
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+            padding: 2rem;
+            width: 450px;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            overflow-y: auto;
+        }
+
+        .basket-dropdown.show {
+            transform: translateX(0);
+        }
+
+        .basket-header {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--sage-green);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .basket-close {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--soft-brown);
+            padding: 1rem;
+            margin: -0.5rem;
+            border-radius: 6px;
+            transition: color 0.3s ease;
+            position: relative;
+            overflow: visible;
+            min-width: 40px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .basket-close:hover {
+            color: #ff4444;
+        }
+
+        .basket-close:active {
+            color: #ff0000;
+        }
+
+        .basket-items {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .basket-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(94, 97, 94, 0.08);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease;
+            transform: translateX(0);
+        }
+
+        .basket-item.removing {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .basket-item:last-child {
+            border-bottom: none;
+        }
+
+        .basket-item-info {
+            flex: 1;
+        }
+
+        .basket-item-name {
+            font-weight: 500;
+            color: var(--charcoal);
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        .basket-item-price {
+            font-size: 0.9rem;
+            color: var(--sage-green);
+            font-weight: 600;
+        }
+
+        .basket-item-remove {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            padding: 0.5rem;
+            opacity: 0.7;
+            transition: color 0.3s ease, opacity 0.3s ease;
+            font-size: 1.3rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 32px;
+            min-height: 32px;
+            font-weight: bold;
+        }
+
+        .basket-item-remove:hover {
+            opacity: 1;
+            color: #ff4444;
+        }
+
+        .basket-item-remove:active {
+            color: #ff0000;
+        }
+
+        .basket-empty {
+            text-align: center;
+            color: var(--soft-brown);
+            padding: 2rem 0;
+            font-style: italic;
+        }
+
+        .basket-total {
+            border-top: 2px solid var(--sage-green);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--charcoal);
+        }
+
+        .basket-checkout {
+            background: var(--accent-gold);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .basket-checkout:hover {
+            background: #a68653;
+            transform: translateY(-2px);
+        }
+
+        .basket-checkout:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+
+        .cta-button {
+            background: var(--sage-green);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background: var(--muted-sage);
+            box-shadow: 0 12px 30px rgba(160, 13, 46, 0.4);
+        }
+
+        /* UPDATED: Simplified single wave animation for add to basket confirmation */
+        .add-to-basket::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--sage-green);
+            transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .add-to-basket .button-text {
+            position: relative;
+            z-index: 1;
+            transition: opacity 0.4s ease;
+        }
+
+        .add-to-basket .button-text-added {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            white-space: nowrap;
+        }
+
+        /* When item is added to basket - single wave in and stay golden */
+        .add-to-basket.in-basket::before {
+            background: var(--accent-gold);
+            left: 0%;
+        }
+
+        .add-to-basket.in-basket .button-text {
+            opacity: 0;
+        }
+
+        .add-to-basket.in-basket .button-text-added {
+            opacity: 1;
+        }
+
+        /* When item is being added (animation trigger) */
+        .add-to-basket.wave-success::before {
+            background: var(--accent-gold);
+            left: 0%;
+        }
+
+        .add-to-basket.wave-success .button-text {
+            opacity: 0;
+        }
+
+        .add-to-basket.wave-success .button-text-added {
+            opacity: 1;
+        }
+
+        /* When trying to add item already in basket - no color change */
+        .add-to-basket.wave-already::before {
+            background: var(--accent-gold);
+            left: 0%;
+        }
+
+        .add-to-basket.wave-already .button-text {
+            opacity: 0;
+        }
+
+        .add-to-basket.wave-already .button-text-added {
+            opacity: 1;
+        }
+
+        /* When item is being removed - single wave out */
+        .add-to-basket.wave-remove::before {
+            background: var(--accent-gold);
+            left: -100%;
+        }
+
+        .add-to-basket.wave-remove .button-text {
+            opacity: 1;
+        }
+
+        .add-to-basket.wave-remove .button-text-added {
+            opacity: 0;
+        }
+
+        /* Canvas Background */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* Scroll Progress Bar - ULTRA SMOOTH */
+        #scroll-progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 4px;
+            background: rgba(160, 13, 46, 0.1);
+            z-index: 10001;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateZ(0); /* Force hardware acceleration */
+            will-change: opacity; /* Optimize for animations */
+            transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --progress: 0;
+        }
+
+        #scroll-progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--sage-green), var(--accent-gold));
+            transform: scaleX(var(--progress, 0));
+            transform-origin: left center;
+            will-change: transform;
+            box-shadow: 0 2px 8px rgba(160, 13, 46, 0.3);
+            transition: transform 0.05s linear; /* Very fast for smoothness */
+        }
+
+        #scroll-progress-bar.visible {
+            opacity: 1;
+        }
+
+        /* Hero section elements are immediately visible */
+        .hero .hero-content * {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        /* Scroll-triggered elements start hidden */
+        .reports-section .section-header,
+        .reports-section .report-card,
+        .features-section .section-header,
+        .features-section .feature,
+        .faq-section .faq-heading,
+        .faq-section .faq-column,
+        .faq-section .faq-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        /* When elements become visible during scroll */
+        .reports-section .section-header.scroll-visible,
+        .reports-section .report-card.scroll-visible,
+        .features-section .section-header.scroll-visible,
+        .features-section .feature.scroll-visible,
+        .faq-section .faq-heading.scroll-visible,
+        .faq-section .faq-column.scroll-visible,
+        .faq-section .faq-item.scroll-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Section Layout - Ensures perfect viewport coverage */
+        section {
+            scroll-margin-top: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--warm-cream) 0%, #d8ddd8 100%);
+            padding: 8rem clamp(1rem, 4vw, 4rem) 4rem;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+            z-index: 1;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            font-weight: 700;
+            color: var(--charcoal);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fade-up 1s ease-out 0.2s forwards;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: var(--soft-brown);
+            margin-bottom: 2rem;
+            font-weight: 400;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fade-up 1s ease-out 0.4s forwards;
+        }
+
+        .confidence-section {
+            background: var(--paper-white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 4px 20px var(--subtle-shadow);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fade-up 1s ease-out 0.6s forwards;
+        }
+
+        .confidence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            align-items: start;
+            text-align: center;
+        }
+
+        .confidence-item {
+            text-align: center;
+        }
+
+        .confidence-item h3 {
+            font-size: 1.8rem;
+            color: var(--sage-green);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .confidence-item p {
+            color: var(--soft-brown);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .hero .cta-wrapper {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fade-up 1s ease-out 0.8s forwards;
+        }
+
+        @keyframes fade-up {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Reports Section */
+        .reports-section {
+            min-height: 100vh;
+            padding: 8rem clamp(1rem, 4vw, 4rem);
+            background: var(--paper-white);
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-top: -3.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            color: var(--charcoal);
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--soft-brown);
+            font-weight: 400;
+        }
+
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .report-card {
+            background: var(--warm-cream);
+            border: 1px solid rgba(94, 97, 94, 0.15);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .report-card:nth-child(1) { transition-delay: 0.1s; }
+        .report-card:nth-child(2) { transition-delay: 0.2s; }
+        .report-card:nth-child(3) { transition-delay: 0.3s; }
+
+        .report-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sage-green), var(--accent-gold));
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .report-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .report-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: rgba(160, 13, 46, 0.3);
+        }
+
+        .report-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--sage-green), var(--muted-sage));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .report-icon-img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .report-card:hover .report-icon {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(160, 13, 46, 0.3);
+        }
+
+        .report-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--charcoal);
+            font-weight: 600;
+        }
+
+        .report-card p {
+            color: var(--soft-brown);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1rem;
+            flex-grow: 1;
+        }
+
+        .price {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--sage-green);
+            margin-bottom: 1.5rem;
+            display: block;
+            text-align: left;
+        }
+
+        .report-card .cta-button {
+            margin-top: auto;
+            align-self: flex-start;
+        }
+
+        /* Features Section - Enhanced Visual Identity */
+        .features-section {
+            min-height: 100vh;
+            padding: 8rem clamp(1rem, 4vw, 4rem);
+            background: linear-gradient(135deg, var(--midnight) 0%, var(--charcoal) 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .features-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(160, 13, 46, 0.1) 100px, rgba(160, 13, 46, 0.1) 200px);
+            pointer-events: none;
+        }
+
+        .features-section .section-header h2 {
+            color: var(--paper-white);
+        }
+
+        .features-section .section-header p {
+            color: rgba(245, 247, 245, 0.7);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+            align-items: center;
+        }
+
+        .features-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .feature {
+            text-align: left;
+            padding: 0;
+            background: transparent;
+            border-radius: 0;
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 0;
+            background: var(--sage-green);
+            transition: height 0.4s ease;
+        }
+
+        .feature:hover::before {
+            height: 100%;
+        }
+
+        .feature:hover {
+            padding-left: 1.5rem;
+        }
+
+        .feature:nth-child(1) { transition-delay: 0.1s; }
+        .feature:nth-child(2) { transition-delay: 0.2s; }
+        .feature:nth-child(3) { transition-delay: 0.3s; }
+
+        .features-right {
+            position: relative;
+            height: 700px;
+            aspect-ratio: 794 / 1123;
+            max-width: 100%;
+            background: rgba(245, 247, 245, 0.05);
+            border-radius: 12px;
+            box-shadow: 0 0 0 1px rgba(160, 13, 46, 0.2), 0 8px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .features-right::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--sage-green), transparent);
+        }
+
+        .report-preview {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .report-preview-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--soft-brown);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .report-preview-placeholder h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--paper-white);
+        }
+
+        .report-preview-placeholder p {
+            color: rgba(245, 247, 245, 0.7);
+        }
+
+        /* Slideshow Styles */
+        .slideshow-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--paper-white);
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .slide-image {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .slide-indicators {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
+            z-index: 10;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(245, 247, 245, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(160, 13, 46, 0.5);
+        }
+
+        .indicator:hover {
+            background: rgba(245, 247, 245, 0.6);
+            transform: scale(1.2);
+        }
+
+        .indicator.active {
+            background: var(--sage-green);
+            border-color: var(--sage-green);
+        }
+
+        .feature h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+            color: var(--paper-white);
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .feature:hover h3 {
+            color: var(--sage-green);
+        }
+
+        .feature p {
+            color: rgba(245, 247, 245, 0.75);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            min-height: auto;
+            padding: 3rem clamp(1rem, 4vw, 4rem);
+            text-align: center;
+            background: var(--charcoal);
+            color: var(--warm-cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .cta-section .cta-button {
+            background: var(--sage-green);
+            font-size: 1rem;
+            padding: 1rem 2.5rem;
+        }
+
+        /* Newsletter Form */
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 2rem auto 2rem;
+            align-items: stretch;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            border: 2px solid var(--warm-cream);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--warm-cream);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-input::placeholder {
+            color: rgba(232, 237, 232, 0.6);
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--sage-green);
+            background: rgba(232, 237, 232, 0.05);
+        }
+
+        .newsletter-button {
+            padding: 1rem 2rem;
+            background: var(--sage-green);
+            color: var(--charcoal);
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+
+        .newsletter-button:hover {
+            background: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .newsletter-button:active {
+            transform: translateY(0);
+        }
+
+        /* Footer - FIXED LAYOUT */
+        footer {
+            background: var(--midnight);
+            color: var(--warm-cream);
+            padding: 4rem clamp(1rem, 4vw, 4rem) 2rem;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--warm-cream);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: rgba(232, 237, 232, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: var(--sage-green);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(232, 237, 232, 0.1);
+            color: rgba(232, 237, 232, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* FAQ Section Styles - Clean White Background */
+        .faq-section {
+            min-height: 100vh; /* Make the FAQ section fill the entire viewport */
+            padding: 10rem clamp(1rem, 4vw, 4rem) 8rem;
+            background: var(--paper-white);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .faq-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(74, 93, 35, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(141, 110, 99, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(46, 125, 50, 0.02) 0%, transparent 50%);
+            animation: float-bg 20s cubic-bezier(0.4, 0, 0.2, 1) infinite; /* Smoother animation */
+            z-index: 0;
+        }
+        
+        @keyframes float-bg {
+            0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+            25% { transform: translateX(20px) translateY(-30px) rotate(1deg); }
+            50% { transform: translateX(-20px) translateY(20px) rotate(2deg); }
+            75% { transform: translateX(25px) translateY(10px) rotate(1deg); }
+        }
+        
+        .faq-heading {
+            text-align: center;
+            margin-top: -5.5rem;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .faq-heading h2 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            color: var(--charcoal);
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+        
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .faq-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), 
+                        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .faq-column.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .faq-item {
+            background: var(--warm-cream);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(62, 39, 35, 0.08);
+            border: 2px solid rgba(74, 93, 35, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+            /* GPU acceleration for ultra-smooth performance */
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            will-change: transform, opacity, background, border-color;
+            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        
+        .faq-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .faq-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                var(--sage-green) 0%, 
+                var(--accent-gold) 50%, 
+                var(--sage-green) 100%);
+            background-size: 300% 100%;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            border-radius: 24px 24px 0 0;
+            animation: shimmer 6s ease-in-out infinite;
+            will-change: transform, background-position;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 0; }
+            50% { background-position: 100% 0; }
+        }
+        
+        .faq-item:hover::before {
+            transform: scaleX(1);
+            animation: none;
+        }
+        
+        .faq-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(74, 93, 35, 0.15);
+            border-color: rgba(74, 93, 35, 0.3);
+        }
+        
+        .faq-item.active {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(141, 110, 99, 0.002));
+            border-color: rgba(74, 93, 35, 0.1);
+            box-shadow: 0 10px 40px rgba(62, 39, 35, 0.08);
+            transform: translateY(-8px);
+        }
+        
+        .faq-item.active:hover {
+            box-shadow: 0 20px 50px rgba(74, 93, 35, 0.2);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(141, 110, 99, 0.002));
+            border-color: rgba(107, 134, 87, 0.4);
+        }
+        
+        .faq-item.active::before {
+            transform: scaleX(1);
+            background: linear-gradient(90deg, var(--sage-green), var(--accent-gold));
+            animation: none;
+        }
+        
+        .faq-question {
+            padding: 1.75rem;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--charcoal);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            line-height: 1.4;
+            gap: 1.5rem;
+            will-change: color;
+            transition: color 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        
+        .faq-question:hover {
+            color: var(--sage-green);
+        }
+        
+        .faq-question::after {
+            content: '\▼'; /* Unicode for down arrow (▼) */
+            font-size: 1rem; /* Smaller font size for the arrow */
+            color: #4a5d23;
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(74, 93, 35, 0.1), rgba(46, 125, 50, 0.08));
+            box-shadow: 0 4px 15px rgba(74, 93, 35, 0.15);
+            font-weight: 300;
+            will-change: transform, background, color;
+            /* Closing speed (faster) */
+            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .faq-question.active::after {
+            content: '\▲'; /* Unicode for up arrow (▲) */
+            transform: scale(1.1); 
+            color: #fffef7;
+            background: linear-gradient(135deg, #4a5d23, #2e7d32);
+            box-shadow: 0 6px 20px rgba(74, 93, 35, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            /* Opening speed (slower) */
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        
+        .faq-question.active {
+            color: var(--soft-brown);
+        }
+    
+        .faq-answer {
+    overflow: hidden;
+    padding: 0 1.75rem;
+    color: var(--soft-brown);
+    background: linear-gradient(180deg, transparent, rgba(74, 93, 35, 0.02));
+    /* Slower opening, faster closing */
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    will-change: max-height, opacity, transform;
+    /* Closing speed (faster) */
+    transition: 
+        max-height 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+        opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+        transform 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+        padding 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.faq-answer.show {
+    max-height: 280px;
+    opacity: 1;
+    transform: translateY(0);
+    padding: 0.25rem 1.75rem 2rem;
+    /* Opening speed (slower) */
+    transition: 
+        max-height 1.2s cubic-bezier(0.19, 1, 0.22, 1),
+        opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1),
+        transform 1.2s cubic-bezier(0.19, 1, 0.22, 1),
+        padding 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* All FAQ animations now perfectly synchronized with ultra-smooth easing */
+        
+        .faq-answer p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.7;
+            letter-spacing: 0.01em;
+        }
+        
+        .faq-answer a {
+            color: var(--sage-green);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            border-bottom: 1px solid transparent;
+        }
+        
+        .faq-answer a:hover {
+            color: var(--accent-gold);
+            border-bottom-color: var(--accent-gold);
+        }
+        
+        /* Responsive design for FAQ section */
+        @media (max-width: 1024px) {
+            .faq-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .faq-section {
+                padding: 8rem clamp(1rem, 4vw, 4rem) 6rem;
+            }
+        }
+
+        /* Enhanced Stripe Checkout Modal */
+        .checkout-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+
+        .checkout-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .checkout-modal {
+            background: var(--paper-white);
+            border-radius: 16px;
+            padding: 0;
+            width: 95%;
+            max-width: 1200px;
+            max-height: calc(100vh - 4rem);
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            transform: scale(0.95) translateY(30px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(107, 134, 87, 0.1);
+            margin: auto;
+            overflow-y: auto;
+        }
+        
+        @media (min-width: 768px) {
+            .checkout-modal {
+                width: 90%;
+                max-width: 1400px;
+                min-height: 650px;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .checkout-modal {
+                width: 85%;
+                max-width: 1600px;
+                min-height: 700px;
+            }
+        }
+
+        .checkout-overlay.show .checkout-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .checkout-content {
+            flex: 1;
+            padding: 2rem;
+            display: grid !important;
+            grid-template-columns: 1fr 450px !important;
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            overflow: visible;
+        }
+        
+        .checkout-left-side {
+            display: flex !important;
+            flex-direction: column;
+            gap: 2rem;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            max-height: calc(100vh - 200px);
+            padding-right: 1rem;
+        }
+        
+        .checkout-right-side {
+            display: block !important;
+        }
+        
+        .checkout-right-side {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            min-height: 100%;
+            padding: 0;
+        }
+        
+        .order-summary-container {
+            width: 100%;
+            max-width: 450px;
+        }
+        
+        .order-summary-section {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        
+        .order-pay-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--sage-green) 0%, var(--muted-sage) 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 1rem;
+            font-family: inherit;
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(107, 134, 87, 0.1);
+            will-change: transform, box-shadow;
+        }
+        
+        .order-pay-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 134, 87, 0.2);
+        }
+        
+        .order-pay-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(204, 204, 204, 0.1);
+        }
+        
+        .order-total {
+            border-top: 1px solid #e9ecef;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .order-total-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        
+        .order-total-line.total {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: #1a1a1a;
+            border-top: 2px solid #e9ecef;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .billing-address-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+        
+        @media (min-width: 640px) {
+            .billing-address-form {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.25rem;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .checkout-content {
+                gap: 4rem;
+                padding: 4rem;
+            }
+
+            .checkout-left-side {
+                gap: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .checkout-content {
+                grid-template-columns: 1fr !important;
+                padding: 2rem;
+                grid-template-rows: 1fr auto;
+                gap: 2rem;
+            }
+
+            .checkout-left-side {
+                gap: 2.5rem;
+                max-height: 60vh;
+                order: 1;
+            }
+
+            .checkout-right-side {
+                order: 2;
+                padding: 1rem 0;
+                min-height: auto;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .checkout-content {
+                padding: 1.5rem;
+            }
+
+            .checkout-section {
+                padding: 2rem;
+            }
+
+            .checkout-left-side {
+                gap: 2rem;
+                max-height: 50vh;
+            }
+        }
+
+        /* Custom scrollbar for checkout left side */
+        .checkout-left-side::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .checkout-left-side::-webkit-scrollbar-track {
+            background: rgba(160, 13, 46, 0.1);
+            border-radius: 3px;
+        }
+
+        .checkout-left-side::-webkit-scrollbar-thumb {
+            background: var(--sage-green);
+            border-radius: 3px;
+        }
+
+        .checkout-left-side::-webkit-scrollbar-thumb:hover {
+            background: var(--muted-sage);
+        }
+
+        .checkout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2.5rem 3rem 1.5rem;
+            border-bottom: 1px solid rgba(107, 134, 87, 0.1);
+            background: linear-gradient(135deg, 
+                rgba(107, 134, 87, 0.03) 0%, 
+                rgba(184, 150, 95, 0.02) 100%);
+        }
+        
+        @media (min-width: 1024px) {
+            .checkout-header {
+                padding: 3rem 4rem 2rem;
+            }
+        }
+        
+        .checkout-header h2 {
+            color: var(--charcoal);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .checkout-header h2 img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+        }
+
+        .checkout-close {
+            background: rgba(160, 13, 46, 0.1);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            color: var(--sage-green);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .checkout-close:hover {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            transform: scale(1.1);
+        }
+
+        .checkout-section {
+            padding: 1.75rem;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkout-section:not(:last-child) {
+            border-bottom: none;
+        }
+        
+        .checkout-section.full-width {
+            grid-column: 1 / -1;
+        }
+
+        @media (min-width: 1024px) {
+            .checkout-section {
+                padding: 2rem 2.5rem;
+                margin-bottom: 0;
+            }
+        }
+
+        .checkout-section h3 {
+            color: #1a1a1a;
+            margin: 0 0 1rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Form Styles */
+        .customer-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--sage-green);
+            box-shadow: 0 0 0 3px rgba(107, 134, 87, 0.1);
+        }
+
+        .form-group input.error {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+            animation: shake 0.6s ease-in-out;
+        }
+
+        .form-group input.error:focus {
+            border-color: #dc2626 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25) !important;
+        }
+
+        @keyframes shake {
+            0%, 20%, 40%, 60%, 80% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+        }
+
+
+        .form-group input.success {
+            border-color: var(--sage-green) !important;
+            background: rgba(107, 134, 87, 0.02) !important;
+            box-shadow: 0 0 0 3px rgba(107, 134, 87, 0.1) !important;
+        }
+
+        .form-group input.success:focus {
+            border-color: var(--sage-green) !important;
+            box-shadow: 0 0 0 3px rgba(107, 134, 87, 0.15) !important;
+        }
+
+        /* Stripe Elements */
+        .stripe-element {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .stripe-element:focus-within {
+            border-color: var(--sage-green);
+            box-shadow: 0 0 0 3px rgba(107, 134, 87, 0.1);
+        }
+
+        .stripe-element--invalid {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+            animation: shake 0.6s ease-in-out;
+        }
+
+        .stripe-element--complete {
+            border-color: var(--sage-green) !important;
+            background: rgba(107, 134, 87, 0.02) !important;
+            box-shadow: 0 0 0 3px rgba(107, 134, 87, 0.1) !important;
+        }
+
+        /* Add spacing above card details section */
+        .form-group:has(#card-element) {
+            margin-top: 2rem;
+        }
+
+        /* Payment Button Section */
+        .payment-section {
+            padding: 2.5rem 3rem;
+            background: linear-gradient(135deg, rgba(107, 134, 87, 0.03), rgba(184, 150, 95, 0.02));
+            border-top: 2px solid rgba(107, 134, 87, 0.1);
+            margin-top: auto;
+        }
+        
+        .payment-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--sage-green) 0%, var(--muted-sage) 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            font-family: inherit;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 8px 32px rgba(107, 134, 87, 0.25);
+            transform: translateY(0);
+        }
+        
+        .payment-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(107, 134, 87, 0.3);
+        }
+
+        .payment-button:disabled {
+            background: linear-gradient(135deg, #ccc 0%, #bbb 100%);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .payment-button .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        .payment-button.loading .spinner {
+            display: inline-block;
+        }
+        
+        .payment-button .button-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .payment-security-section {
+            padding: 2rem;
+            background: var(--paper-white);
+            border-top: 1px solid rgba(107, 134, 87, 0.1);
+        }
+
+        .payment-security {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .security-badge {
+            background: rgba(160, 13, 46, 0.1);
+            color: var(--sage-green);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(107, 134, 87, 0.2);
+        }
+        
+        .security-details {
+            color: var(--soft-brown);
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, rgba(254, 242, 242, 0.95), rgba(252, 226, 226, 0.95));
+            border: 2px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            display: none;
+            opacity: 0;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+            position: relative;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .error-message::before {
+            content: "⚠️";
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+        
+        .error-message.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: errorSlideIn 0.4s ease-out;
+        }
+
+        @keyframes errorSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 3rem 2rem;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-message.animate-in {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .success-checkmark {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--sage-green);
+            position: relative;
+            margin: 0 auto 1.5rem;
+            transform: scale(0);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 20px rgba(107, 134, 87, 0.3);
+        }
+
+        .success-checkmark.animate-circle {
+            transform: scale(1);
+            animation: spin-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-checkmark::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 28px;
+            border: 4px solid white;
+            border-top: none;
+            border-left: none;
+            transform: translate(-50%, -60%) rotate(-315deg) scale(0);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .success-checkmark.animate-tick::after {
+            transform: translate(-50%, -60%) rotate(45deg) scale(1);
+        }
+
+        @keyframes spin-in {
+            0% {
+                transform: scale(0) rotate(-180deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .order-id-box {
+            background: rgba(160, 13, 46, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            display: inline-block;
+            color: var(--sage-green);
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .order-id-box.animate-in {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .success-title {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-title.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .success-description {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-description.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .faq-section {
+                padding: 7rem clamp(1rem, 4vw, 4rem) 5rem;
+            }
+
+            .section-header {
+                margin-top: -3.5rem;
+            }
+
+            .faq-heading {
+                margin-top: 1rem;
+            }
+
+            .hero h1 {
+                margin-top: 3.5rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .newsletter-button {
+                width: 100%;
+            }
+
+            .checkout-modal {
+                width: 95%;
+                max-height: 95vh;
+            }
+
+            .checkout-header,
+            .checkout-content {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-security {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .reports-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+
+            /* For reports section with 3 items, make middle item span 2 columns on tablets */
+            .reports-grid .report-card:nth-child(3) {
+                grid-column: 1 / -1;
+                max-width: 50%;
+                margin: 0 auto;
+            }
+
+            .features-grid {
+                gap: 3rem;
+            }
+
+            .features-right {
+                height: 600px;
+                aspect-ratio: 794 / 1123;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .logo {
+                justify-self: auto;
+            }
+
+            .basket-dropdown {
+                width: 100vw;
+                padding: 1.5rem;
+            }
+
+            .confidence-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .confidence-item {
+                text-align: center;
+            }
+
+            .reports-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .features-right {
+                height: 600px;
+                aspect-ratio: 794 / 1123;
+            }
+            
+            .faq-section {
+                padding: 2rem 0;
+            }
+            
+            .faq-question {
+                padding: 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .faq-answer.show {
+                padding: 0.25rem 1.5rem 1.75rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .loading-logo {
+                font-size: 2rem;
+            }
+
+            .loading-subtitle {
+                font-size: 1rem;
+                text-align: center;
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .confidence-section {
+                padding: 1.5rem;
+                margin: 1.5rem 0;
+            }
+
+            .report-card {
+                padding: 2rem;
+            }
+
+            .basket-dropdown {
+                width: 100vw;
+                padding: 1.5rem;
+            }
+            
+            .faq-heading h2 {
+                font-size: 2.5rem;
+            }
+            
+            .faq-question {
+                padding: 1.25rem;
+                font-size: 0.95rem;
+            }
+            
+            .faq-answer.show {
+                padding: 0.25rem 1.25rem 1.5rem;
+            }
+        }
+    </style>
+    <script src="config.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body class="loading">
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">YPR</div>
+        <div class="loading-animation">
+            <div class="loading-circle"></div>
+            <div class="loading-inner-circle"></div>
+            <div class="loading-center-dot"></div>
+        </div>
+    </div>
+
+    <!-- Canvas Background -->
+    <canvas id="canvas-bg"></canvas>
+    
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress-bar"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Yorkshire Property Report</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#reports">Reports</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <div class="basket-container">
+                <button class="basket-button" id="basketBtn">
+                    <img src="icons8-opened-folder-48.png" alt="Folder" class="basket-icon">
+                    <span class="basket-count" id="basketCount">0</span>
+                </button>
+                <div class="basket-dropdown" id="basketDropdown">
+                    <div class="basket-header">
+                        Your Basket
+                        <button class="basket-close" id="basketClose">—</button>
+                    </div>
+                    <div class="basket-items" id="basketItems">
+                        <div class="basket-empty">Your basket is empty</div>
+                    </div>
+                    <div class="basket-total" id="basketTotal" style="display: none;">
+                        <span>Total: £<span id="totalAmount">0</span></span>
+                    </div>
+                    <button class="basket-checkout" id="checkoutBtn" disabled>Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Helping you find home in the right place</h1>
+            <p class="subtitle">We uncover information on Yorkshire neighbourhoods, going beyond what you'll find on a rightmove listing or from the local estate agent.</p>
+            
+            <div class="confidence-section">
+                <div class="confidence-grid">
+                    <div class="confidence-item">
+                        <h3>Confidence.</h3>
+                        <p>Have greater confidence knowing whether a property and the local area is right for you.</p>
+                    </div>
+                    <div class="confidence-item">
+                        <h3>Convenience.</h3>
+                        <p>Have all the research conveniently crafted into a bespoke digital report.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reports Section -->
+    <section class="reports-section" id="reports">
+        <div class="container">
+            <div class="section-header">
+                <h2>Reports</h2>
+                <p></p>
+            </div>
+            
+            <div class="reports-grid">
+                <!-- Crime Level Report -->
+                <div class="report-card">
+                    <div class="report-icon"><img src="icons8-siren-48.png" alt="Crime Level" class="report-icon-img"></div>
+                    <h3>Crime Level Comparison</h3>
+                    <p>We will compare the level of crime in your current area with the neighbourhood you're interested to move to.</p>
+                    <div class="price">£90</div>
+                    <button class="cta-button add-to-basket" data-name="Crime Level Comparison" data-price="90" data-emoji="🚨" data-icon="icons8-siren-48.png">
+                        <span class="button-text">Add to basket</span>
+                        <span class="button-text-added">Added ✓</span>
+                    </button>
+                </div>
+
+                <!-- Affordable House Report -->
+                <div class="report-card">
+                    <div class="report-icon"><img src="icons8-neighborhood-48.png" alt="Affordable" class="report-icon-img"></div>
+                    <h3>Nearest Affordable House</h3>
+                    <p>We will show you exactly where the nearest council and other affordable houses are relative to the home you are viewing to buy.</p>
+                    <div class="price">£59</div>
+                    <button class="cta-button add-to-basket" data-name="Nearest Affordable House" data-price="59" data-emoji="🏡" data-icon="icons8-neighborhood-48.png">
+                        <span class="button-text">Add to basket</span>
+                        <span class="button-text-added">Added ✓</span>
+                    </button>
+                </div>
+
+                <!-- Price Evaluation Report -->
+                <div class="report-card">
+                    <div class="report-icon"><img src="icons8-price-tag-pound-48.png" alt="Affordable" class="report-icon-img"></div>
+                    <h3>Asking Price Evaluation</h3>
+                    <p>We will evaluate the asking price to ensure you're not unknowingly overpaying for your new home.</p>
+                    <div class="price">£64</div>
+                    <button class="cta-button add-to-basket" data-name="Asking Price Evaluation" data-price="64" data-emoji="💰" data-icon="icons8-price-tag-pound-48.png">
+                        <span class="button-text">Add to basket</span>
+                        <span class="button-text-added">Added ✓</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="about">
+        <div class="features-bg"></div>
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose Us</h2>
+            </div>
+            
+            <div class="features-grid">
+                <div class="features-left">
+                    <div class="feature">
+                        <h3>Unique Insight</h3>
+                        <p>We're the only UK company that finds affordable homes near properties for sale on Rightmove. We provide you this information before you buy your home.</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>Experienced Writers</h3>
+                        <p>All our report writers have experience in the residential sector.</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>Regional Focus</h3>
+                        <p>We've narrowed our focus to Yorkshire & Humber, so every report we write meets our high standards.</p>
+                    </div>
+                </div>
+
+                <div class="features-right">
+                    <!-- Interactive Slideshow Report Preview -->
+                    <div class="slideshow-container">
+                        <!-- Slide 1 -->
+                        <div class="slide active">
+                            <img src="2 Bondgate, Harewood triple/Asking Price Evaluation/Slide1.PNG" alt="Report Slide 1" class="slide-image">
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="slide">
+                            <img src="2 Bondgate, Harewood triple/Asking Price Evaluation/Slide2.PNG" alt="Report Slide 2" class="slide-image">
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="slide">
+                            <img src="2 Bondgate, Harewood triple/Asking Price Evaluation/Slide3.PNG" alt="Report Slide 3" class="slide-image">
+                        </div>
+
+                        <!-- Slide 4 -->
+                        <div class="slide">
+                            <img src="2 Bondgate, Harewood triple/Asking Price Evaluation/Slide4.PNG" alt="Report Slide 4" class="slide-image">
+                        </div>
+
+                        <!-- Navigation Indicators -->
+                        <div class="slide-indicators">
+                            <span class="indicator active" data-slide="0"></span>
+                            <span class="indicator" data-slide="1"></span>
+                            <span class="indicator" data-slide="2"></span>
+                            <span class="indicator" data-slide="3"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section - Enhanced for V22 -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="faq-heading">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            
+            <div class="faq-grid">
+                <!-- Left Column -->
+                <div class="faq-column left-column">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            What areas do your property reports cover?
+                        </button>
+                        <div class="faq-answer">
+                            <p>Our property reports cover the entire Yorkshire region, including all major cities and towns such as Leeds, York, Sheffield, Hull, Bradford and Wakefield.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How do I request a report?
+                        </button>
+                        <div class="faq-answer">
+                            <p>Simply browse our available reports and add the ones you need to your basket. For our business clients, please email us directly.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How quickly will I receive my report?
+                        </button>
+                        <div class="faq-answer">
+                            <p>In order to write a bespoke report, every property must be individually researched. Therefore, please allow 2-3 working days after your order has been confirmed for the digital delivery of your report. For urgent requirements, we offer an expedited service that can deliver your report within 24 hours. There is a small additional fee for this.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="faq-column right-column">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How can I contact YPR?
+                        </button>
+                        <div class="faq-answer">
+                            <p>You can contact us via email at <a href="mailto:info@ypr.co.uk">info@ypr.co.uk</a> for any enquiries about our reports. We aim to respond to all enquiries within one working day.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            Can I share my report with others?
+                        </button>
+                        <div class="faq-answer">
+                            <p>Reports are prepared for your exclusive use and should not be distributed to third parties without our written consent.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How long is my report valid for?
+                        </button>
+                        <div class="faq-answer">
+                            <p>Property markets are dynamic, so reports should be considered current for approximately 3 months from the date of issue. After this period, we recommend purchasing an updated report. We offer discounted rates for report renewals within 6 months of the original purchase.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h3>Subscribe to our newsletter and receive 10% off your first order!</h3>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email address" class="newsletter-input" required>
+                <button type="submit" class="newsletter-button">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-logo">Yorkshire Property Report</div>
+            <ul class="footer-links">
+                <li><a href="terms.html">Terms of Business</a></li>
+            </ul>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Yorkshire Property Report. All rights reserved.</p>
+                <p style="margin-top: 0.75rem; font-size: 0.85rem; opacity: 0.7;">info@ypr.co.uk</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced Stripe Checkout Modal -->
+    <div class="checkout-overlay" id="checkoutOverlay">
+        <div class="checkout-modal">
+            <div class="checkout-header">
+                <h2><img src="icons8-secure-26.png" alt="Secure"> Secure Checkout</h2>
+                <button class="checkout-close" id="checkoutCloseBtn">×</button>
+            </div>
+
+            <div class="checkout-content" id="checkoutContent">
+                <!-- Left Side: Customer and Payment Information -->
+                <div class="checkout-left-side">
+                    <!-- Customer Information -->
+                    <div class="checkout-section">
+                        <h3>Customer Information</h3>
+                        <form class="customer-form" id="customerForm">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required placeholder="John">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required placeholder="Doe">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required placeholder="john@example.com">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="currentAddress">Current Address *</label>
+                                <input type="text" id="currentAddress" name="currentAddress" required placeholder="Your current address">
+                            </div>
+                            <div class="form-group">
+                                <label for="currentCity">City *</label>
+                                <input type="text" id="currentCity" name="currentCity" required placeholder="Leeds">
+                            </div>
+                            <div class="form-group">
+                                <label for="currentPostcode">Postcode *</label>
+                                <input type="text" id="currentPostcode" name="currentPostcode" required placeholder="LS1 1AA">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="propertyAddress">Address of Interested Property *</label>
+                                <input type="text" id="propertyAddress" name="propertyAddress" required placeholder="Property you want a report for">
+                            </div>
+                            <div class="form-group">
+                                <label for="propertyCity">City *</label>
+                                <input type="text" id="propertyCity" name="propertyCity" required placeholder="Leeds">
+                            </div>
+                            <div class="form-group">
+                                <label for="propertyPostcode">Postcode *</label>
+                                <input type="text" id="propertyPostcode" name="propertyPostcode" required placeholder="LS1 1AA">
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Payment Information -->
+                    <div class="checkout-section">
+                        <h3>Payment Information</h3>
+
+                        <div class="form-group">
+                            <label for="cardholderName">Cardholder Name *</label>
+                            <input type="text" id="cardholderName" name="cardholderName" required placeholder="John Doe">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="card-element">Card Details *</label>
+                            <div id="card-element" class="stripe-element">
+                                <!-- Stripe Elements will create form elements here -->
+                            </div>
+                            <div id="card-errors" class="error-message"></div>
+                        </div>
+                        
+                        <h4 style="margin: 2.5rem 0 1.5rem 0; color: #374151; font-size: 1rem; font-weight: 600;">Billing Address</h4>
+                        
+                        <div class="billing-address-form">
+                            <div class="form-group full-width">
+                                <label for="billingAddress">Address *</label>
+                                <input type="text" id="billingAddress" name="billingAddress" required placeholder="123 Main Street">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="billingCity">City *</label>
+                                <input type="text" id="billingCity" name="billingCity" required placeholder="London">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="billingPostcode">Postcode *</label>
+                                <input type="text" id="billingPostcode" name="billingPostcode" required placeholder="SW1A 1AA">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Order Summary and Pay Button -->
+                <div class="checkout-right-side">
+                    <div class="order-summary-container">
+                        <div class="checkout-section order-summary-section">
+                            <h3>Order Summary</h3>
+                            <div class="order-summary" id="orderSummary">
+                                <!-- Items will be populated by JavaScript -->
+                            </div>
+                            <div class="order-total">
+                                <div class="order-total-line">
+                                    <span>Subtotal</span>
+                                    <span id="orderSubtotal">£0.00</span>
+                                </div>
+                                <div class="order-total-line">
+                                    <span>Digital Delivery in 2-3 working days</span>
+                                    <span>Free</span>
+                                </div>
+                                <div class="order-total-line total">
+                                    <span>Total</span>
+                                    <span id="orderTotal">£0.00</span>
+                                </div>
+                            </div>
+                            <button type="button" class="order-pay-button" id="orderPayButton" disabled>
+                                Pay Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Section - In Main White Container -->
+            <div class="payment-security-section">
+                <div id="payment-errors" class="error-message"></div>
+                <div class="payment-security">
+                    <span class="security-badge">🔒 Secured by Stripe</span>
+                    <span class="security-details">256-bit SSL encryption</span>
+                </div>
+            </div>
+
+            <!-- Success Message (hidden initially) -->
+            <div class="success-message" id="successMessage" style="display: none;">
+                <div style="text-align: center; padding: 3rem 2rem;">
+                    <div class="success-checkmark" id="successCheckmark"></div>
+                    <h3 class="success-title" id="successTitle" style="color: var(--sage-green); font-size: 1.8rem; margin: 1.5rem 0 1rem;">Payment Successful!</h3>
+                    <p class="success-description" id="successDescription" style="color: var(--soft-brown); margin-bottom: 1.5rem; line-height: 1.6;">
+                        Thank you for your purchase. A confirmation email has been sent to your email address. Your property reports will be prepared and sent to your email address within 48 hours.
+                    </p>
+                    <div class="order-id-box" id="orderIdBox">
+                        <strong>Order ID:</strong>
+                        <span id="orderId">ORDER-2024-001</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        
+        // Basket functionality
+        let basket = [];
+        
+        
+        // Optimized Loading Screen - faster page appearance
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loadingScreen');
+                const body = document.body;
+                
+                loadingScreen.classList.add('hidden');
+                body.classList.remove('loading');
+                
+                // Remove loading screen from DOM after animation
+                setTimeout(function() {
+                    loadingScreen.remove();
+                }, 600);
+            }, 400);
+        });
+
+        // Basket functionality
+        const basketBtn = document.getElementById('basketBtn');
+        const basketDropdown = document.getElementById('basketDropdown');
+        const basketClose = document.getElementById('basketClose');
+        const basketCount = document.getElementById('basketCount');
+        const basketItems = document.getElementById('basketItems');
+        const basketTotal = document.getElementById('basketTotal');
+        const totalAmount = document.getElementById('totalAmount');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const addToBasketBtns = document.querySelectorAll('.add-to-basket');
+
+        // Toggle basket dropdown
+        basketBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            basketDropdown.classList.add('show');
+        });
+
+        // Close basket dropdown
+        basketClose.addEventListener('click', function() {
+            basketDropdown.classList.remove('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!basketDropdown.contains(e.target) && !basketBtn.contains(e.target)) {
+                basketDropdown.classList.remove('show');
+            }
+        });
+
+        // Enhanced reversible basket functionality
+        addToBasketBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const name = this.dataset.name;
+                const price = parseInt(this.dataset.price);
+                const emoji = this.dataset.emoji;
+                const icon = this.dataset.icon;
+
+                // Check if item already exists in basket
+                const existingItemIndex = basket.findIndex(item => item.name === name);
+                const isInBasket = existingItemIndex !== -1;
+
+                if (!isInBasket) {
+                    // Add to basket
+                    basket.push({ name, price, emoji, icon });
+                    updateBasket();
+                    
+                    // Trigger success wave animation
+                    this.classList.add('wave-success');
+                    setTimeout(() => {
+                        this.classList.remove('wave-success');
+                        this.classList.add('in-basket'); // Keep golden state
+                    }, 800);
+                    
+                    // Always open basket to show contents when adding
+                    basketDropdown.classList.add('show');
+                } else {
+                    // Remove from basket with reverse animation
+                    this.classList.remove('in-basket', 'wave-success', 'wave-already');
+                    this.classList.add('wave-remove');
+                    
+                    setTimeout(() => {
+                        // Remove from basket array
+                        basket.splice(existingItemIndex, 1);
+                        updateBasket();
+                        
+                        // Reset button to original state
+                        this.classList.remove('wave-remove');
+                    }, 800);
+                }
+            });
+        });
+
+        // Update basket display and sync button states
+        function updateBasket() {
+            basketCount.textContent = basket.length;
+
+            // Sync all button states with basket contents
+            addToBasketBtns.forEach(btn => {
+                const itemName = btn.dataset.name;
+                const isInBasket = basket.some(item => item.name === itemName);
+
+                if (isInBasket) {
+                    if (!btn.classList.contains('in-basket')) {
+                        btn.classList.add('in-basket');
+                    }
+                } else {
+                    btn.classList.remove('in-basket', 'wave-success', 'wave-already', 'wave-remove');
+                }
+            });
+
+            if (basket.length === 0) {
+                basketItems.innerHTML = '<div class="basket-empty">Your basket is empty</div>';
+                basketTotal.style.display = 'none';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            let total = 0;
+            basketItems.innerHTML = '';
+
+            basket.forEach((item, index) => {
+                total += item.price;
+                const itemEl = document.createElement('div');
+                itemEl.className = 'basket-item';
+                itemEl.innerHTML = `
+                    <div class="basket-item-info">
+                        <div class="basket-item-name"><img src="${item.icon}" alt="${item.name}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;"> ${item.name}</div>
+                        <div class="basket-item-price">£${item.price}</div>
+                    </div>
+                    <button class="basket-item-remove" onclick="removeFromBasket(${index}, event)">×</button>
+                `;
+                basketItems.appendChild(itemEl);
+            });
+
+            totalAmount.textContent = total;
+            basketTotal.style.display = 'flex';
+            checkoutBtn.disabled = false;
+        }
+
+        // Enhanced synchronized remove animations for basket item and button
+        function removeFromBasket(index, event) {
+            event.stopPropagation(); // Prevent event bubbling
+            
+            const removedItem = basket[index];
+            
+            // Find the basket item element and add removing animation
+            const basketItemElements = document.querySelectorAll('.basket-item:not(.basket-empty)');
+            const basketItemToRemove = basketItemElements[index];
+            
+            // Find the corresponding button and trigger reverse wave animation
+            const correspondingBtn = Array.from(addToBasketBtns).find(btn => 
+                btn.dataset.name === removedItem.name
+            );
+            
+            // Start both animations simultaneously
+            if (basketItemToRemove) {
+                basketItemToRemove.classList.add('removing');
+            }
+            
+            if (correspondingBtn) {
+                // Trigger the remove animation (same as clicking the button when in basket)
+                correspondingBtn.classList.remove('in-basket', 'wave-success', 'wave-already');
+                correspondingBtn.classList.add('wave-remove');
+            }
+            
+            // Remove from basket array and update display after animation completes
+            setTimeout(() => {
+                basket.splice(index, 1);
+                updateBasket();
+                
+                if (correspondingBtn) {
+                    correspondingBtn.classList.remove('wave-remove');
+                }
+            }, 800); // Match the animation duration
+        }
+
+        
+        // View selected reports - Open checkout modal
+        checkoutBtn.addEventListener('click', function() {
+            if (basket.length > 0) {
+                openCheckoutModal();
+            }
+        });
+
+        // Enhanced smooth scrolling with navbar offset
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                
+                if (target) {
+                    const navbar = document.getElementById('navbar');
+                    const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                    
+                    // Calculate the exact position to scroll to
+                    let scrollPosition;
+                    
+                    if (targetId === '#home') {
+                        // For home, scroll to absolute top
+                        scrollPosition = 0;
+                    } else {
+                        // For other sections, scroll to the top of the section
+                        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+                        scrollPosition = targetPosition;
+                    }
+                    
+                    // Smooth scroll to the calculated position
+                    window.scrollTo({
+                        top: scrollPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // SCROLL-ONLY ANIMATIONS - focused on scroll triggers
+        function initializeScrollAnimations() {
+            console.log('🎯 Initializing scroll-triggered animations only');
+            
+            if (!window.IntersectionObserver) {
+                console.warn('IntersectionObserver not supported');
+                return;
+            }
+
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const element = entry.target;
+                        console.log('📱 Scroll animation triggered for:', element.className);
+                        
+                        // Add the scroll-visible class for CSS transitions
+                        element.classList.add('scroll-visible');
+                        
+                        // Special handling for parent containers
+                        if (element.classList.contains('reports-section')) {
+                            // Animate header first
+                            const header = element.querySelector('.section-header');
+                            if (header) {
+                                setTimeout(() => header.classList.add('scroll-visible'), 100);
+                            }
+                            
+                            // Animate cards with stagger
+                            const cards = element.querySelectorAll('.report-card');
+                            cards.forEach((card, index) => {
+                                setTimeout(() => {
+                                    card.classList.add('scroll-visible');
+                                }, 200 + (index * 150));
+                            });
+                        }
+                        
+                        if (element.classList.contains('features-section')) {
+                            // Animate header first
+                            const header = element.querySelector('.section-header');
+                            if (header) {
+                                setTimeout(() => header.classList.add('scroll-visible'), 100);
+                            }
+                            
+                            // Animate features with stagger
+                            const features = element.querySelectorAll('.feature');
+                            features.forEach((feature, index) => {
+                                setTimeout(() => {
+                                    feature.classList.add('scroll-visible');
+                                }, 200 + (index * 200));
+                            });
+                        }
+                        
+                        if (element.classList.contains('faq-section')) {
+                            // Animate heading first
+                            const heading = element.querySelector('.faq-heading');
+                            if (heading) {
+                                setTimeout(() => heading.classList.add('scroll-visible'), 100);
+                            }
+                            
+                            // Animate columns
+                            const columns = element.querySelectorAll('.faq-column');
+                            columns.forEach((column, colIndex) => {
+                                setTimeout(() => {
+                                    column.classList.add('scroll-visible');
+                                    
+                                    // Animate items within this column
+                                    const items = column.querySelectorAll('.faq-item');
+                                    items.forEach((item, itemIndex) => {
+                                        setTimeout(() => {
+                                            item.classList.add('scroll-visible');
+                                        }, itemIndex * 100);
+                                    });
+                                }, 300 + (colIndex * 200));
+                            });
+                        }
+                        
+                        // Unobserve after triggering
+                        observer.unobserve(element);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe section containers instead of individual elements
+            const sections = document.querySelectorAll('.reports-section, .features-section, .faq-section');
+            console.log('👁️ Observing', sections.length, 'sections for scroll animations');
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        // MULTIPLE INITIALIZATION STRATEGIES
+        let animationsInitialized = false;
+        
+        function safeInitializeAnimations() {
+            if (animationsInitialized) {
+                console.log('⚠️ Animations already initialized, skipping...');
+                return;
+            }
+            
+            console.log('🎬 SAFE INITIALIZE ANIMATIONS - Starting...');
+            animationsInitialized = true;
+            
+            // Wait a bit for the loading screen to finish
+            setTimeout(() => {
+                initializeScrollAnimations();
+            }, 500);
+        }
+        
+        // Strategy 1: DOM Content Loaded
+        if (document.readyState === 'loading') {
+            console.log('📚 Document still loading - waiting for DOMContentLoaded');
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('📚 DOMContentLoaded fired');
+                safeInitializeAnimations();
+            });
+        } else {
+            console.log('📚 Document already loaded');
+            safeInitializeAnimations();
+        }
+        
+        // Strategy 2: Window Load (backup)
+        window.addEventListener('load', function() {
+            console.log('🪟 Window load event fired');
+            if (!animationsInitialized) {
+                console.log('🪟 Animations not yet initialized - initializing now');
+                safeInitializeAnimations();
+            }
+        });
+        
+        // Strategy 3: Immediate timeout (backup backup)
+        setTimeout(() => {
+            if (!animationsInitialized) {
+                console.log('⏰ Timeout backup - force initializing animations');
+                safeInitializeAnimations();
+            }
+        }, 2000);
+        
+
+        // ULTRA SMOOTH Scroll Progress Bar
+        function createScrollProgressBar() {
+            const progressBar = document.getElementById('scroll-progress-bar');
+            
+            if (!progressBar) {
+                console.warn('Progress bar element not found');
+                return;
+            }
+
+            let isVisible = false;
+            let lastScrollTop = 0;
+            let lastUpdate = 0;
+            const updateThreshold = 16; // ~60fps
+            
+            // Use transform instead of width for better performance
+            function updateProgress() {
+                const now = performance.now();
+                
+                // Throttle updates for smoother performance
+                if (now - lastUpdate < updateThreshold) {
+                    return;
+                }
+                
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Only update if scroll changed significantly
+                if (Math.abs(scrollTop - lastScrollTop) < 1) {
+                    return;
+                }
+                
+                const docHeight = document.documentElement.scrollHeight;
+                const winHeight = window.innerHeight;
+                const scrollPercent = Math.min(Math.max((scrollTop / (docHeight - winHeight)), 0), 1);
+                
+                // Use transform scaleX for hardware acceleration
+                const progressElement = progressBar.querySelector('::before') || progressBar;
+                progressBar.style.setProperty('--progress', scrollPercent);
+                
+                // Update visibility smoothly
+                const shouldBeVisible = scrollTop > 50;
+                if (shouldBeVisible !== isVisible) {
+                    isVisible = shouldBeVisible;
+                    progressBar.classList.toggle('visible', isVisible);
+                }
+                
+                lastScrollTop = scrollTop;
+                lastUpdate = now;
+            }
+            
+            // Optimized scroll listener with passive scrolling
+            let rafId = null;
+            
+            function onScroll() {
+                if (rafId) return;
+                
+                rafId = requestAnimationFrame(() => {
+                    updateProgress();
+                    rafId = null;
+                });
+            }
+            
+            // Use passive listener for better performance
+            window.addEventListener('scroll', onScroll, { 
+                passive: true,
+                capture: false 
+            });
+            
+            // Use Intersection Observer for better performance if available
+            if (window.IntersectionObserver) {
+                const observer = new IntersectionObserver(() => {
+                    updateProgress();
+                }, { 
+                    threshold: [0, 0.25, 0.5, 0.75, 1],
+                    rootMargin: '0px 0px -50px 0px'
+                });
+                
+                observer.observe(document.body);
+            }
+            
+            // Initialize
+            updateProgress();
+            console.log('Ultra smooth scroll progress bar initialized');
+        }
+        
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', createScrollProgressBar);
+        } else {
+            createScrollProgressBar();
+        }
+
+        // FAQ accordion functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach((question) => {
+                question.addEventListener('click', function() {
+                    const parentItem = this.closest('.faq-item');
+                    const answer = this.nextElementSibling;
+                    const isOpening = !this.classList.contains('active');
+                    
+                    // Get all items in the same column
+                    const currentColumn = parentItem.closest('.faq-column');
+                    const allQuestionsInColumn = currentColumn.querySelectorAll('.faq-question');
+                    
+                    // Close all other open answers in this column first
+                    if (isOpening) {
+                        allQuestionsInColumn.forEach(q => {
+                            if (q !== this && q.classList.contains('active')) {
+                                const otherParent = q.closest('.faq-item');
+                                const otherAnswer = q.nextElementSibling;
+                                
+                                q.classList.remove('active');
+                                otherParent.classList.remove('active');
+                                otherAnswer.classList.remove('show');
+                            }
+                        });
+                        
+                        // Open this answer
+                        this.classList.add('active');
+                        parentItem.classList.add('active');
+                        answer.classList.add('show');
+                    } else {
+                        // Close this answer
+                        answer.classList.remove('show');
+                        this.classList.remove('active');
+                        parentItem.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Checkout Modal Functionality
+        const checkoutOverlay = document.getElementById('checkoutOverlay');
+        const checkoutCloseBtn = document.getElementById('checkoutCloseBtn');
+        const orderSummary = document.getElementById('orderSummary');
+        const orderItems = document.getElementById('orderItems');
+        const orderTotal = document.getElementById('orderTotal');
+        
+        // Stripe Configuration
+        // Replace with your actual publishable key
+        const stripe = Stripe(window.CONFIG?.STRIPE_PUBLISHABLE_KEY || 'YOUR_ACTUAL_STRIPE_PUBLISHABLE_KEY_HERE');
+        let cardElement = null;
+        
+        function initializeStripeElements() {
+            const elements = stripe.elements();
+            
+            // Custom styling to match your theme
+            const style = {
+                base: {
+                    fontSize: '16px',
+                    color: '#424770',
+                    '::placeholder': {
+                        color: '#aab7c4',
+                    },
+                },
+                invalid: {
+                    color: '#9e2146',
+                },
+            };
+            
+            cardElement = elements.create('card', {
+                style: style,
+                hidePostalCode: true,
+                disableLink: true
+            });
+            cardElement.mount('#card-element');
+            
+            cardElement.on('change', function(event) {
+                const cardContainer = document.getElementById('card-element');
+                const cardErrorsElement = document.getElementById('card-errors');
+                
+                // Clear previous states
+                cardContainer.classList.remove('stripe-element--invalid', 'stripe-element--complete');
+                
+                if (event.error) {
+                    // Add error styling to card container
+                    cardContainer.classList.add('stripe-element--invalid');
+                    
+                    // Show error message with smooth animation
+                    if (cardErrorsElement) {
+                        cardErrorsElement.textContent = event.error.message;
+                        cardErrorsElement.style.display = 'block';
+                        cardErrorsElement.classList.add('show');
+                        
+                        // Auto-hide after 5 seconds
+                        setTimeout(() => {
+                            cardErrorsElement.classList.remove('show');
+                        }, 5000);
+                    }
+                    
+                    // Also show in main error area for consistency
+                    showError('Card details: ' + event.error.message);
+                    
+                } else if (event.complete) {
+                    // Add success styling when card is complete and valid
+                    cardContainer.classList.add('stripe-element--complete');
+                    
+                    // Hide card-specific errors
+                    if (cardErrorsElement) {
+                        cardErrorsElement.style.display = 'none';
+                        cardErrorsElement.classList.remove('show');
+                    }
+                    
+                    // Clear main error if it was about card details
+                    const mainError = document.getElementById('payment-errors');
+                    if (mainError && mainError.textContent.includes('Card details:')) {
+                        mainError.textContent = '';
+                        mainError.style.display = 'none';
+                        mainError.classList.remove('show');
+                    }
+                } else {
+                    // Card is in progress but not complete
+                    if (cardErrorsElement) {
+                        cardErrorsElement.style.display = 'none';
+                        cardErrorsElement.classList.remove('show');
+                    }
+                }
+            });
+        }
+
+        // Clear form field styles and add input listeners
+        function initializeFormStyling() {
+            // Clear all field styles - including fields outside customerForm
+            document.querySelectorAll('input, textarea, select').forEach(field => {
+                field.classList.remove('error', 'success');
+                field.style.borderColor = '';
+                field.style.backgroundColor = 'white';
+                field.style.background = 'white';
+                
+                // Add input listener to clear error state when typing
+                field.addEventListener('input', function() {
+                    this.classList.remove('error');
+                    this.style.borderColor = '';
+                });
+            });
+        }
+        
+        function openCheckoutModal() {
+            // Populate order summary
+            populateOrderSummary();
+            
+            // Show modal
+            checkoutOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Initialize Stripe Elements if not already done
+            if (!cardElement) {
+                initializeStripeElements();
+            }
+            
+            // Initialize form styling
+            setTimeout(initializeFormStyling, 100);
+        }
+        
+        function closeCheckoutModal() {
+            // Add smooth closing animation
+            checkoutOverlay.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            checkoutOverlay.classList.remove('show');
+            document.body.style.overflow = 'auto';
+            
+            // SECURITY: Clear and reset Stripe card element to prevent data persistence
+            if (cardElement) {
+                try {
+                    cardElement.clear();
+                    const cardContainer = document.getElementById('card-element');
+                    if (cardContainer) {
+                        cardContainer.classList.remove('stripe-element--invalid', 'stripe-element--complete');
+                    }
+                } catch (error) {
+                    console.warn('Error clearing card element:', error);
+                }
+            }
+            
+            // Reset all forms completely
+            const form = document.getElementById('customerForm');
+            if (form) {
+                form.reset();
+            }
+            
+            // Clear all billing inputs manually (extra security)
+            const billingInputs = ['billingAddress', 'billingCity', 'billingPostcode', 'cardholderName'];
+            billingInputs.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.value = '';
+                    input.classList.remove('error', 'success');
+                }
+            });
+            
+            // Clear all other form inputs and remove validation states
+            document.querySelectorAll('#customerForm input, .form-group input').forEach(input => {
+                input.value = '';
+                input.classList.remove('error', 'success');
+            });
+            
+            // Clear all errors
+            const errorElement = document.getElementById('payment-errors');
+            if (errorElement) {
+                errorElement.textContent = '';
+                errorElement.style.display = 'none';
+                errorElement.classList.remove('show');
+            }
+            
+            const cardErrors = document.getElementById('card-errors');
+            if (cardErrors) {
+                cardErrors.textContent = '';
+                cardErrors.style.display = 'none';
+                cardErrors.classList.remove('show');
+            }
+            
+            // Reset button state
+            const orderPayButton = document.getElementById('orderPayButton');
+            if (orderPayButton) {
+                orderPayButton.disabled = false;
+                orderPayButton.textContent = 'Pay Now';
+            }
+            
+            // Reset success message and restore proper checkout content layout
+            const successMessage = document.getElementById('successMessage');
+            const checkoutContent = document.getElementById('checkoutContent');
+            if (successMessage && checkoutContent) {
+                // Reset all animation classes
+                successMessage.classList.remove('animate-in');
+                document.getElementById('successCheckmark')?.classList.remove('animate-circle', 'animate-tick');
+                document.getElementById('successTitle')?.classList.remove('animate-in');
+                document.getElementById('successDescription')?.classList.remove('animate-in');
+                document.getElementById('orderIdBox')?.classList.remove('animate-in');
+                
+                successMessage.style.display = 'none';
+                
+                // Restore proper grid layout for checkout content
+                checkoutContent.style.display = 'grid';
+                checkoutContent.style.gridTemplateColumns = '1fr';
+                checkoutContent.style.gap = '2rem';
+                
+                // Ensure left and right sides are properly displayed with correct styles
+                const leftSide = document.querySelector('.checkout-left-side');
+                const rightSide = document.querySelector('.checkout-right-side');
+                
+                if (leftSide) {
+                    leftSide.style.display = 'flex';
+                    leftSide.style.flexDirection = 'column';
+                }
+                if (rightSide) {
+                    rightSide.style.display = 'block';
+                }
+            }
+            
+            // Always clear basket when modal closes (successful or cancelled)
+            if (basket.length > 0) {
+                basket = [];
+                updateBasket();
+            }
+        }
+        
+        function populateOrderSummary() {
+            const orderSummary = document.getElementById('orderSummary');
+            const orderSubtotal = document.getElementById('orderSubtotal');
+            const orderTotal = document.getElementById('orderTotal');
+            const orderPayButton = document.getElementById('orderPayButton');
+            
+            orderSummary.innerHTML = '';
+            let total = 0;
+            
+            basket.forEach(item => {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'order-item';
+                orderItem.style.cssText = `
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0.75rem 0;
+                    border-bottom: 1px solid #f0f0f0;
+                    font-size: 0.875rem;
+                `;
+                orderItem.innerHTML = `
+                    <span style="color: #374151;"><img src="${item.icon}" alt="${item.name}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;"> ${item.name}</span>
+                    <span style="font-weight: 600; color: #1a1a1a;">£${item.price}</span>
+                `;
+                orderSummary.appendChild(orderItem);
+                total += item.price;
+            });
+            
+            // Update totals
+            orderSubtotal.textContent = `£${total}.00`;
+            orderTotal.textContent = `£${total}.00`;
+            
+            // Enable the pay button
+            orderPayButton.disabled = false;
+        }
+        
+        // Event Listeners
+        checkoutCloseBtn.addEventListener('click', closeCheckoutModal);
+        
+        checkoutOverlay.addEventListener('click', function(e) {
+            if (e.target === checkoutOverlay) {
+                closeCheckoutModal();
+            }
+        });
+
+        // Order Pay Button functionality - Handle payment directly
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'orderPayButton') {
+                handlePaymentSubmission(e);
+            }
+        });
+        
+        // Comprehensive field validation function
+        function validateAllFields() {
+            let hasErrors = false;
+            const errors = [];
+            
+            // Clear all previous error states
+            document.querySelectorAll('.form-group input').forEach(field => {
+                field.classList.remove('error');
+            });
+            
+            // Define validation rules for each field
+            const validationRules = {
+                firstName: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'First Name'
+                },
+                lastName: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'Last Name'
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    label: 'Email Address'
+                },
+                currentAddress: {
+                    required: true,
+                    minLength: 10,
+                    label: 'Current Address'
+                },
+                currentCity: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'Current City'
+                },
+                currentPostcode: {
+                    required: true,
+                    postcode: true,
+                    label: 'Current Postcode'
+                },
+                propertyAddress: {
+                    required: true,
+                    minLength: 10,
+                    label: 'Property Address'
+                },
+                propertyCity: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'Property City'
+                },
+                propertyPostcode: {
+                    required: true,
+                    postcode: true,
+                    label: 'Property Postcode'
+                },
+                cardholderName: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'Cardholder Name'
+                },
+                billingAddress: {
+                    required: true,
+                    minLength: 10,
+                    label: 'Billing Address'
+                },
+                billingCity: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'Billing City'
+                },
+                billingPostcode: {
+                    required: true,
+                    postcode: true,
+                    label: 'Billing Postcode'
+                }
+            };
+            
+            // Validate each field
+            for (const [fieldName, rules] of Object.entries(validationRules)) {
+                const field = document.getElementById(fieldName);
+                if (!field) continue;
+                
+                const value = field.value.trim();
+                let fieldErrors = [];
+                
+                // Check if required field is empty
+                if (rules.required && !value) {
+                    fieldErrors.push(`${rules.label} is required`);
+                }
+                
+                // Only validate format if field has content
+                if (value) {
+                    // Check minimum length
+                    if (rules.minLength && value.length < rules.minLength) {
+                        fieldErrors.push(`${rules.label} must be at least ${rules.minLength} characters`);
+                    }
+                    
+                    // Check for numbers in name fields
+                    if (rules.noNumbers && /\d/.test(value)) {
+                        fieldErrors.push(`${rules.label} cannot contain numbers`);
+                    }
+                    
+                    // Email validation
+                    if (rules.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+                        fieldErrors.push('Please enter a valid email address');
+                    }
+                    
+                    // UK Postcode validation
+                    if (rules.postcode && !/^[A-Z]{1,2}[0-9R][0-9A-Z]?\s?[0-9][A-Z]{2}$/i.test(value.replace(/\s/g, ''))) {
+                        fieldErrors.push(`${rules.label} must be a valid UK postcode (e.g., SW1A 1AA)`);
+                    }
+                }
+                
+                // Mark field as error if validation failed, success if valid
+                if (fieldErrors.length > 0) {
+                    field.classList.add('error');
+                    field.classList.remove('success');
+                    hasErrors = true;
+                    errors.push(...fieldErrors);
+                } else if (value) {
+                    field.classList.remove('error');
+                    field.classList.add('success');
+                }
+            }
+            
+            // Check if card element is complete and valid
+            const cardContainer = document.getElementById('card-element');
+            if (!cardContainer || !cardContainer.classList.contains('stripe-element--complete')) {
+                hasErrors = true;
+                errors.push('Please enter valid card details');
+                
+                // Add error styling to card if not already present
+                if (cardContainer && !cardContainer.classList.contains('stripe-element--invalid')) {
+                    cardContainer.classList.add('stripe-element--invalid');
+                }
+            }
+            
+            return { hasErrors, errors };
+        }
+
+        // Real-time validation for better UX
+        function setupRealTimeValidation() {
+            const fields = document.querySelectorAll('#customerForm input, input[id*="billing"], input[id="cardholderName"]');
+            
+            fields.forEach(field => {
+                field.addEventListener('blur', function() {
+                    validateSingleField(this);
+                });
+                
+                field.addEventListener('input', function() {
+                    // Remove error state when user starts typing
+                    if (this.classList.contains('error')) {
+                        this.classList.remove('error');
+                    }
+                    
+                    // Also clear main error message if it's showing
+                    const mainError = document.getElementById('payment-errors');
+                    if (mainError && mainError.classList.contains('show')) {
+                        setTimeout(() => {
+                            mainError.classList.remove('show');
+                        }, 1000);
+                    }
+                });
+            });
+        }
+
+        function validateSingleField(field) {
+            const validationRules = {
+                firstName: { required: true, minLength: 2, noNumbers: true, label: 'First Name' },
+                lastName: { required: true, minLength: 2, noNumbers: true, label: 'Last Name' },
+                email: { required: true, email: true, label: 'Email Address' },
+                currentAddress: { required: true, minLength: 10, label: 'Current Address' },
+                currentCity: { required: true, minLength: 2, noNumbers: true, label: 'Current City' },
+                currentPostcode: { required: true, postcode: true, label: 'Current Postcode' },
+                propertyAddress: { required: true, minLength: 10, label: 'Property Address' },
+                propertyCity: { required: true, minLength: 2, noNumbers: true, label: 'Property City' },
+                propertyPostcode: { required: true, postcode: true, label: 'Property Postcode' },
+                cardholderName: { required: true, minLength: 2, noNumbers: true, label: 'Cardholder Name' },
+                billingAddress: { required: true, minLength: 10, label: 'Billing Address' },
+                billingCity: { required: true, minLength: 2, noNumbers: true, label: 'Billing City' },
+                billingPostcode: { required: true, postcode: true, label: 'Billing Postcode' }
+            };
+            
+            const rules = validationRules[field.id];
+            if (!rules) return;
+            
+            const value = field.value.trim();
+            let isValid = true;
+            
+            field.classList.remove('error');
+            
+            if (rules.required && !value) {
+                isValid = false;
+            } else if (value) {
+                if (rules.minLength && value.length < rules.minLength) isValid = false;
+                if (rules.noNumbers && /\d/.test(value)) isValid = false;
+                if (rules.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) isValid = false;
+                if (rules.postcode && !/^[A-Z]{1,2}[0-9R][0-9A-Z]?\s?[0-9][A-Z]{2}$/i.test(value.replace(/\s/g, ''))) isValid = false;
+            }
+            
+            if (!isValid) {
+                field.classList.add('error');
+                field.classList.remove('success');
+            } else if (value) {
+                field.classList.remove('error');
+                field.classList.add('success');
+            }
+        }
+        
+        // Handle payment submission function
+        async function handlePaymentSubmission(e) {
+            e.preventDefault();
+            e.stopPropagation(); // Prevent event bubbling
+            
+            const orderPayButton = document.getElementById('orderPayButton');
+            
+            // Disable button and show loading
+            orderPayButton.disabled = true;
+            orderPayButton.textContent = 'Processing...';
+            
+            // Clear previous errors
+            const errorElement = document.getElementById('payment-errors');
+            errorElement.textContent = '';
+            errorElement.style.display = 'none';
+            
+            // Comprehensive form validation
+            const { hasErrors, errors } = validateAllFields();
+            
+            if (hasErrors) {
+                orderPayButton.disabled = false;
+                orderPayButton.textContent = 'Pay Now';
+                
+                // Show the first few most important errors
+                const priorityErrors = errors.slice(0, 3);
+                showError(priorityErrors.join('. ') + '.');
+                
+                // Scroll to first error field and focus it
+                const firstErrorField = document.querySelector('.form-group input.error');
+                if (firstErrorField) {
+                    firstErrorField.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    setTimeout(() => firstErrorField.focus(), 300);
+                }
+                
+                return;
+            }
+            
+            try {
+                // Double-check card element is ready (extra safety)
+                const cardContainer = document.getElementById('card-element');
+                if (!cardElement || !cardContainer?.classList.contains('stripe-element--complete')) {
+                    orderPayButton.disabled = false;
+                    orderPayButton.textContent = 'Pay Now';
+                    showError('Please ensure your card details are complete and valid.');
+                    return;
+                }
+                
+                // Get values directly from form fields
+                const cardholderNameValue = document.getElementById('cardholderName')?.value || '';
+                const emailValue = document.getElementById('email')?.value || '';
+                const billingAddressValue = document.getElementById('billingAddress')?.value || '';
+                const billingCityValue = document.getElementById('billingCity')?.value || '';
+                const billingPostcodeValue = document.getElementById('billingPostcode')?.value || '';
+                
+                // Create payment method
+                const {error, paymentMethod} = await stripe.createPaymentMethod({
+                    type: 'card',
+                    card: cardElement,
+                    billing_details: {
+                        name: cardholderNameValue,
+                        email: emailValue,
+                        address: {
+                            line1: billingAddressValue,
+                            city: billingCityValue,
+                            postal_code: billingPostcodeValue,
+                            country: 'GB',
+                        },
+                    },
+                });
+                
+                if (error) {
+                    orderPayButton.disabled = false;
+                    orderPayButton.textContent = 'Pay Now';
+                    showError('Payment failed: ' + error.message);
+                    
+                    // Also add error styling to card element
+                    if (cardContainer) {
+                        cardContainer.classList.add('stripe-element--invalid');
+                        cardContainer.classList.remove('stripe-element--complete');
+                    }
+                    return;
+                }
+                
+                // Here you would normally send the payment to your backend
+                // For now, simulate successful payment
+                const customerData = {
+                    firstName: document.getElementById('firstName')?.value || '',
+                    lastName: document.getElementById('lastName')?.value || '',
+                    email: document.getElementById('email')?.value || '',
+                    propertyAddress: document.getElementById('propertyAddress')?.value || ''
+                };
+                await processStripePayment(paymentMethod, customerData);
+                
+            } catch (error) {
+                showError('An unexpected error occurred. Please try again.');
+                console.error('Payment error:', error);
+            }
+        }
+        
+        // Real Stripe payment processing
+        async function processStripePayment(paymentMethod, customerData) {
+            try {
+                // Step 1: Create payment intent on backend
+                const response = await fetch('/create-payment-intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: 14900, // £149.00 in pence
+                        currency: 'gbp',
+                        customerEmail: customerData.email,
+                        customerName: `${customerData.firstName} ${customerData.lastName}`,
+                        propertyAddress: customerData.propertyAddress
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to create payment intent');
+                }
+                
+                const { clientSecret, paymentIntentId } = await response.json();
+                
+                // Step 2: Confirm payment with Stripe
+                const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: cardElement,
+                        billing_details: {
+                            name: `${customerData.firstName} ${customerData.lastName}`,
+                            email: customerData.email
+                        }
+                    }
+                });
+                
+                if (error) {
+                    throw error;
+                }
+                
+                if (paymentIntent.status === 'succeeded') {
+                    console.log('Payment succeeded:', paymentIntent.id);
+                    
+                    // Redirect to confirmation page
+                    redirectToConfirmation(paymentIntent.id, paymentMethod, customerData);
+                    
+                    // Email will be sent automatically via webhook
+                } else {
+                    throw new Error('Payment was not successful');
+                }
+                
+            } catch (error) {
+                console.error('Payment error:', error);
+                throw error;
+            }
+        }
+        
+        // Redirect to payment confirmation page with loading animation
+        function redirectToConfirmation(orderId, paymentMethod, customerData) {
+            // Store order details in localStorage for the confirmation page
+            const orderData = {
+                orderNumber: orderId,
+                customerName: `${customerData.firstName} ${customerData.lastName}`,
+                customerEmail: customerData.email,
+                propertyAddress: customerData.propertyAddress,
+                paymentMethod: 'card',
+                orderDate: new Date().toISOString(),
+                orderItems: [...basket], // Copy current basket items BEFORE any clearing
+                orderTotal: calculateTotal()
+            };
+            
+            // Store in localStorage FIRST before any DOM manipulation
+            localStorage.setItem('orderData', JSON.stringify(orderData));
+            console.log('Order data stored:', orderData); // Debug log
+            
+            // Prevent any other navigation or form submission
+            window.onbeforeunload = null;
+            
+            // Show loading screen IMMEDIATELY without closing modal first
+            showPaymentLoadingScreen();
+        }
+
+        // Show YPR loading screen during payment processing
+        function showPaymentLoadingScreen() {
+            console.log('Showing payment loading screen'); // Debug log
+            
+            // Prevent any other navigation or page reloads
+            window.onbeforeunload = null;
+            
+            // Create loading screen element that covers everything
+            const loadingScreen = document.createElement('div');
+            loadingScreen.className = 'loading-screen';
+            loadingScreen.id = 'paymentLoadingScreen';
+            loadingScreen.style.zIndex = '15000'; // Well above checkout modal (10000)
+            loadingScreen.style.position = 'fixed';
+            loadingScreen.style.top = '0';
+            loadingScreen.style.left = '0';
+            loadingScreen.style.width = '100%';
+            loadingScreen.style.height = '100%';
+            loadingScreen.style.background = 'linear-gradient(135deg, var(--warm-cream) 0%, #d8ddd8 100%)';
+            loadingScreen.style.display = 'flex';
+            loadingScreen.style.flexDirection = 'column';
+            loadingScreen.style.alignItems = 'center';
+            loadingScreen.style.justifyContent = 'center';
+            loadingScreen.style.opacity = '1'; // Show immediately
+            
+            loadingScreen.innerHTML = `
+                <div class="loading-logo">YPR</div>
+                <div class="loading-animation">
+                    <div class="loading-circle"></div>
+                    <div class="loading-inner-circle"></div>
+                    <div class="loading-center-dot"></div>
+                </div>
+                <div id="loadingText" style="margin-top: 2rem; color: var(--sage-green); font-weight: 500; text-align: center; opacity: 0; animation: fadeInUp 1s ease-out 0.8s forwards; min-height: 24px;">
+                    Processing your order...
+                </div>
+            `;
+            
+            // Add to document
+            document.body.appendChild(loadingScreen);
+            
+            // Progressive loading text updates
+            const loadingText = loadingScreen.querySelector('#loadingText');
+            const messages = [
+                'Processing your order...',
+                'Securing payment details...',
+                'Generating reports...',
+                'Almost ready!'
+            ];
+            
+            let messageIndex = 0;
+            const textInterval = setInterval(() => {
+                messageIndex++;
+                if (messageIndex < messages.length) {
+                    loadingText.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingText.textContent = messages[messageIndex];
+                        loadingText.style.opacity = '1';
+                    }, 200);
+                } else {
+                    clearInterval(textInterval);
+                }
+            }, 600);
+            
+            // Show loading for 2.5 seconds then redirect DIRECTLY to confirmation
+            setTimeout(() => {
+                clearInterval(textInterval);
+                console.log('Redirecting to confirmation page'); // Debug log
+                
+                // Clean up checkout modal while loading screen is still visible
+                const checkoutOverlay = document.getElementById('checkoutOverlay');
+                if (checkoutOverlay) {
+                    checkoutOverlay.style.display = 'none';
+                }
+                
+                // Direct redirect without fade for reliability
+                window.location.replace('payment-confirmation.html');
+            }, 2500);
+        }
+
+        // Calculate total from current basket
+        function calculateTotal() {
+            return basket.reduce((total, item) => total + item.price, 0);
+        }
+        
+        // Show error message
+        function showError(message) {
+            const errorElement = document.getElementById('payment-errors');
+            const orderPayButton = document.getElementById('orderPayButton');
+            
+            // Clear any existing timeout
+            if (window.errorTimeout) {
+                clearTimeout(window.errorTimeout);
+            }
+            
+            // Remove any existing show class first for re-animation
+            errorElement.classList.remove('show');
+            
+            // Small delay to ensure CSS transitions work properly
+            setTimeout(() => {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                errorElement.classList.add('show');
+                
+                // Reset button state
+                if (orderPayButton) {
+                    orderPayButton.disabled = false;
+                    orderPayButton.textContent = 'Pay Now';
+                }
+                
+                // Auto-hide after 6 seconds with smooth transition
+                window.errorTimeout = setTimeout(() => {
+                    errorElement.classList.remove('show');
+                    setTimeout(() => {
+                        if (!errorElement.classList.contains('show')) {
+                            errorElement.style.display = 'none';
+                        }
+                    }, 400); // Wait for fade-out animation
+                }, 6000);
+            }, 50);
+        }
+
+        // Initialize real-time validation when checkout section is ready
+        function initializeCheckoutValidation() {
+            if (document.querySelector('#customerForm')) {
+                setupRealTimeValidation();
+                console.log('✅ Real-time form validation initialized');
+            }
+        }
+
+        // Wait for DOM to be ready and initialize validation
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeCheckoutValidation);
+        } else {
+            initializeCheckoutValidation();
+        }
+
+        // Slideshow Functionality
+        function initializeSlideshow() {
+            const slideshowContainer = document.querySelector('.slideshow-container');
+            if (!slideshowContainer) return;
+
+            const slides = slideshowContainer.querySelectorAll('.slide');
+            const indicators = slideshowContainer.querySelectorAll('.indicator');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                // Remove active class from all slides and indicators
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+
+                // Add active class to current slide and indicator
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                currentSlide = index;
+            }
+
+            function nextSlide() {
+                const nextIndex = (currentSlide + 1) % slides.length;
+                showSlide(nextIndex);
+            }
+
+            // Click on slideshow container to advance
+            slideshowContainer.addEventListener('click', (e) => {
+                // Don't advance if clicking on an indicator
+                if (!e.target.classList.contains('indicator')) {
+                    nextSlide();
+                }
+            });
+
+            // Click on indicators to jump to specific slide
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent the container click from firing
+                    showSlide(index);
+                });
+            });
+
+            console.log('✅ Slideshow initialized with', slides.length, 'slides');
+        }
+
+        // Initialize slideshow when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeSlideshow);
+        } else {
+            initializeSlideshow();
+        }
+    </script>
+</body>
+</html>
