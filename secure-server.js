@@ -348,8 +348,13 @@ app.post('/api/payment/confirm',
                 emailSent: false
             });
 
-            // Send confirmation email
-            await sendConfirmationEmail(customerData.email, orderNumber, savedCustomer);
+            // Send confirmation email (non-blocking - don't fail order if email fails)
+            try {
+                await sendConfirmationEmail(customerData.email, orderNumber, savedCustomer);
+            } catch (emailError) {
+                console.error('⚠️ Email sending failed, but order was saved successfully:', emailError.message);
+                // Order is still successful even if email fails
+            }
 
             authSystem.addAuditLog('ORDER_COMPLETED', {
                 orderNumber,
@@ -493,15 +498,17 @@ app.get('/api/admin/customer/:email',
 // Email Configuration
 const emailTransporter = nodemailer.createTransport({
     host: 'smtp.zoho.com',
-    port: 465,
-    secure: true, // use SSL
+    port: 587,
+    secure: false, // use STARTTLS
     auth: {
         user: config.email.user,
         pass: config.email.pass
     },
     tls: {
         rejectUnauthorized: true
-    }
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000
 });
 
 async function sendConfirmationEmail(customerEmail, orderNumber, customerData) {
