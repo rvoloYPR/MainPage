@@ -1157,7 +1157,7 @@
         .newsletter-button {
             padding: 1rem 2rem;
             background: var(--sage-green);
-            color: var(--charcoal);
+            color: var(--warm-cream);
             border: none;
             border-radius: 4px;
             font-size: 1rem;
@@ -1169,7 +1169,7 @@
         }
 
         .newsletter-button:hover {
-            background: var(--gold);
+            background: var(--muted-sage);
             transform: translateY(-2px);
         }
 
@@ -1695,13 +1695,19 @@
             .checkout-content {
                 grid-template-columns: 1fr !important;
                 padding: 2rem;
-                grid-template-rows: 1fr auto;
+                grid-template-rows: auto auto;
                 gap: 2rem;
+            }
+
+            .checkout-modal {
+                min-height: auto;
+                max-height: 90vh;
             }
 
             .checkout-left-side {
                 gap: 2.5rem;
-                max-height: 60vh;
+                max-height: none;
+                overflow-y: visible;
                 order: 1;
             }
 
@@ -2202,11 +2208,19 @@
             .checkout-modal {
                 width: 95%;
                 max-height: 95vh;
+                min-height: auto;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
 
             .checkout-header,
             .checkout-content {
                 padding: 1.5rem;
+            }
+
+            .checkout-left-side {
+                max-height: none !important;
+                overflow-y: visible !important;
             }
 
             .form-row {
@@ -2216,6 +2230,16 @@
             .payment-security {
                 flex-direction: column;
                 gap: 0.5rem;
+            }
+
+            .checkout-overlay {
+                padding: 0.5rem;
+                align-items: flex-start;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .checkout-overlay.show {
+                display: flex !important;
             }
         }
 
@@ -2283,10 +2307,18 @@
             }
 
             .features-right {
+                display: block !important;
+                visibility: visible !important;
                 height: 600px;
                 aspect-ratio: 794 / 1123;
+                margin: 0 auto;
             }
-            
+
+            .slideshow-container {
+                display: flex !important;
+                visibility: visible !important;
+            }
+
             .faq-section {
                 padding: 2rem 0;
             }
@@ -2368,7 +2400,7 @@
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
-            <a href="#" class="logo">Yorkshire Property Report</a>
+            <a href="#" class="logo"><img src="LOGO ONLY.PNG" alt="Yorkshire Property Report" style="height: 40px; vertical-align: middle; margin-right: 10px;">Yorkshire Property Report</a>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#reports">Reports</a></li>
@@ -2598,7 +2630,7 @@
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="cta-content">
-            <h3>Subscribe to our newsletter and receive 10% off your first order!</h3>
+            <h3>Join our mailing list for free articles and offers!</h3>
             <form class="newsletter-form">
                 <input type="email" placeholder="Enter your email address" class="newsletter-input" required>
                 <button type="submit" class="newsletter-button">Subscribe</button>
@@ -2692,7 +2724,14 @@
                         </div>
                         
                         <h4 style="margin: 2.5rem 0 1.5rem 0; color: #374151; font-size: 1rem; font-weight: 600;">Billing Address</h4>
-                        
+
+                        <div class="form-group full-width" style="margin-bottom: 1.5rem;">
+                            <label class="checkbox-label" style="display: flex; align-items: center; cursor: pointer; font-weight: 500; color: #374151;">
+                                <input type="checkbox" id="sameAsCurrentAddress" style="margin-right: 0.75rem; width: 18px; height: 18px; cursor: pointer; accent-color: var(--sage-green);">
+                                <span>Billing address is the same as my current address</span>
+                            </label>
+                        </div>
+
                         <div class="billing-address-form">
                             <div class="form-group full-width">
                                 <label for="billingAddress">Address *</label>
@@ -3280,61 +3319,93 @@
         const orderTotal = document.getElementById('orderTotal');
         
         // Stripe Configuration
-        // Replace with your actual publishable key
-        const stripe = Stripe(window.CONFIG?.STRIPE_PUBLISHABLE_KEY || 'YOUR_ACTUAL_STRIPE_PUBLISHABLE_KEY_HERE');
+        console.log('Loading Stripe with key:', window.CONFIG?.STRIPE_PUBLISHABLE_KEY ? 'Key found' : 'No key found');
+
+        let stripe;
+        try {
+            stripe = Stripe(window.CONFIG?.STRIPE_PUBLISHABLE_KEY || 'YOUR_ACTUAL_STRIPE_PUBLISHABLE_KEY_HERE');
+            console.log('Stripe initialized successfully');
+        } catch (error) {
+            console.error('Error initializing Stripe:', error);
+        }
+
         let cardElement = null;
-        
+        let cardElementComplete = false; // Track card completion state
+        let elementsInstance = null; // Track elements instance
+
         function initializeStripeElements() {
-            const elements = stripe.elements();
-            
-            // Custom styling to match your theme
-            const style = {
-                base: {
-                    fontSize: '16px',
-                    color: '#424770',
-                    '::placeholder': {
-                        color: '#aab7c4',
+            // Prevent duplicate initialization
+            if (cardElement) {
+                console.log('Stripe Elements already initialized');
+                return;
+            }
+
+            try {
+                console.log('Initializing Stripe Elements...');
+                elementsInstance = stripe.elements();
+
+                // Custom styling to match your theme
+                const style = {
+                    base: {
+                        fontSize: '16px',
+                        color: '#424770',
+                        '::placeholder': {
+                            color: '#aab7c4',
+                        },
                     },
-                },
-                invalid: {
-                    color: '#9e2146',
-                },
-            };
-            
-            cardElement = elements.create('card', {
-                style: style,
-                hidePostalCode: true,
-                disableLink: true
-            });
-            cardElement.mount('#card-element');
-            
+                    invalid: {
+                        color: '#9e2146',
+                    },
+                };
+
+                cardElement = elementsInstance.create('card', {
+                    style: style,
+                    hidePostalCode: true,
+                    disableLink: true
+                });
+                cardElement.mount('#card-element');
+
+                console.log('Stripe Card Element mounted successfully');
+            } catch (error) {
+                console.error('Error initializing Stripe Elements:', error);
+                showError('Error loading payment form. Please refresh the page and try again.');
+                return;
+            }
+
             cardElement.on('change', function(event) {
                 const cardContainer = document.getElementById('card-element');
                 const cardErrorsElement = document.getElementById('card-errors');
-                
+
+                console.log('Card element change:', { complete: event.complete, error: event.error });
+
+                // Track card completion state
+                cardElementComplete = event.complete && !event.error;
+
                 // Clear previous states
                 cardContainer.classList.remove('stripe-element--invalid', 'stripe-element--complete');
-                
+
                 if (event.error) {
+                    cardElementComplete = false;
                     // Add error styling to card container
                     cardContainer.classList.add('stripe-element--invalid');
-                    
+
                     // Show error message with smooth animation
                     if (cardErrorsElement) {
                         cardErrorsElement.textContent = event.error.message;
                         cardErrorsElement.style.display = 'block';
                         cardErrorsElement.classList.add('show');
-                        
+
                         // Auto-hide after 5 seconds
                         setTimeout(() => {
                             cardErrorsElement.classList.remove('show');
                         }, 5000);
                     }
-                    
+
                     // Also show in main error area for consistency
                     showError('Card details: ' + event.error.message);
-                    
+
                 } else if (event.complete) {
+                    cardElementComplete = true;
                     // Add success styling when card is complete and valid
                     cardContainer.classList.add('stripe-element--complete');
                     
@@ -3390,9 +3461,12 @@
             if (!cardElement) {
                 initializeStripeElements();
             }
-            
+
             // Initialize form styling
             setTimeout(initializeFormStyling, 100);
+
+            // Setup billing address auto-fill
+            setupBillingAddressAutoFill();
         }
         
         function closeCheckoutModal() {
@@ -3405,6 +3479,7 @@
             if (cardElement) {
                 try {
                     cardElement.clear();
+                    cardElementComplete = false; // Reset state
                     const cardContainer = document.getElementById('card-element');
                     if (cardContainer) {
                         cardContainer.classList.remove('stripe-element--invalid', 'stripe-element--complete');
@@ -3427,8 +3502,17 @@
                 if (input) {
                     input.value = '';
                     input.classList.remove('error', 'success');
+                    input.disabled = false;
+                    input.style.backgroundColor = '';
+                    input.style.cursor = '';
                 }
             });
+
+            // Reset billing address checkbox
+            const sameAddressCheckbox = document.getElementById('sameAsCurrentAddress');
+            if (sameAddressCheckbox) {
+                sameAddressCheckbox.checked = false;
+            }
             
             // Clear all other form inputs and remove validation states
             document.querySelectorAll('#customerForm input, .form-group input').forEach(input => {
@@ -3682,12 +3766,14 @@
             }
             
             // Check if card element is complete and valid
-            const cardContainer = document.getElementById('card-element');
-            if (!cardContainer || !cardContainer.classList.contains('stripe-element--complete')) {
+            console.log('Validating card element. cardElement:', !!cardElement, 'cardElementComplete:', cardElementComplete);
+
+            if (!cardElement || !cardElementComplete) {
                 hasErrors = true;
                 errors.push('Please enter valid card details');
-                
-                // Add error styling to card if not already present
+
+                // Add error styling to card container
+                const cardContainer = document.getElementById('card-element');
                 if (cardContainer && !cardContainer.classList.contains('stripe-element--invalid')) {
                     cardContainer.classList.add('stripe-element--invalid');
                 }
@@ -3764,7 +3850,66 @@
                 field.classList.add('success');
             }
         }
-        
+
+        // Setup billing address auto-fill functionality
+        function setupBillingAddressAutoFill() {
+            const checkbox = document.getElementById('sameAsCurrentAddress');
+            const billingFields = {
+                address: document.getElementById('billingAddress'),
+                city: document.getElementById('billingCity'),
+                postcode: document.getElementById('billingPostcode')
+            };
+            const currentFields = {
+                address: document.getElementById('currentAddress'),
+                city: document.getElementById('currentCity'),
+                postcode: document.getElementById('currentPostcode')
+            };
+
+            if (!checkbox) return;
+
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // Copy values from current address to billing address
+                    billingFields.address.value = currentFields.address.value;
+                    billingFields.city.value = currentFields.city.value;
+                    billingFields.postcode.value = currentFields.postcode.value;
+
+                    // Disable billing fields and add visual indication
+                    Object.values(billingFields).forEach(field => {
+                        field.disabled = true;
+                        field.style.backgroundColor = '#f3f4f6';
+                        field.style.cursor = 'not-allowed';
+                        // Trigger success styling if field has value
+                        if (field.value) {
+                            field.classList.add('success');
+                            field.classList.remove('error');
+                        }
+                    });
+
+                    // Also update when current address fields change
+                    Object.keys(currentFields).forEach(key => {
+                        currentFields[key].addEventListener('input', function updateBillingOnCurrentChange() {
+                            if (checkbox.checked) {
+                                billingFields[key].value = this.value;
+                                if (billingFields[key].value) {
+                                    billingFields[key].classList.add('success');
+                                }
+                            }
+                        });
+                    });
+                } else {
+                    // Clear billing fields and re-enable them
+                    Object.values(billingFields).forEach(field => {
+                        field.value = '';
+                        field.disabled = false;
+                        field.style.backgroundColor = '';
+                        field.style.cursor = '';
+                        field.classList.remove('success', 'error');
+                    });
+                }
+            });
+        }
+
         // Handle payment submission function
         async function handlePaymentSubmission(e) {
             e.preventDefault();
@@ -3807,8 +3952,9 @@
             
             try {
                 // Double-check card element is ready (extra safety)
-                const cardContainer = document.getElementById('card-element');
-                if (!cardElement || !cardContainer?.classList.contains('stripe-element--complete')) {
+                console.log('Double-checking before payment. cardElement:', !!cardElement, 'cardElementComplete:', cardElementComplete);
+
+                if (!cardElement || !cardElementComplete) {
                     orderPayButton.disabled = false;
                     orderPayButton.textContent = 'Pay Now';
                     showError('Please ensure your card details are complete and valid.');
@@ -3862,6 +4008,8 @@
                 await processStripePayment(paymentMethod, customerData);
                 
             } catch (error) {
+                orderPayButton.disabled = false;
+                orderPayButton.textContent = 'Pay Now';
                 showError('An unexpected error occurred. Please try again.');
                 console.error('Payment error:', error);
             }
@@ -3870,53 +4018,82 @@
         // Real Stripe payment processing
         async function processStripePayment(paymentMethod, customerData) {
             try {
+                console.log('Processing payment...', { paymentMethod: paymentMethod.id, customerData });
+
+                // Get all form data for backend
+                const formData = {
+                    firstName: document.getElementById('firstName')?.value || '',
+                    lastName: document.getElementById('lastName')?.value || '',
+                    email: document.getElementById('email')?.value || '',
+                    phone: '', // Add if you have phone field
+                    currentAddress: document.getElementById('currentAddress')?.value || '',
+                    currentCity: document.getElementById('currentCity')?.value || '',
+                    currentPostcode: document.getElementById('currentPostcode')?.value || '',
+                    propertyAddress: document.getElementById('propertyAddress')?.value || '',
+                    propertyCity: document.getElementById('propertyCity')?.value || '',
+                    propertyPostcode: document.getElementById('propertyPostcode')?.value || ''
+                };
+
+                console.log('Creating payment intent with backend...');
+
                 // Step 1: Create payment intent on backend
-                const response = await fetch('/create-payment-intent', {
+                const intentResponse = await fetch('https://mainpage-5wb3.onrender.com/api/payment/create-intent', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        amount: 14900, // £149.00 in pence
-                        currency: 'gbp',
-                        customerEmail: customerData.email,
-                        customerName: `${customerData.firstName} ${customerData.lastName}`,
-                        propertyAddress: customerData.propertyAddress
-                    })
+                    body: JSON.stringify(formData)
                 });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to create payment intent');
+
+                if (!intentResponse.ok) {
+                    const errorData = await intentResponse.json();
+                    throw new Error(errorData.error || 'Failed to create payment intent');
                 }
-                
-                const { clientSecret, paymentIntentId } = await response.json();
-                
+
+                const { clientSecret, paymentIntentId } = await intentResponse.json();
+                console.log('Payment intent created:', paymentIntentId);
+
                 // Step 2: Confirm payment with Stripe
+                console.log('Confirming payment with Stripe...');
                 const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-                    payment_method: {
-                        card: cardElement,
-                        billing_details: {
-                            name: `${customerData.firstName} ${customerData.lastName}`,
-                            email: customerData.email
-                        }
-                    }
+                    payment_method: paymentMethod.id
                 });
-                
+
                 if (error) {
+                    console.error('Payment confirmation error:', error);
                     throw error;
                 }
-                
+
                 if (paymentIntent.status === 'succeeded') {
-                    console.log('Payment succeeded:', paymentIntent.id);
-                    
+                    console.log('✅ Payment succeeded:', paymentIntent.id);
+
+                    // Step 3: Confirm with backend to save order and send email
+                    const confirmResponse = await fetch('https://mainpage-5wb3.onrender.com/api/payment/confirm', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            ...formData,
+                            paymentIntentId: paymentIntent.id,
+                            stripeCustomerId: paymentIntent.customer
+                        })
+                    });
+
+                    if (!confirmResponse.ok) {
+                        console.warn('Payment succeeded but order confirmation failed');
+                    }
+
+                    const confirmData = await confirmResponse.json();
+                    console.log('Order confirmed:', confirmData.orderNumber);
+
                     // Redirect to confirmation page
-                    redirectToConfirmation(paymentIntent.id, paymentMethod, customerData);
-                    
-                    // Email will be sent automatically via webhook
+                    redirectToConfirmation(confirmData.orderNumber, paymentMethod, formData);
+
                 } else {
                     throw new Error('Payment was not successful');
                 }
-                
+
             } catch (error) {
                 console.error('Payment error:', error);
                 throw error;
