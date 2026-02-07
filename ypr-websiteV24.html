@@ -4037,7 +4037,7 @@
                 console.log('Creating payment intent with backend...');
 
                 // Step 1: Create payment intent on backend
-                const intentResponse = await fetch('http://localhost:3000/api/payment/create-intent', {
+                const intentResponse = await fetch('https://mainpage-5wb3.onrender.com/api/payment/create-intent', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -4068,7 +4068,7 @@
                     console.log('✅ Payment succeeded:', paymentIntent.id);
 
                     // Step 3: Confirm with backend to save order and send email
-                    const confirmResponse = await fetch('http://localhost:3000/api/payment/confirm', {
+                    const confirmResponse = await fetch('https://mainpage-5wb3.onrender.com/api/payment/confirm', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
