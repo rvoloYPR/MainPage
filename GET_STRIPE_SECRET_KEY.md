@@ -58,7 +58,7 @@ C:\Users\User\Documents\Documents\YPR\testing - 3\.env
 ### Step 6: Replace the Test Secret Key
 Find this line (around line 12):
 ```env
-STRIPE_SECRET_KEY=sk_test_51RhzPbFEWrfGuPMwHaJJSUZuR8I8JVyKtxlE7s2dOZGQYk3MG5AEqwU2XTy4JIxP21P5tYp4Nx34r5YOxuwCdYJP00k3q8B1g4
+STRIPE_SECRET_KEY=sk_test_YOUR_CURRENT_PLACEHOLDER_KEY
 ```
 
 Replace it with YOUR actual test secret key from Stripe:
