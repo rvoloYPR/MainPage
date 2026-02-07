@@ -727,7 +727,7 @@
 
         async function verifyAndLoadDashboard() {
             try {
-                const response = await apiCall('/admin/zero-trust-status');
+                const response = await apiCall('/admin/security-status');
                 if (response.systemStatus === 'ZERO_TRUST_ACTIVE') {
                     showDashboard();
                 } else {
@@ -844,7 +844,7 @@
             if (!accessToken) return;
 
             try {
-                const status = await apiCall('/admin/zero-trust-status');
+                const status = await apiCall('/admin/security-status');
                 const now = Date.now();
                 const nextVerification = now + (status.config.VERIFY_EVERY_MINUTES * 60 * 1000);
                 
@@ -945,7 +945,7 @@
         // Data loading functions
         async function loadOverview() {
             try {
-                const status = await apiCall('/admin/zero-trust-status');
+                const status = await apiCall('/admin/security-status');
                 
                 document.getElementById('securityLevel').textContent = status.securityLevel;
                 document.getElementById('activeSessions').textContent = status.activeSessions;
@@ -978,7 +978,7 @@
 
         async function loadSecurityStatus() {
             try {
-                const security = await apiCall('/admin/zero-trust-status');
+                const security = await apiCall('/admin/security-status');
                 const securityDiv = document.getElementById('securityData');
                 
                 securityDiv.innerHTML = `
