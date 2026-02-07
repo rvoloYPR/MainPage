@@ -634,6 +634,8 @@
                 const password = document.getElementById('password').value;
                 const twoFactorCode = ''; // 2FA disabled
 
+                console.log('Attempting login...', { username });
+
                 const response = await fetch('/admin/login', {
                     method: 'POST',
                     headers: {
@@ -648,7 +650,9 @@
                     })
                 });
 
+                console.log('Response status:', response.status);
                 const data = await response.json();
+                console.log('Response data:', data);
 
                 if (data.requiresChallenge) {
                     // New device detected - show challenge
@@ -675,8 +679,10 @@
                 }
 
             } catch (error) {
+                console.error('Login error:', error);
                 errorDiv.style.display = 'block';
-                errorDiv.textContent = error.message;
+                errorDiv.textContent = error.message || 'An error occurred';
+                alert('Login failed: ' + (error.message || 'Unknown error')); // Temporary debug
             } finally {
                 loginBtn.disabled = false;
                 loginBtn.textContent = '🚀 Secure Login';
