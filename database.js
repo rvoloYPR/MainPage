@@ -27,12 +27,12 @@ class DataEncryption {
     encrypt(text) {
         if (!text) return null;
         const iv = crypto.randomBytes(this.ivLength);
-        const cipher = crypto.createCipher(this.algorithm, this.key);
-        
+        const cipher = crypto.createCipheriv(this.algorithm, this.key, iv);
+
         let encrypted = cipher.update(text, 'utf8', 'hex');
         encrypted += cipher.final('hex');
         const tag = cipher.getAuthTag();
-        
+
         return iv.toString('hex') + tag.toString('hex') + encrypted;
     }
 
@@ -42,10 +42,10 @@ class DataEncryption {
             const iv = Buffer.from(encryptedText.slice(0, this.ivLength * 2), 'hex');
             const tag = Buffer.from(encryptedText.slice(this.ivLength * 2, (this.ivLength + this.tagLength) * 2), 'hex');
             const encrypted = encryptedText.slice((this.ivLength + this.tagLength) * 2);
-            
-            const decipher = crypto.createDecipher(this.algorithm, this.key);
+
+            const decipher = crypto.createDecipheriv(this.algorithm, this.key, iv);
             decipher.setAuthTag(tag);
-            
+
             let decrypted = decipher.update(encrypted, 'hex', 'utf8');
             decrypted += decipher.final('utf8');
             return decrypted;
