@@ -103,7 +103,7 @@ class SecurityMiddleware {
                 directives: {
                     defaultSrc: ["'self'"],
                     styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-                    scriptSrc: ["'self'", "https://js.stripe.com"],
+                    scriptSrc: ["'self'", "'unsafe-inline'", "https://js.stripe.com"],
                     fontSrc: ["'self'", "https://fonts.gstatic.com"],
                     imgSrc: ["'self'", "data:", "https:"],
                     connectSrc: ["'self'", "https://api.stripe.com"],
