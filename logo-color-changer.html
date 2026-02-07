@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Color Changer</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #f5f5f5;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            color: #2c2c2c;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        canvas {
+            border: 2px solid #ddd;
+            margin: 20px 0;
+            display: block;
+            max-width: 100%;
+        }
+        button {
+            background: #a00d2e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        button:hover {
+            background: #850b27;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Yorkshire Property Report Logo Color Changer</h1>
+        <p class="subtitle">Change "PROPERTY REPORT" to website red (#a00d2e)</p>
+
+        <div>
+            <canvas id="originalCanvas"></canvas>
+            <p style="text-align: center; color: #666; margin-top: -10px;">Original Logo (loaded from LOGO.PNG)</p>
+        </div>
+
+        <div>
+            <button id="processBtn" onclick="processImage()">Change Color to Website Red</button>
+            <button id="downloadBtn" onclick="downloadImage()" disabled>Download New Logo</button>
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <div style="margin-top: 20px;">
+            <canvas id="resultCanvas" style="display: none;"></canvas>
+            <p id="resultLabel" style="text-align: center; color: #666; margin-top: -10px; display: none;">New Logo with Website Red</p>
+        </div>
+    </div>
+
+    <script>
+        const originalCanvas = document.getElementById('originalCanvas');
+        const resultCanvas = document.getElementById('resultCanvas');
+        const processBtn = document.getElementById('processBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const statusDiv = document.getElementById('status');
+        const resultLabel = document.getElementById('resultLabel');
+
+        let img = new Image();
+        img.crossOrigin = "anonymous";
+
+        function showStatus(message, type) {
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + type;
+            statusDiv.style.display = 'block';
+        }
+
+        img.onload = function() {
+            originalCanvas.width = img.width;
+            originalCanvas.height = img.height;
+            const ctx = originalCanvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            processBtn.disabled = false;
+            showStatus('Logo loaded successfully! Click "Change Color" to update.', 'success');
+        };
+
+        img.onerror = function() {
+            showStatus('Error loading LOGO.PNG. Make sure the file is in the same directory as this HTML file.', 'error');
+        };
+
+        img.src = 'LOGO.PNG';
+
+        function processImage() {
+            const ctx = originalCanvas.getContext('2d');
+            const imageData = ctx.getImageData(0, 0, originalCanvas.width, originalCanvas.height);
+            const data = imageData.data;
+
+            // Target website red color
+            const targetR = 160;  // #a00d2e
+            const targetG = 13;
+            const targetB = 46;
+
+            let pixelsChanged = 0;
+
+            // Process each pixel
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const a = data[i + 3];
+
+                // Identify reddish pixels (the current "PROPERTY REPORT" text)
+                // Look for pixels where R > G and R > B, and in a certain range
+                if (a > 0 && // Not transparent
+                    r > g && r > b && // Reddish
+                    r > 80 && r < 200 && // In the red range
+                    g < 100 && b < 100) { // Not too much green or blue
+
+                    data[i] = targetR;     // Red
+                    data[i + 1] = targetG; // Green
+                    data[i + 2] = targetB; // Blue
+                    pixelsChanged++;
+                }
+            }
+
+            // Draw result
+            resultCanvas.width = originalCanvas.width;
+            resultCanvas.height = originalCanvas.height;
+            const resultCtx = resultCanvas.getContext('2d');
+            resultCtx.putImageData(imageData, 0, 0);
+
+            resultCanvas.style.display = 'block';
+            resultLabel.style.display = 'block';
+            downloadBtn.disabled = false;
+
+            showStatus(`Color changed successfully! ${pixelsChanged} pixels updated to #a00d2e`, 'success');
+        }
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'yorkshire-logo-website-red.png';
+            link.href = resultCanvas.toDataURL('image/png');
+            link.click();
+            showStatus('Logo downloaded successfully!', 'success');
+        }
+    </script>
+</body>
+</html>

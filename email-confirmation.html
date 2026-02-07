@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Yorkshire Property Report</title>
+    <style>
+        /* Professional Email Template Styles */
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #2c2c2c;
+            background: linear-gradient(135deg, #e8e3db 0%, #ddd6c8 100%);
+        }
+        
+        .email-container {
+            max-width: 900px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #5a7249 0%, #4a6238 50%, #3a5229 100%);
+            color: white;
+            padding: 45px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(184, 150, 95, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header p {
+            margin: 12px 0 0 0;
+            font-size: 15px;
+            opacity: 0.9;
+            font-weight: 400;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .success-badge {
+            background-color: rgba(255, 255, 255, 0.25);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 16px 0 0 0;
+            font-weight: 600;
+            font-size: 13px;
+            backdrop-filter: blur(8px);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .content {
+            padding: 40px 50px;
+        }
+        
+        .greeting {
+            font-size: 20px;
+            color: #2c2c2c;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .order-summary {
+            background-color: #fafafa;
+            border-radius: 18px;
+            padding: 35px;
+            margin: 35px 0;
+            border: 1px solid #e8e3db;
+        }
+        
+        .order-summary h2 {
+            color: #2c2c2c;
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 25px 0;
+        }
+        
+        .order-details {
+            margin: 25px 0;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 14px 0;
+            padding: 14px 18px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #d9d4c7;
+        }
+        
+        .detail-label {
+            font-weight: 500;
+            color: #75624a;
+            font-size: 13px;
+        }
+        
+        .detail-value {
+            color: #2c2c2c;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .items-purchased {
+            background-color: #fafafa;
+            border-radius: 18px;
+            padding: 35px;
+            margin: 35px 0;
+            border: 1px solid #e8e3db;
+        }
+        
+        .items-purchased h2 {
+            color: #2c2c2c;
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 25px 0;
+        }
+        
+        .order-items {
+            margin-top: 0;
+        }
+        
+        .item-description {
+            color: #75624a;
+            font-size: 13px;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+        
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 18px;
+            background-color: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #d9d4c7;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.07);
+        }
+        
+        .item-name {
+            font-weight: 500;
+            color: #2c2c2c;
+            font-size: 15px;
+        }
+        
+        .item-price {
+            color: #6b8657;
+            font-weight: 700;
+            font-size: 17px;
+        }
+        
+        .total-row {
+            margin-top: 18px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 600;
+            background: #6b8657;
+            color: white;
+            border-radius: 14px;
+            box-shadow: 0 5px 15px rgba(107, 134, 87, 0.35);
+        }
+        
+        .total-label {
+            font-weight: 600;
+        }
+        
+        .total-value {
+            font-size: 22px;
+            font-weight: 800;
+        }
+        
+        .next-steps {
+            background-color: #fafafa;
+            border-radius: 18px;
+            padding: 35px;
+            margin: 35px 0;
+            border: 1px solid #e8e3db;
+        }
+        
+        .next-steps h3 {
+            color: #2c2c2c;
+            margin: 0 0 25px 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .step {
+            margin: 16px 0;
+            padding: 18px;
+            background-color: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #d9d4c7;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background: #b8965f;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            margin-right: 14px;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(184, 150, 95, 0.4);
+        }
+        
+        .step-text {
+            color: #2c2c2c;
+            line-height: 1.5;
+            padding-top: 2px;
+            font-size: 14px;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 35px 0;
+            padding: 35px;
+            background-color: #fafafa;
+            border-radius: 18px;
+            border: 1px solid #e8e3db;
+        }
+        
+        .cta-button {
+            background: #6b8657;
+            color: white;
+            padding: 16px 32px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            font-size: 14px;
+            border-radius: 50px;
+            box-shadow: 0 4px 14px rgba(107, 134, 87, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background: #5a7249;
+            box-shadow: 0 12px 30px rgba(107, 134, 87, 0.4);
+        }
+        
+        .support-info {
+            background-color: #fafafa;
+            border-radius: 18px;
+            padding: 35px;
+            margin: 35px 0;
+            text-align: center;
+            border: 1px solid #e8e3db;
+        }
+        
+        .support-info h3 {
+            color: #2c2c2c;
+            margin: 0 0 18px 0;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .contact-link {
+            color: #6b8657;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .contact-link:hover {
+            color: #5a7249;
+            text-decoration: underline;
+        }
+        
+        .footer {
+            background: #1a1a1a;
+            color: #f0ede6;
+            padding: 45px 50px;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .footer a {
+            color: #b8965f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .footer a:hover {
+            color: #f0ede6;
+            text-decoration: underline;
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-links a {
+            margin: 0 14px;
+            color: #b8965f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 13px;
+        }
+        
+        .social-links a:hover {
+            color: #f0ede6;
+            text-decoration: underline;
+        }
+        
+        @media only screen and (max-width: 768px) {
+            .email-container {
+                margin: 15px;
+                border-radius: 20px;
+            }
+            
+            .content, .header, .footer {
+                padding: 25px;
+            }
+            
+            .order-summary, .items-purchased, .next-steps, .support-info, .cta-section {
+                padding: 25px;
+                margin: 25px 0;
+            }
+            
+            .detail-row, .item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 14px;
+            }
+            
+            .detail-value, .item-price {
+                margin-top: 6px;
+            }
+            
+            .step {
+                padding: 14px;
+            }
+            
+            .total-row {
+                flex-direction: column;
+                text-align: center;
+                gap: 6px;
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Yorkshire Property Report</h1>
+            <div class="success-badge">PAYMENT CONFIRMED</div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <div class="greeting">
+                Dear {{CUSTOMER_NAME}},
+            </div>
+            
+            <p>Thank you for your order! We're excited to help you with your property research in Yorkshire.</p>
+            
+            <p>This email confirms that we have successfully received your payment and your property reports are now being prepared by our expert team.</p>
+            
+            <!-- Order Details -->
+            <div class="order-summary">
+                <h2>Order Details</h2>
+                
+                <div class="order-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Order Number:</span>
+                        <span class="detail-value">{{ORDER_NUMBER}}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Order Date:</span>
+                        <span class="detail-value">{{ORDER_DATE}}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Customer Email:</span>
+                        <span class="detail-value">{{CUSTOMER_EMAIL}}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Property Address:</span>
+                        <span class="detail-value">{{PROPERTY_ADDRESS}}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Items Purchased -->
+            <div class="items-purchased">
+                <h2>Items Purchased</h2>
+                
+                <div class="order-items">
+                    <div class="item">
+                        <div>
+                            <div class="item-name">Crime Level Analysis</div>
+                            <div class="item-description">Comprehensive crime statistics and safety analysis</div>
+                        </div>
+                        <div class="item-price">£90.00</div>
+                    </div>
+                    <div class="item">
+                        <div>
+                            <div class="item-name">Affordable Properties</div>
+                            <div class="item-description">Value analysis and market opportunities</div>
+                        </div>
+                        <div class="item-price">£59.00</div>
+                    </div>
+                </div>
+                
+                <div class="total-row">
+                    <span class="total-label">Total Paid:</span>
+                    <span class="total-value">£149.00</span>
+                </div>
+            </div>
+            
+            <!-- Next Steps -->
+            <div class="next-steps">
+                <h3>What Happens Next</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-text">
+                        <strong>Report Preparation (24-48 hours)</strong><br>
+                        Our expert team will research and compile your comprehensive property reports.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-text">
+                        <strong>Quality Review</strong><br>
+                        Each report undergoes thorough quality checks to ensure accuracy and completeness.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-text">
+                        <strong>Report Delivery</strong><br>
+                        Your completed reports will be sent to this email address as secure PDF attachments.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-text">
+                        <strong>Follow-up Support</strong><br>
+                        Our team is available to answer any questions about your reports.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Support Information -->
+            <div class="support-info">
+                <h3>Need Help?</h3>
+                <p>Our support team is ready to assist you with any questions.</p>
+                <p>
+                    Email: <a href="mailto:info@ypr.co.uk" class="contact-link">info@ypr.co.uk</a><br>
+                </p>
+                <p style="font-size: 14px; margin-top: 15px; color: #75624a;">
+                    <strong>Business Hours:</strong> Monday - Friday, 9:00 AM - 6:00 PM GMT
+                </p>
+            </div>
+            
+            <p style="margin-top: 30px;">Thank you for choosing Yorkshire Property Report. We look forward to providing you with valuable insights for your property decisions.</p>
+            
+            <p style="margin-top: 20px;">
+                Best regards,<br>
+
+                
+                <strong>The Yorkshire Property Report Team</strong>
+            </p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px;">
+                Yorkshire Property Report
+            </div>
+            
+            
+            <p style="margin: 15px 0 5px 0; font-size: 12px; opacity: 0.8;">
+                This email was sent to {{CUSTOMER_EMAIL}} regarding order {{ORDER_NUMBER}}.
+            </p>
+            
+            <p style="margin: 5px 0; font-size: 12px; opacity: 0.8;">
+                © 2024 Yorkshire Property Report. All rights reserved.
+            </p>
+            
+            <p style="margin: 15px 0 0 0; font-size: 11px; opacity: 0.6;">
+                If you have any concerns about this email, please contact us at info@ypr.co.uk
+            </p>
+        </div>
+    </div>
+</body>
+</html>

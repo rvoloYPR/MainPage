@@ -1,0 +1,253 @@
+# =================================
+# SECURITY - NEVER COMMIT THESE
+# =================================
+# Environment variables (contains secret keys)
+.env
+.env.local
+.env.production
+.env.development
+.env.staging
+.env.test
+
+# JWT secrets and certificates
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+jwt_secret.txt
+secrets/
+
+# API keys and credentials
+config/secrets.json
+credentials.json
+service-account.json
+firebase-adminsdk*.json
+
+# Database files (contains customer data)
+*.db
+*.sqlite
+*.sqlite3
+ypr_customers.db
+database.sql
+backup.sql
+
+# Session and cache files
+sessions/
+.session-store
+redis.dump
+
+# =================================
+# DEVELOPMENT FILES
+# =================================
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependency directories
+jspm_packages/
+bower_components/
+
+# Package lock files (optional - include if using specific versions)
+# package-lock.json
+# yarn.lock
+
+# =================================
+# LOGS AND RUNTIME DATA
+# =================================
+# Logs
+*.log
+logs/
+audit-logs/
+error-logs/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+.coverage/
+
+# =================================
+# BUILD AND DEPLOYMENT
+# =================================
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vuepress/dist
+
+# Dependency directories
+.pnp
+.pnp.js
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Webpack bundles
+bundle.js
+bundle.js.map
+
+# =================================
+# UPLOADS AND USER DATA
+# =================================
+# User uploads (may contain sensitive data)
+/uploads/
+/public/uploads/
+/static/uploads/
+user-files/
+attachments/
+
+# Backups and temporary files
+/backups/
+/temp/
+/tmp/
+*.tmp
+*.bak
+*.backup
+
+# Email templates with real data
+/email-templates/filled/
+
+# =================================
+# MONITORING AND ANALYTICS
+# =================================
+# Error tracking
+.sentry/
+sentry.properties
+
+# Analytics and monitoring
+newrelic.js
+.newrelic.yml
+
+# Performance monitoring
+lighthouse-reports/
+
+# =================================
+# OS AND IDE FILES
+# =================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+
+# Windows
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.directory
+.Trash-*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# =================================
+# TESTING
+# =================================
+# Test results
+test-results/
+coverage/
+.nyc_output/
+
+# Jest
+jest-coverage/
+
+# =================================
+# DOCKER AND DEPLOYMENT
+# =================================
+# Docker
+.dockerignore
+Dockerfile.prod
+docker-compose.override.yml
+
+# Kubernetes
+k8s/secrets/
+*.kubeconfig
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# =================================
+# MISCELLANEOUS
+# =================================
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Compiled binary addons
+build/Release/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional REPL history
+.node_repl_history
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# =================================
+# PRODUCTION SPECIFIC
+# =================================
+# SSL certificates for production
+ssl/
+certificates/
+*.csr
+
+# Database dumps with real data
+production-dump.sql
+customer-data.sql
+
+# Production configuration
+config.production.js
+production-config.json
