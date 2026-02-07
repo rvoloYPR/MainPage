@@ -3988,8 +3988,9 @@
                     orderPayButton.disabled = false;
                     orderPayButton.textContent = 'Pay Now';
                     showError('Payment failed: ' + error.message);
-                    
+
                     // Also add error styling to card element
+                    const cardContainer = document.getElementById('card-element');
                     if (cardContainer) {
                         cardContainer.classList.add('stripe-element--invalid');
                         cardContainer.classList.remove('stripe-element--complete');
