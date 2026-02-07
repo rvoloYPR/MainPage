@@ -1,16 +1,20 @@
 // Configuration file for API keys and settings
 const CONFIG = {
+    // 🧪 TEMPORARILY IN TEST MODE FOR TESTING - WILL SWITCH TO LIVE AFTER TESTING
     // Environment-based key selection - automatically switches between test/live
     // Use test key for: localhost, 127.0.0.1, file://, or empty hostname (local testing)
     // Use live key ONLY for your production domain
-    STRIPE_PUBLISHABLE_KEY: (
-        window.location.hostname === 'localhost' ||
-        window.location.hostname === '127.0.0.1' ||
-        window.location.hostname === '' ||
-        window.location.protocol === 'file:'
-    )
-        ? 'pk_test_51RhzPbFEWrfGuPMwO7vfaSUFdU7LjktaUpbEpdiirJr7zZUkbYB28xV79Ucdj4qsC57gyhdqs4EYPeoeCJCHpSxU00EB2VBqf7' // Test key for local development
-        : 'pk_live_51RhzPbFEWrfGuPMwZdGMrR4xhhkgmgw8Hg4kVJiPpoYQKCoP6SHpHWhSVMyJUaGiVYG0sBt7tgflRLhdInONyE6M00oPr7yu5v', // Live key for production
+    STRIPE_PUBLISHABLE_KEY: 'pk_test_51RhzPbFEWrfGuPMwO7vfaSUFdU7LjktaUpbEpdiirJr7zZUkbYB28xV79Ucdj4qsC57gyhdqs4EYPeoeCJCHpSxU00EB2VBqf7', // Test key for testing
+
+    // After testing works, uncomment this and comment out the line above:
+    // STRIPE_PUBLISHABLE_KEY: (
+    //     window.location.hostname === 'localhost' ||
+    //     window.location.hostname === '127.0.0.1' ||
+    //     window.location.hostname === '' ||
+    //     window.location.protocol === 'file:'
+    // )
+    //     ? 'pk_test_51RhzPbFEWrfGuPMwO7vfaSUFdU7LjktaUpbEpdiirJr7zZUkbYB28xV79Ucdj4qsC57gyhdqs4EYPeoeCJCHpSxU00EB2VBqf7' // Test key for local development
+    //     : 'pk_live_51RhzPbFEWrfGuPMwZdGMrR4xhhkgmgw8Hg4kVJiPpoYQKCoP6SHpHWhSVMyJUaGiVYG0sBt7tgflRLhdInONyE6M00oPr7yu5v', // Live key for production
 };
 
 // Make config available globally
