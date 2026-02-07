@@ -38,7 +38,7 @@ class ZeroTrustAuthSystem {
             
             // Security Challenges
             CHALLENGE_ON_SENSITIVE_ACTIONS: true, // Extra verification for critical actions
-            REQUIRE_2FA_FOR_LOGIN: true,         // Always require 2FA
+            REQUIRE_2FA_FOR_LOGIN: process.env.REQUIRE_2FA === 'true',         // Require 2FA based on environment
             REQUIRE_BIOMETRIC_WHERE_POSSIBLE: false, // Future: WebAuthn
             
             // Anomaly Detection
