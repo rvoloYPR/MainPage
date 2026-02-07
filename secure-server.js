@@ -492,10 +492,15 @@ app.get('/api/admin/customer/:email',
 
 // Email Configuration
 const emailTransporter = nodemailer.createTransport({
-    service: config.email.service,
+    host: 'smtp.zoho.com',
+    port: 465,
+    secure: true, // use SSL
     auth: {
         user: config.email.user,
         pass: config.email.pass
+    },
+    tls: {
+        rejectUnauthorized: true
     }
 });
 
