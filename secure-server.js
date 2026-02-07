@@ -495,9 +495,9 @@ app.get('/api/admin/customer/:email',
 // EMAIL SYSTEM
 // ==============================================
 
-// Email Configuration
+// Email Configuration - Using EU server for UK account
 const emailTransporter = nodemailer.createTransport({
-    host: 'smtp.zoho.com',
+    host: 'smtp.zoho.eu',
     port: 587,
     secure: false, // use STARTTLS
     auth: {
