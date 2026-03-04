@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.yorkshirepropertyreport.co.uk/sitemap.xml
