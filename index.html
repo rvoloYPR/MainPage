@@ -453,6 +453,17 @@
                             <input type="text" id="cardholderName" name="cardholderName" required placeholder="John Doe">
                         </div>
                         
+                        <!-- Apple Pay Button -->
+                        <div id="apple-pay-button-container" style="display: none; margin-bottom: 1.5rem;">
+                            <div id="payment-request-button" style="height: 48px; border-radius: 4px; overflow: hidden;">
+                                <!-- Apple Pay button will be inserted here -->
+                            </div>
+                            <div style="text-align: center; margin: 1rem 0; color: #6b7280; font-size: 0.875rem;">
+                                <span style="background: white; padding: 0 0.5rem; position: relative; z-index: 1;">or pay with card</span>
+                                <div style="position: absolute; width: 100%; height: 1px; background: #e5e7eb; top: 50%; left: 0; z-index: 0;"></div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="card-element">Card Details *</label>
                             <div id="card-element" class="stripe-element">
@@ -1070,6 +1081,135 @@
         let cardElement = null;
         let cardElementComplete = false; // Track card completion state
         let elementsInstance = null; // Track elements instance
+        let paymentRequest = null; // Apple Pay payment request
+
+        function initializeApplePay() {
+            if (!stripe) {
+                console.error('Stripe not initialized');
+                return;
+            }
+
+            // Calculate total from basket
+            const total = basket.reduce((sum, item) => sum + item.price, 0);
+
+            // Create payment request
+            paymentRequest = stripe.paymentRequest({
+                country: 'GB',
+                currency: 'gbp',
+                total: {
+                    label: 'Yorkshire Property Report',
+                    amount: total * 100, // Convert to pence
+                },
+                requestPayerName: true,
+                requestPayerEmail: true,
+            });
+
+            // Check if Apple Pay is available
+            const prButton = elementsInstance.create('paymentRequestButton', {
+                paymentRequest: paymentRequest,
+                style: {
+                    paymentRequestButton: {
+                        type: 'buy', // 'buy', 'donate', 'book', or 'default'
+                        theme: 'dark', // 'dark', 'light', or 'light-outline'
+                        height: '48px',
+                    },
+                },
+            });
+
+            paymentRequest.canMakePayment().then(function(result) {
+                if (result) {
+                    console.log('✅ Apple Pay is available');
+                    const container = document.getElementById('apple-pay-button-container');
+                    if (container) {
+                        container.style.display = 'block';
+                        prButton.mount('#payment-request-button');
+                    }
+                } else {
+                    console.log('❌ Apple Pay not available on this device/browser');
+                    document.getElementById('apple-pay-button-container').style.display = 'none';
+                }
+            });
+
+            // Handle payment method creation
+            paymentRequest.on('paymentmethod', async function(ev) {
+                console.log('Apple Pay payment method created');
+
+                try {
+                    // Get form data
+                    const formData = {
+                        firstName: document.getElementById('firstName')?.value || ev.payerName?.split(' ')[0] || '',
+                        lastName: document.getElementById('lastName')?.value || ev.payerName?.split(' ').slice(1).join(' ') || '',
+                        email: document.getElementById('email')?.value || ev.payerEmail || '',
+                        currentAddress: document.getElementById('currentAddress')?.value || '',
+                        currentCity: document.getElementById('currentCity')?.value || '',
+                        currentPostcode: document.getElementById('currentPostcode')?.value || '',
+                        propertyAddress: document.getElementById('propertyAddress')?.value || '',
+                        propertyCity: document.getElementById('propertyCity')?.value || '',
+                        propertyPostcode: document.getElementById('propertyPostcode')?.value || ''
+                    };
+
+                    // Validate required fields
+                    if (!formData.currentAddress || !formData.propertyAddress) {
+                        ev.complete('fail');
+                        showError('Please fill in all required address fields before using Apple Pay');
+                        return;
+                    }
+
+                    // Create payment intent on backend
+                    const intentResponse = await fetch('https://mainpage-5wb3.onrender.com/api/payment/create-intent', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (!intentResponse.ok) {
+                        throw new Error('Failed to create payment intent');
+                    }
+
+                    const { clientSecret, paymentIntentId } = await intentResponse.json();
+
+                    // Confirm payment
+                    const { error, paymentIntent } = await stripe.confirmCardPayment(
+                        clientSecret,
+                        { payment_method: ev.paymentMethod.id },
+                        { handleActions: false }
+                    );
+
+                    if (error) {
+                        ev.complete('fail');
+                        showError('Payment failed: ' + error.message);
+                        return;
+                    }
+
+                    ev.complete('success');
+
+                    // Confirm with backend
+                    const confirmResponse = await fetch('https://mainpage-5wb3.onrender.com/api/payment/confirm', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            ...formData,
+                            paymentIntentId: paymentIntent.id,
+                            stripeCustomerId: paymentIntent.customer
+                        })
+                    });
+
+                    const confirmData = await confirmResponse.json();
+
+                    // Redirect to confirmation
+                    redirectToConfirmation(confirmData.orderNumber, ev.paymentMethod, formData);
+
+                } catch (error) {
+                    console.error('Apple Pay error:', error);
+                    ev.complete('fail');
+                    showError('Payment failed. Please try again.');
+                }
+            });
+        }
 
         function initializeStripeElements() {
             // Prevent duplicate initialization
@@ -1190,14 +1330,25 @@
         function openCheckoutModal() {
             // Populate order summary
             populateOrderSummary();
-            
+
             // Show modal
             checkoutOverlay.classList.add('show');
             document.body.style.overflow = 'hidden';
-            
+
             // Initialize Stripe Elements if not already done
             if (!cardElement) {
                 initializeStripeElements();
+                // Initialize Apple Pay after Elements are ready
+                setTimeout(() => {
+                    if (elementsInstance) {
+                        initializeApplePay();
+                    }
+                }, 100);
+            } else {
+                // Re-initialize Apple Pay with updated basket total
+                if (elementsInstance) {
+                    initializeApplePay();
+                }
             }
 
             // Initialize form styling
