@@ -67,8 +67,8 @@
         gtag('config', 'G-V85T93K4DG');
     </script>
 
-    <script src="config.js" defer></script>
-    <script src="https://js.stripe.com/v3/" async></script>
+    <script src="config.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body class="loading">
     <!-- Loading Screen -->
@@ -1068,16 +1068,7 @@
         const orderTotal = document.getElementById('orderTotal');
         
         // Stripe Configuration
-        console.log('Loading Stripe with key:', window.CONFIG?.STRIPE_PUBLISHABLE_KEY ? 'Key found' : 'No key found');
-
         let stripe;
-        try {
-            stripe = Stripe(window.CONFIG?.STRIPE_PUBLISHABLE_KEY || 'YOUR_ACTUAL_STRIPE_PUBLISHABLE_KEY_HERE');
-            console.log('Stripe initialized successfully');
-        } catch (error) {
-            console.error('Error initializing Stripe:', error);
-        }
-
         let cardElement = null;
         let cardElementComplete = false; // Track card completion state
         let elementsInstance = null; // Track elements instance
@@ -1216,6 +1207,29 @@
             if (cardElement) {
                 console.log('Stripe Elements already initialized');
                 return;
+            }
+
+            // Initialize Stripe if not already done
+            if (!stripe) {
+                console.log('Initializing Stripe...');
+                if (typeof Stripe === 'undefined') {
+                    console.error('Stripe library not loaded');
+                    showError('Payment system not loaded. Please refresh the page and try again.');
+                    return;
+                }
+                if (!window.CONFIG?.STRIPE_PUBLISHABLE_KEY) {
+                    console.error('Stripe publishable key not found');
+                    showError('Payment configuration error. Please contact support.');
+                    return;
+                }
+                try {
+                    stripe = Stripe(window.CONFIG.STRIPE_PUBLISHABLE_KEY);
+                    console.log('Stripe initialized successfully');
+                } catch (error) {
+                    console.error('Error initializing Stripe:', error);
+                    showError('Failed to initialize payment system. Please refresh the page and try again.');
+                    return;
+                }
             }
 
             try {
