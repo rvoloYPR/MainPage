@@ -1109,16 +1109,22 @@
 
             paymentRequest.canMakePayment().then(function(result) {
                 if (result) {
-                    console.log('✅ Apple Pay is available');
+                    console.log('✅ Apple Pay is available on this device');
+                    console.log('Available payment methods:', result);
                     const container = document.getElementById('apple-pay-button-container');
                     if (container) {
                         container.style.display = 'block';
                         prButton.mount('#payment-request-button');
+                        console.log('✅ Apple Pay button mounted successfully');
                     }
                 } else {
                     console.log('❌ Apple Pay not available on this device/browser');
+                    console.log('ℹ️ Apple Pay requires Safari browser on Mac/iPhone/iPad with Apple Pay configured');
+                    console.log('ℹ️ Current browser:', navigator.userAgent.includes('Safari') ? 'Safari' : navigator.userAgent.includes('Chrome') ? 'Chrome' : 'Other');
                     document.getElementById('apple-pay-button-container').style.display = 'none';
                 }
+            }).catch(function(error) {
+                console.error('Error checking Apple Pay availability:', error);
             });
 
             // Handle payment method creation
