@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation - Yorkshire Property Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --midnight: #0a0a0a;
+            --charcoal: #2c2c2c;
+            --warm-charcoal: #3a3a3a;
+            --warm-cream: #f0ede6;
+            --sage-green: #6b8657;
+            --muted-sage: #5a7249;
+            --accent-gold: #b8965f;
+            --soft-brown: #75624a;
+            --paper-white: #fafafa;
+            --subtle-shadow: rgba(0, 0, 0, 0.12);
+            --success-green: #27ae60;
+            --light-success: #d5f4e6;
+        }
+
+        html, body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.8;
+            color: var(--charcoal);
+            background-color: var(--warm-cream);
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(250, 248, 243, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(139, 115, 85, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 4vw, 4rem);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            color: var(--charcoal);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--sage-green);
+        }
+
+        .home-link {
+            background: var(--sage-green);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .home-link:hover {
+            background: var(--muted-sage);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(107, 134, 87, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            width: 100%;
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(3rem, 6vw, 8rem);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Success Animation */
+        .success-animation {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .success-icon {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 4rem;
+            background: linear-gradient(135deg, #1e7e34, #28a745);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: white;
+            animation: successPulse 1.2s ease-out;
+            box-shadow: 0 15px 40px rgba(30, 126, 52, 0.5);
+            position: relative;
+        }
+
+        .success-icon::before {
+            content: '';
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border: 3px solid #1e7e34;
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: ripple 2s infinite;
+        }
+
+        @keyframes successPulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.1;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .success-title {
+            color: #1e7e34;
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            animation: slideInUp 0.8s ease-out 0.3s both;
+        }
+
+        .success-subtitle {
+            color: var(--charcoal);
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            animation: slideInUp 0.8s ease-out 0.5s both;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .email-confirmation {
+            background: linear-gradient(135deg, rgba(30, 126, 52, 0.1), rgba(211, 244, 230, 0.8));
+            padding: 2rem 3rem;
+            border-radius: 20px;
+            color: #1e7e34;
+            font-weight: 600;
+            margin-bottom: 5rem;
+            animation: slideInUp 0.8s ease-out 0.7s both;
+            border: 2px solid rgba(30, 126, 52, 0.3);
+            box-shadow: 0 4px 15px rgba(30, 126, 52, 0.1);
+            position: relative;
+            overflow: hidden;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .email-confirmation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s ease-in-out 1s;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Order Details Card */
+        .order-details {
+            background: var(--paper-white);
+            border-radius: 25px;
+            padding: 4rem 5rem;
+            box-shadow: 0 6px 30px var(--subtle-shadow);
+            margin-bottom: 6rem;
+            animation: slideInUp 0.8s ease-out 0.9s both;
+        }
+
+        .order-details h2 {
+            color: var(--charcoal);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--sage-green);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .order-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7rem;
+            margin-bottom: 4rem;
+        }
+
+        .info-group h3 {
+            color: var(--sage-green);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .info-item {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: var(--soft-brown);
+            min-width: 180px;
+            font-size: 1.05rem;
+        }
+
+        .info-value {
+            color: var(--charcoal);
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+
+        .order-items {
+            border-top: 2px solid var(--sage-green);
+            padding-top: 3rem;
+            margin-top: 3rem;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(139, 115, 85, 0.1);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .item-name span {
+            font-size: 1.2rem;
+        }
+
+        .item-price {
+            font-weight: 700;
+            color: var(--sage-green);
+            font-size: 1.2rem;
+        }
+
+        .order-total {
+            margin-top: 3rem;
+            padding-top: 2.5rem;
+            border-top: 2px solid #1e7e34;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .total-label {
+            color: var(--charcoal);
+        }
+
+        .total-value {
+            color: #1e7e34;
+        }
+
+        /* Next Steps */
+        .next-steps {
+            background: var(--paper-white);
+            border-radius: 25px;
+            padding: 4rem 5rem;
+            box-shadow: 0 6px 30px var(--subtle-shadow);
+            margin-bottom: 7rem;
+            animation: slideInUp 0.8s ease-out 1.1s both;
+        }
+
+        .next-steps h2 {
+            color: var(--charcoal);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--accent-gold);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .steps-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 3rem;
+            padding: 2.5rem 3rem;
+            background: rgba(184, 150, 95, 0.05);
+            border-radius: 15px;
+            border-left: 5px solid var(--accent-gold);
+        }
+
+        .step-number {
+            background: var(--accent-gold);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-right: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            color: var(--charcoal);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .step-content p {
+            color: var(--soft-brown);
+            margin: 0;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 4rem;
+            justify-content: center;
+            margin-bottom: 8rem;
+            animation: slideInUp 0.8s ease-out 1.3s both;
+        }
+
+        .btn {
+            padding: 1.3rem 3rem;
+            border: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 220px;
+            justify-content: center;
+            line-height: 1.5;
+        }
+
+        .btn-primary {
+            background: var(--sage-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--muted-sage);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(107, 134, 87, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--charcoal);
+            border: 2px solid var(--charcoal);
+        }
+
+        .btn-secondary:hover {
+            background: var(--charcoal);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(44, 44, 44, 0.2);
+        }
+
+        /* Support Section */
+        .support-section {
+            background: var(--paper-white);
+            border-radius: 25px;
+            padding: 4rem 5rem;
+            box-shadow: 0 6px 30px var(--subtle-shadow);
+            margin-bottom: 6rem;
+            text-align: center;
+            animation: slideInUp 0.8s ease-out 1.5s both;
+        }
+
+        .support-section h2 {
+            color: var(--charcoal);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .support-section p {
+            color: var(--soft-brown);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 2.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--sage-green);
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 1.1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            background: rgba(107, 134, 87, 0.05);
+        }
+
+        .contact-item:hover {
+            color: var(--muted-sage);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--midnight);
+            color: var(--warm-cream);
+            padding: 4rem clamp(1rem, 4vw, 4rem) 2rem;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--warm-cream);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: rgba(250, 248, 243, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: var(--sage-green);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(250, 248, 243, 0.1);
+            color: rgba(250, 248, 243, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 1000px;
+                padding: 0 clamp(2.5rem, 5vw, 6rem);
+            }
+            
+            .order-details, .next-steps, .support-section {
+                padding: 3rem 4rem;
+            }
+            
+            .order-info {
+                gap: 4rem;
+            }
+            
+            .action-buttons {
+                gap: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                padding: 0 2rem;
+            }
+            
+            .order-details, .next-steps, .support-section {
+                padding: 2.5rem;
+            }
+            
+            .order-info {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .success-icon {
+                width: 120px;
+                height: 120px;
+                font-size: 3rem;
+            }
+            
+            .step-item {
+                padding: 2rem;
+            }
+            
+            .info-label {
+                min-width: 140px;
+            }
+            
+            .main-content {
+                padding-top: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="ypr-websiteV24.html" class="logo">Yorkshire Property Report</a>
+            <a href="ypr-websiteV24.html" class="home-link">← Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Success Animation -->
+            <div class="success-animation">
+                <div class="success-icon">✓</div>
+                <h1 class="success-title">Payment Successful!</h1>
+                <p class="success-subtitle">Thank you for your order, your property report is being prepared.</p>
+                <div class="email-confirmation">
+                    📧 A confirmation email with more details has been sent to your inbox.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Yorkshire Property Report</div>
+            <ul class="footer-links">
+                <li><a href="terms.html">Terms of Business</a></li>
+            </ul>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Yorkshire Property Report. All rights reserved.</p>
+                <p style="margin-top: 0.75rem; font-size: 0.85rem; opacity: 0.7;">info@ypr.co.uk</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Get URL parameters to populate order details
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Populate order details from localStorage (sent from main checkout)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get order data from localStorage (set by main checkout page)
+            const orderDataString = localStorage.getItem('orderData');
+            let orderData = null;
+            
+            if (orderDataString) {
+                try {
+                    orderData = JSON.parse(orderDataString);
+                } catch (e) {
+                    console.error('Error parsing order data:', e);
+                }
+            }
+
+            if (orderData) {
+                // Populate with real order data
+                document.getElementById('orderNumber').textContent = orderData.orderNumber;
+                document.getElementById('customerName').textContent = orderData.customerName;
+                document.getElementById('customerEmail').textContent = orderData.customerEmail;
+                document.getElementById('propertyAddress').textContent = orderData.propertyAddress;
+                document.getElementById('paymentMethod').textContent = 'Card Payment';
+                
+                // Format order date
+                const orderDate = new Date(orderData.orderDate).toLocaleDateString('en-GB', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                document.getElementById('orderDate').textContent = orderDate;
+                
+                // Populate order items dynamically
+                populateOrderItems(orderData.orderItems, orderData.orderTotal);
+                
+            } else {
+                // Fallback to demo data if no order data found
+                console.warn('No order data found, using demo values');
+                const fallbackOrderNumber = 'YPR-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+                document.getElementById('orderNumber').textContent = fallbackOrderNumber;
+                
+                const currentDate = new Date().toLocaleDateString('en-GB', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                document.getElementById('orderDate').textContent = currentDate;
+            }
+
+            // Clear order data after use for security
+            setTimeout(() => {
+                localStorage.removeItem('orderData');
+            }, 2000);
+        });
+
+        // Function to populate order items dynamically
+        function populateOrderItems(items, total) {
+            const orderItemsContainer = document.querySelector('.order-items');
+            const orderTotalElement = document.querySelector('.total-value');
+            
+            if (!items || items.length === 0) {
+                return; // Keep default items if no items provided
+            }
+
+            // Clear existing items
+            orderItemsContainer.innerHTML = '';
+            
+            // Add each item
+            items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'order-item';
+
+                // Use the icon from the item data, or fallback to a default
+                const iconHtml = item.icon
+                    ? `<img src="${item.icon}" alt="${item.name}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">`
+                    : '📊';
+
+                itemElement.innerHTML = `
+                    <div class="item-name">${iconHtml} ${item.name}</div>
+                    <div class="item-price">£${item.price.toFixed(2)}</div>
+                `;
+
+                orderItemsContainer.appendChild(itemElement);
+            });
+            
+            // Add total section after items
+            const totalElement = document.createElement('div');
+            totalElement.className = 'order-total';
+            totalElement.innerHTML = `
+                <span class="total-label">Total Paid:</span>
+                <span class="total-value">£${total.toFixed(2)}</span>
+            `;
+            orderItemsContainer.appendChild(totalElement);
+            
+            // Update the separate total display
+            if (orderTotalElement) {
+                orderTotalElement.textContent = `£${total.toFixed(2)}`;
+            }
+        }
+
+        // Add some interactive feedback
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Add a brief visual feedback
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>

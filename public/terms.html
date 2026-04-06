@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Yorkshire Property Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --midnight: #0a0a0a;
+            --charcoal: #2c2c2c;
+            --warm-charcoal: #3a3a3a;
+            --warm-cream: #f0ede6;
+            --sage-green: #6b8657;
+            --muted-sage: #5a7249;
+            --accent-gold: #b8965f;
+            --soft-brown: #75624a;
+            --paper-white: #fafafa;
+            --subtle-shadow: rgba(0, 0, 0, 0.12);
+        }
+
+        html, body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--charcoal);
+            background-color: var(--warm-cream);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(250, 248, 243, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(139, 115, 85, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 4vw, 4rem);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            color: var(--charcoal);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--sage-green);
+        }
+
+        .back-link {
+            background: var(--sage-green);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: var(--muted-sage);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(107, 134, 87, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            width: 100%;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 8rem clamp(1rem, 4vw, 4rem) 4rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 3rem;
+            border-bottom: 3px solid var(--sage-green);
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--charcoal);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .header .subtitle {
+            color: var(--soft-brown);
+            font-size: 1.3rem;
+            font-weight: 400;
+        }
+
+        /* Confidence section styled like the main page */
+        .confidence-section {
+            background: var(--paper-white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 4px 20px var(--subtle-shadow);
+        }
+
+        .confidence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            align-items: start;
+            text-align: center;
+        }
+
+        .confidence-item {
+            text-align: center;
+        }
+
+        .confidence-item h3 {
+            font-size: 1.8rem;
+            color: var(--sage-green);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .confidence-item p {
+            color: var(--soft-brown);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 3rem;
+            background: var(--paper-white);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px var(--subtle-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sage-green), var(--accent-gold));
+        }
+
+        .section h2 {
+            color: var(--sage-green);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .section h3 {
+            color: var(--charcoal);
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem 0;
+            font-weight: 600;
+        }
+
+        .section h4 {
+            color: var(--soft-brown);
+            font-size: 1rem;
+            margin: 1.5rem 0 0.75rem 0;
+            font-weight: 600;
+        }
+
+        .section p {
+            margin-bottom: 1.2rem;
+            color: var(--charcoal);
+            font-size: 1rem;
+        }
+
+        .section ul {
+            margin: 1.2rem 0 1.2rem 2rem;
+        }
+
+        .section li {
+            margin-bottom: 0.7rem;
+            color: var(--charcoal);
+        }
+
+        .subsection {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+            border-left: 3px solid rgba(107, 134, 87, 0.3);
+        }
+
+        .numbered-clause {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(107, 134, 87, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--sage-green);
+        }
+
+        .numbered-clause h4 {
+            color: var(--sage-green);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Services pricing */
+        .services-pricing {
+            background: linear-gradient(135deg, rgba(107, 134, 87, 0.08), rgba(184, 150, 95, 0.08));
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 4px solid var(--sage-green);
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.75rem 0;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(107, 134, 87, 0.15);
+        }
+
+        .price-item:last-child {
+            border-bottom: none;
+        }
+
+        .price {
+            font-weight: 700;
+            color: var(--accent-gold);
+            font-size: 1.1rem;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--warm-cream) 0%, var(--paper-white) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-logo {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--sage-green);
+            margin-bottom: 2rem;
+            letter-spacing: 0.1em;
+            animation: loadingPulse 2s ease-in-out infinite;
+        }
+
+        .loading-animation {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 2rem;
+        }
+
+        .loading-circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(107, 134, 87, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid var(--sage-green);
+            animation: loadingSpin 1s linear infinite;
+        }
+
+        .loading-inner-circle {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(184, 150, 95, 0.3);
+            border-radius: 50%;
+            border-right: 2px solid var(--accent-gold);
+            animation: loadingSpin 1.5s linear infinite reverse;
+        }
+
+        .loading-center-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: var(--sage-green);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: loadingPulse 1s ease-in-out infinite;
+        }
+
+        .loading-subtitle {
+            color: var(--soft-brown);
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            animation: loadingFade 2s ease-in-out infinite;
+        }
+
+        @keyframes loadingSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        @keyframes loadingFade {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        body.loading {
+            overflow: hidden;
+        }
+
+        /* Navigation Link Loading Effect */
+        .nav-link-loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .nav-link-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid white;
+            animation: loadingSpin 0.8s linear infinite;
+            transform: translateY(-50%);
+        }
+
+        /* Footer - UPDATED FOR FULL WIDTH */
+        footer {
+            background: var(--midnight);
+            color: var(--warm-cream);
+            padding: 4rem 0 2rem 0;
+            text-align: center;
+            margin-top: auto;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 4vw, 4rem);
+        }
+
+        .footer-logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--warm-cream);
+        }
+
+        .footer-links {
+    display: grid;
+    grid-template-columns: 1fr; /* Change this line */
+    align-items: center;
+    justify-items: center;
+    margin-bottom: 2.5rem;
+    list-style: none;
+    gap: 1rem;
+    width: 100%;
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+}
+        .footer-links li:nth-child(1) {
+            justify-self: center;
+        }
+
+        .footer-links a {
+            color: rgba(250, 248, 243, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: var(--sage-green);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(250, 248, 243, 0.1);
+            color: rgba(250, 248, 243, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Legal emphasis */
+        .legal-emphasis {
+            background: rgba(184, 150, 95, 0.1);
+            border: 2px solid var(--accent-gold);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 6rem 1.5rem 4rem;
+            }
+
+            .section {
+                padding: 2rem;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .confidence-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .confidence-item {
+                text-align: center;
+            }
+
+            .confidence-section {
+                padding: 1.5rem;
+                margin: 1.5rem 0;
+            }
+
+            .footer-links {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .footer-links li {
+                justify-self: center !important;
+            }
+        }
+    </style>
+</head>
+<body class="loading">
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">YPR</div>
+        <div class="loading-animation">
+            <div class="loading-circle"></div>
+            <div class="loading-inner-circle"></div>
+            <div class="loading-center-dot"></div>
+        </div>
+        <div class="loading-subtitle">Loading Terms of Business...</div>
+    </div>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="ypr-websiteV24.html" class="logo">Yorkshire Property Report</a>
+            <a href="ypr-websiteV24.html" class="back-link">← Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <div class="header">
+                <h1>Terms of Business</h1>
+                <p class="subtitle">Property Intelligence Services</p>
+            </div>
+
+            <!-- Confidence Section (replaces document info box) -->
+            <div class="confidence-section">
+                <div class="confidence-grid">
+                    <div class="confidence-item">
+                        <h3>Document Reference:</h3>
+                        <p>YPR-TOB-2024 | Last Updated: December 2024</p>
+                    </div>
+                    <div class="confidence-item">
+                        <h3>Effective Date:</h3>
+                        <p>These terms apply from the date of acceptance of our services</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1. Introduction and Scope -->
+            <div class="section">
+                <h2>1. Our Services and Appointment</h2>
+                
+                <div class="numbered-clause">
+                    <h4>1.1 Appointment</h4>
+                    <p>Yorkshire Property Report provides independent property intelligence and analysis services. By engaging our services, instructing us to prepare reports, or making payment, you appoint us to act on your behalf under these Terms of Business.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>1.2 Services Provided</h4>
+                    <p>We provide the following property intelligence services for properties within Yorkshire and surrounding areas:</p>
+                    <div class="services-pricing">
+                        <div class="price-item">
+                            <span><strong>Crime Level Analysis:</strong> Comprehensive crime statistics and safety analysis</span>
+                            <span class="price">£90.00</span>
+                        </div>
+                        <div class="price-item">
+                            <span><strong>Affordable Properties Report:</strong> Value analysis and market opportunities</span>
+                            <span class="price">£59.00</span>
+                        </div>
+                        <div class="price-item">
+                            <span><strong>Price Evaluation Report:</strong> Professional valuation and market assessment</span>
+                            <span class="price">£64.00</span>
+                        </div>
+                    </div>
+                    <p><small>All fees are inclusive of VAT where applicable.</small></p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>1.3 Professional Standards</h4>
+                    <p>We undertake to provide our services with reasonable skill and care, using current data sources and established analytical methodologies. Our reports are prepared for your specific use and should not be relied upon by third parties.</p>
+                </div>
+            </div>
+
+            <!-- 2. Fees and Payment -->
+            <div class="section">
+                <h2>2. Fees, Costs and Payment</h2>
+                
+                <div class="numbered-clause">
+                    <h4>2.1 Responsibility for Payment</h4>
+                    <p>You are responsible for payment of our fees, costs and charges. Payment is required in full before commencement of report preparation. We accept major credit cards and bank transfers processed through secure payment systems.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>2.2 Fee Structure</h4>
+                    <p>Our fees are set out above and quoted inclusive of VAT. Fees may be subject to periodic review but any instruction accepted will be completed at the fee quoted at the time of acceptance.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>2.3 Additional Costs</h4>
+                    <p>Where additional research or urgent delivery is requested, supplementary charges may apply. Such charges will be agreed in advance and confirmed in writing before proceeding.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>2.4 Interest and Recovery</h4>
+                    <p>Interest may be charged at 4% above the Bank of England base rate on overdue amounts. We reserve the right to suspend services where payments are outstanding beyond 14 days.</p>
+                </div>
+            </div>
+
+            <!-- 3. Client Obligations -->
+            <div class="section">
+                <h2>3. Your Obligations</h2>
+                
+                <div class="numbered-clause">
+                    <h4>3.1 Information Provision</h4>
+                    <p>You must provide accurate and complete information about the property including full address, any specific requirements, and material facts that may affect our analysis. Inaccurate information may compromise the quality of our service.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>3.2 Use of Reports</h4>
+                    <p>Our reports are prepared for your exclusive use in connection with property decisions. You agree not to distribute, copy, or make available our reports to third parties without our written consent. Reports remain our intellectual property.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>3.3 Professional Advice</h4>
+                    <p>Our reports provide analysis and interpretation of available data but do not constitute formal valuations, legal advice, or investment recommendations. You should seek appropriate professional advice before making significant property decisions.</p>
+                </div>
+            </div>
+
+            <!-- 4. Our Responsibilities and Limitations -->
+            <div class="section">
+                <h2>4. Our Responsibilities and Limitations</h2>
+                
+                <div class="numbered-clause">
+                    <h4>4.1 Standard of Care</h4>
+                    <p>We will exercise reasonable skill and care in preparing your report using reliable data sources and established analytical methods. However, we cannot guarantee absolute accuracy due to the dynamic nature of property markets and limitations of available data.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>4.2 Limitation of Liability</h4>
+                    <p>Our liability under these terms is limited to direct losses and shall not exceed the fee paid for the specific report in question. We exclude liability for consequential losses, lost profits, or indirect damages.</p>
+                </div>
+
+                <div class="legal-emphasis">
+                    <p><strong>Important:</strong> Subject to clause 4.1 above, we will not be liable for any loss as a result of market changes occurring after the report date, decisions made based on our reports, or circumstances beyond our reasonable control.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>4.3 Professional Indemnity</h4>
+                    <p>We maintain professional indemnity insurance appropriate to our services. Details of coverage limits are available upon request.</p>
+                </div>
+            </div>
+
+            <!-- 5. Confidentiality and Data Protection -->
+            <div class="section">
+                <h2>5. Confidentiality and Data Protection</h2>
+                
+                <div class="numbered-clause">
+                    <h4>5.1 Confidentiality</h4>
+                    <p>We will maintain confidentiality of all information provided by you and relating to the property under analysis. We will not disclose such information to third parties except as required by law or with your explicit consent.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>5.2 Data Protection</h4>
+                    <p>We process personal data in accordance with the General Data Protection Regulation (GDPR) and Data Protection Act 2018. Our Privacy Policy, available on our website, provides full details of how we collect, use, and protect your personal information.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>5.3 Data Retention</h4>
+                    <p>We retain client data and report copies for a period necessary to provide ongoing support and comply with regulatory requirements. You may request deletion of your data subject to our legal obligations.</p>
+                </div>
+            </div>
+
+            <!-- 6. Intellectual Property -->
+            <div class="section">
+                <h2>6. Intellectual Property Rights</h2>
+                
+                <div class="numbered-clause">
+                    <h4>6.1 Ownership</h4>
+                    <p>All intellectual property rights in our reports, methodologies, analysis techniques, and documentation remain our exclusive property. You receive a limited, non-transferable license to use the report for your intended purposes only.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>6.2 Restrictions</h4>
+                    <p>You may not reproduce, modify, create derivative works, or reverse engineer our reports or methodologies. Commercial use or redistribution is strictly prohibited without our written consent.</p>
+                </div>
+            </div>
+
+            <!-- 7. Termination and Cancellation -->
+            <div class="section">
+                <h2>7. Termination and Cancellation</h2>
+                
+                <div class="numbered-clause">
+                    <h4>7.1 Cancellation Rights</h4>
+                    <p>You may cancel your instruction within 14 days of placing your order, provided we have not commenced preparation of your report. Cancellation after commencement may result in charges for work completed.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>7.2 Termination for Breach</h4>
+                    <p>We may terminate our appointment immediately if you breach these terms, particularly regarding payment obligations or misuse of our intellectual property.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>7.3 Survival of Terms</h4>
+                    <p>Clauses relating to payment, intellectual property, confidentiality, and limitation of liability survive termination of our appointment.</p>
+                </div>
+            </div>
+
+            <!-- 8. Complaints and General Provisions -->
+            <div class="section">
+                <h2>8. Complaints Procedure and General Terms</h2>
+                
+                <div class="numbered-clause">
+                    <h4>8.1 Complaints Handling</h4>
+                    <p>We operate a formal complaints procedure. Initial concerns should be directed to our customer service team. We will acknowledge complaints within 2 business days and provide substantive responses within 14 days. Unresolved disputes may be referred to appropriate alternative dispute resolution services.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>8.2 Governing Law</h4>
+                    <p>These Terms of Business are governed by English law and subject to the exclusive jurisdiction of the English courts. Any provisions found invalid or unenforceable will not affect the validity of remaining terms.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>8.3 Entire Agreement</h4>
+                    <p>These Terms of Business constitute the entire agreement between us regarding our services and supersede all prior agreements, representations, or understandings. Amendments must be made in writing and agreed by both parties.</p>
+                </div>
+
+                <div class="numbered-clause">
+                    <h4>8.4 Assignment</h4>
+                    <p>You may not assign your rights under these terms without our written consent. We may assign our rights and obligations to associated companies or successors in business.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-logo">Yorkshire Property Report</div>
+            <ul class="footer-links">
+                <li><a href="terms.html">Terms of Business</a></li>
+            </ul>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Yorkshire Property Report. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading screen management
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const body = document.body;
+            
+            // Hide loading screen after page loads
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                body.classList.remove('loading');
+                
+                // Remove loading screen from DOM after animation
+                setTimeout(() => {
+                    if (loadingScreen.parentNode) {
+                        loadingScreen.remove();
+                    }
+                }, 500);
+            }, 1500); // Show loading for 1.5 seconds
+        });
+
+        // Enhanced navigation with loading animation
+        function navigateWithLoading(url) {
+            const body = document.body;
+            
+            // Create and show loading screen
+            const loadingScreen = document.createElement('div');
+            loadingScreen.className = 'loading-screen';
+            loadingScreen.innerHTML = `
+                <div class="loading-logo">YPR</div>
+                <div class="loading-animation">
+                    <div class="loading-circle"></div>
+                    <div class="loading-inner-circle"></div>
+                    <div class="loading-center-dot"></div>
+                </div>
+                <div class="loading-subtitle">Navigating to Home...</div>
+            `;
+            
+            body.appendChild(loadingScreen);
+            body.classList.add('loading');
+            
+            // Navigate after brief delay
+            setTimeout(() => {
+                window.location.href = url;
+            }, 800);
+        }
+
+        // Add loading effect to navigation links
+        document.addEventListener('DOMContentLoaded', function() {
+            const homeLinks = document.querySelectorAll('a[href="ypr-websiteV24.html"]');
+            
+            homeLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Add loading class to clicked link
+                    this.classList.add('nav-link-loading');
+                    
+                    // Navigate with loading animation
+                    navigateWithLoading('ypr-websiteV24.html');
+                });
+            });
+        });
+
+        // Smooth scroll for internal links (if any)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add subtle animation when page loads
+        window.addEventListener('load', function() {
+            document.body.style.animation = 'fadeIn 0.5s ease-out';
+        });
+
+        // Add CSS for fade in animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -79,19 +79,107 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 // Input sanitization
 app.use(securityMiddleware.sanitizeInput());
 
+// Origin Validation Middleware (CSRF Protection)
+app.use((req, res, next) => {
+    // Skip for GET requests, health checks, and webhooks
+    if (req.method === 'GET' || req.path === '/health' || req.path.includes('/webhooks/')) {
+        return next();
+    }
+
+    const origin = req.get('Origin') || req.get('Referer');
+
+    // For POST/PUT/DELETE requests, validate origin
+    if (req.method !== 'OPTIONS') {
+        const allowedOrigins = config.server.allowedOrigins;
+
+        // If origin is provided, validate it
+        if (origin) {
+            const originUrl = new URL(origin);
+            const isAllowed = allowedOrigins.some(allowed => {
+                if (allowed === 'null') return origin === 'null'; // For file:// protocol
+                return origin.startsWith(allowed) || originUrl.origin === allowed;
+            });
+
+            if (!isAllowed) {
+                authSystem.addAuditLog('INVALID_ORIGIN_BLOCKED', {
+                    origin: origin,
+                    path: req.path,
+                    method: req.method,
+                    ip: req.ip,
+                    severity: 'HIGH'
+                });
+
+                return res.status(403).json({
+                    error: 'Invalid origin',
+                    code: 'INVALID_ORIGIN'
+                });
+            }
+        }
+    }
+
+    next();
+});
+
 // Rate limiting middleware
 app.use('/admin', securityMiddleware.getRateLimiter('auth'));
 app.use('/api/payment', securityMiddleware.getRateLimiter('payment'));
 app.use('/api/email', securityMiddleware.getRateLimiter('email'));
 app.use(securityMiddleware.getRateLimiter('general')); // General rate limiting
 
-// Static file serving
-app.use(express.static('.', {
+// SECURITY: Block access to sensitive files BEFORE any static serving
+app.use((req, res, next) => {
+    const path = require('path');
+    const requestedPath = path.normalize(req.path).toLowerCase();
+
+    // Block access to sensitive file types and files
+    const blockedPatterns = [
+        /\.env/i,           // Environment files
+        /\.db$/i,           // Database files
+        /\.sqlite/i,        // SQLite databases
+        /\.js$/i,           // JavaScript source files
+        /\.json$/i,         // JSON config files (package.json, etc.)
+        /\.md$/i,           // Markdown documentation
+        /\.txt$/i,          // Text files (may contain sensitive info)
+        /node_modules/i,    // Node modules
+        /\.git/i,           // Git directory
+        /config/i,          // Config files
+        /auth/i,            // Auth files
+        /database/i,        // Database files
+        /security/i,        // Security files
+        /backend/i,         // Backend files
+        /zero-trust/i,      // Zero-trust files
+        /\.log$/i,          // Log files
+    ];
+
+    // Check if request matches any blocked pattern
+    if (blockedPatterns.some(pattern => pattern.test(requestedPath))) {
+        authSystem.addAuditLog('BLOCKED_FILE_ACCESS_ATTEMPT', {
+            path: req.path,
+            ip: req.ip,
+            userAgent: req.get('User-Agent'),
+            severity: 'HIGH'
+        });
+
+        return res.status(404).json({
+            error: 'Not found',
+            code: 'NOT_FOUND'
+        });
+    }
+
+    next();
+});
+
+// Static file serving - ONLY serve from public directory
+// This prevents access to .env, .js files, database, etc.
+app.use(express.static('public', {
     setHeaders: (res, path) => {
         if (path.endsWith('.html')) {
             res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 hour cache
         }
-    }
+    },
+    // Additional security options
+    dotfiles: 'deny',  // Explicitly deny dotfiles
+    index: false       // Don't serve index files automatically
 }));
 
 // ==============================================
@@ -205,6 +293,26 @@ app.post('/admin/disable-2fa',
 );
 
 // ==============================================
+// ADMIN DASHBOARD SERVING (Protected)
+// ==============================================
+
+// Serve admin dashboard (requires authentication)
+app.get('/admin-dashboard.html',
+    authSystem.verifyZeroTrustToken.bind(authSystem),
+    (req, res) => {
+        res.sendFile(__dirname + '/admin-dashboard.html');
+    }
+);
+
+// Alternative admin dashboard route
+app.get('/admin/dashboard',
+    authSystem.verifyZeroTrustToken.bind(authSystem),
+    (req, res) => {
+        res.sendFile(__dirname + '/admin-dashboard.html');
+    }
+);
+
+// ==============================================
 // ADMIN PANEL ENDPOINTS
 // ==============================================
 
@@ -256,6 +364,68 @@ app.get('/admin/security-status',
 // ==============================================
 // CUSTOMER ORDER ENDPOINTS
 // ==============================================
+
+// Stripe Webhook Endpoint (for payment confirmations)
+// This must come before bodyParser middleware for raw body access
+app.post('/api/webhooks/stripe',
+    bodyParser.raw({ type: 'application/json' }),
+    async (req, res) => {
+        const sig = req.headers['stripe-signature'];
+
+        try {
+            if (!config.stripe.webhookSecret) {
+                console.error('❌ Webhook secret not configured');
+                return res.status(500).send('Webhook secret not configured');
+            }
+
+            const event = stripe.webhooks.constructEvent(
+                req.body,
+                sig,
+                config.stripe.webhookSecret
+            );
+
+            // Handle the event
+            switch (event.type) {
+                case 'payment_intent.succeeded':
+                    const paymentIntent = event.data.object;
+                    console.log('💰 PaymentIntent succeeded:', paymentIntent.id);
+
+                    authSystem.addAuditLog('STRIPE_WEBHOOK_PAYMENT_SUCCESS', {
+                        paymentIntentId: paymentIntent.id,
+                        amount: paymentIntent.amount,
+                        severity: 'INFO'
+                    });
+                    break;
+
+                case 'payment_intent.payment_failed':
+                    const failedIntent = event.data.object;
+                    console.log('❌ PaymentIntent failed:', failedIntent.id);
+
+                    authSystem.addAuditLog('STRIPE_WEBHOOK_PAYMENT_FAILED', {
+                        paymentIntentId: failedIntent.id,
+                        severity: 'MEDIUM'
+                    });
+                    break;
+
+                default:
+                    console.log(`Unhandled event type: ${event.type}`);
+            }
+
+            res.json({ received: true });
+
+        } catch (err) {
+            console.error('❌ Webhook signature verification failed:', err.message);
+
+            authSystem.addAuditLog('STRIPE_WEBHOOK_VERIFICATION_FAILED', {
+                error: err.message,
+                ip: req.ip,
+                severity: 'HIGH'
+            });
+
+            return res.status(400).send(`Webhook Error: ${err.message}`);
+        }
+    }
+);
 
 // Create Payment Intent (with validation)
 app.post('/api/payment/create-intent',

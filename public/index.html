@@ -1,0 +1,2235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yorkshire Property Report - Your Guide to Finding the Perfect Home</title>
+
+    <!-- Meta Description -->
+    <meta name="description" content="Yorkshire Property Report provides comprehensive property intelligence for homebuyers across Yorkshire. Get detailed reports on crime rates, schools, transport links, and nearby affordable housing before you buy.">
+
+    <!-- Keywords -->
+    <meta name="keywords" content="Yorkshire property reports, property intelligence, crime reports, school reports, transport links, affordable housing, homebuyer reports, Leeds, York, Sheffield, Hull, Bradford">
+
+    <!-- Author and Brand -->
+    <meta name="author" content="Yorkshire Property Report Ltd">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.yorkshirepropertyreport.co.uk/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.yorkshirepropertyreport.co.uk/">
+    <meta property="og:title" content="Yorkshire Property Report - Comprehensive Property Intelligence">
+    <meta property="og:description" content="Make informed property decisions with detailed reports on crime, schools, transport, and affordable housing across Yorkshire.">
+    <meta property="og:image" content="https://www.yorkshirepropertyreport.co.uk/yorkshire-logo-website-red.webp">
+    <meta property="og:site_name" content="Yorkshire Property Report">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.yorkshirepropertyreport.co.uk/">
+    <meta name="twitter:title" content="Yorkshire Property Report - Comprehensive Property Intelligence">
+    <meta name="twitter:description" content="Make informed property decisions with detailed reports on crime, schools, transport, and affordable housing across Yorkshire.">
+    <meta name="twitter:image" content="https://www.yorkshirepropertyreport.co.uk/yorkshire-logo-website-red.webp">
+
+    <!-- Structured Data (Schema.org LocalBusiness) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Yorkshire Property Report",
+        "description": "Professional property intelligence reports for homebuyers across Yorkshire",
+        "url": "https://www.yorkshirepropertyreport.co.uk",
+        "logo": "https://www.yorkshirepropertyreport.co.uk/yorkshire-logo-website-red.webp",
+        "email": "info@yorkshirepropertyreport.co.uk",
+        "areaServed": {
+            "@type": "State",
+            "name": "Yorkshire"
+        },
+        "serviceType": ["Property Reports", "Crime Reports", "School Reports", "Transport Analysis", "Affordable Housing Intelligence"],
+        "priceRange": "£39-£99"
+    }
+    </script>
+
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="LOGO ONLY.PNG" as="image">
+    <link rel="preload" href="yorkshire-logo-website-red.webp" as="image">
+
+    <!-- External Stylesheet (Cached by Browser) -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V85T93K4DG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-V85T93K4DG');
+    </script>
+
+    <script src="config.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body class="loading">
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">YPR</div>
+        <div class="loading-animation">
+            <div class="loading-circle"></div>
+            <div class="loading-inner-circle"></div>
+            <div class="loading-center-dot"></div>
+        </div>
+    </div>
+
+    <!-- Canvas Background -->
+    <canvas id="canvas-bg"></canvas>
+    
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress-bar"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo"><img src="LOGO ONLY.PNG" alt="Yorkshire Property Report" style="height: 40px; vertical-align: middle; margin-right: 10px;">Yorkshire Property Report</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#reports">Reports</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <div class="basket-container">
+                <button class="basket-button" id="basketBtn">
+                    <img src="icons8-opened-folder-48.png" alt="Folder" class="basket-icon">
+                    <span class="basket-count" id="basketCount">0</span>
+                </button>
+                <div class="basket-dropdown" id="basketDropdown">
+                    <div class="basket-header">
+                        Your Basket
+                        <button class="basket-close" id="basketClose">—</button>
+                    </div>
+                    <div class="basket-items" id="basketItems">
+                        <div class="basket-empty">Your basket is empty</div>
+                    </div>
+                    <div class="basket-total" id="basketTotal" style="display: none;">
+                        <span>Total: £<span id="totalAmount">0</span></span>
+                    </div>
+                    <button class="basket-checkout" id="checkoutBtn" disabled>Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Helping you find home in the right place</h1>
+            <p class="subtitle">We uncover information on Yorkshire neighbourhoods, going beyond what you'll find on a rightmove listing or from the local estate agent.</p>
+            
+            <div class="confidence-section">
+                <div class="confidence-grid">
+                    <div class="confidence-item">
+                        <h3>Confidence.</h3>
+                        <p>Have greater confidence knowing whether a property and the local area is right for you.</p>
+                    </div>
+                    <div class="confidence-item">
+                        <h3>Convenience.</h3>
+                        <p>Have all the research conveniently crafted into a bespoke digital report.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reports Section -->
+    <section class="reports-section" id="reports">
+        <div class="container">
+            <div class="section-header">
+                <h2>Reports</h2>
+                <p></p>
+            </div>
+            
+            <div class="reports-grid">
+                <!-- Crime Level Report -->
+                <div class="report-card">
+                    <div class="report-icon"><img src="icons8-siren-48.png" alt="Crime Level" class="report-icon-img"></div>
+                    <h3>Crime Level Comparison</h3>
+                    <p>We will compare the level of crime in your current area with the neighbourhood you're interested to move to.</p>
+                    <div class="price">£90</div>
+                    <button class="cta-button add-to-basket" data-name="Crime Level Comparison" data-price="90" data-emoji="🚨" data-icon="icons8-siren-48.png">
+                        <span class="button-text">Add to basket</span>
+                        <span class="button-text-added">Added ✓</span>
+                    </button>
+                </div>
+
+                <!-- Affordable House Report -->
+                <div class="report-card">
+                    <div class="report-icon"><img src="icons8-neighborhood-48.png" alt="Affordable" class="report-icon-img"></div>
+                    <h3>Nearest Affordable Property</h3>
+                    <p>We will show you exactly where the nearest council and other affordable houses are relative to the home you are viewing to buy.</p>
+                    <div class="price">£59</div>
+                    <button class="cta-button add-to-basket" data-name="Nearest Affordable House" data-price="59" data-emoji="🏡" data-icon="icons8-neighborhood-48.png">
+                        <span class="button-text">Add to basket</span>
+                        <span class="button-text-added">Added ✓</span>
+                    </button>
+                </div>
+
+                <!-- Price Evaluation Report -->
+                <div class="report-card">
+                    <div class="report-icon"><img src="icons8-price-tag-pound-48.png" alt="Affordable" class="report-icon-img"></div>
+                    <h3>Asking Price Evaluation</h3>
+                    <p>We will evaluate the asking price to ensure you're not unknowingly overpaying for your new home.</p>
+                    <div class="price">£64</div>
+                    <button class="cta-button add-to-basket" data-name="Asking Price Evaluation" data-price="64" data-emoji="💰" data-icon="icons8-price-tag-pound-48.png">
+                        <span class="button-text">Add to basket</span>
+                        <span class="button-text-added">Added ✓</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="about">
+        <div class="features-bg"></div>
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose Us</h2>
+            </div>
+            
+            <div class="features-grid">
+                <div class="features-left">
+                    <div class="feature">
+                        <h3>Unique Insight</h3>
+                        <p>Yorkshire Property Report is the only UK company that finds affordable homes near properties for sale on Rightmove. We provide you this information before you buy your home.</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>Experienced Writers</h3>
+                        <p>All our report writers have experience in the residential sector.</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>Regional Focus</h3>
+                        <p>We've narrowed our focus to Yorkshire & Humber, so every report we write meets our high standards.</p>
+                    </div>
+                </div>
+
+                <div class="features-right">
+                    <!-- Report Preview Image -->
+                    <div class="slideshow-container">
+                        <div class="slide active">
+                            <picture>
+                                <source srcset="2%20Bondgate%2C%20Harewood%20triple/2%20Bondgate%2C%20Harewood%20AH.webp" type="image/webp">
+                                <img src="2%20Bondgate%2C%20Harewood%20triple/2%20Bondgate%2C%20Harewood%20AH.png" alt="Property Report Preview" class="slide-image" loading="lazy">
+                            </picture>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section - Enhanced for V22 -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="faq-heading">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            
+            <div class="faq-grid">
+                <!-- Left Column -->
+                <div class="faq-column left-column">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            Which areas does Yorkshire Property Report cover?
+                        </button>
+                        <div class="faq-answer">
+                            <p>Our property reports cover the entire Yorkshire region, including all major cities and towns such as Leeds, York, Sheffield, Hull, Bradford and Wakefield.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How do I request a report?
+                        </button>
+                        <div class="faq-answer">
+                            <p>Simply browse our available reports and add the ones you need to your basket. For our business clients, please email us directly.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How quickly will I receive my report?
+                        </button>
+                        <div class="faq-answer">
+                            <p>In order to write a bespoke report, every property must be individually researched. Therefore, please allow 2-3 working days after your order has been confirmed for the digital delivery of your report. For urgent requirements, we offer an expedited service that can deliver your report within 24 hours. There is a small additional fee for this.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="faq-column right-column">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How can I contact Yorkshire Property Report?
+                        </button>
+                        <div class="faq-answer">
+                            <p>You can contact us via email at <a href="mailto:info@yorkshirepropertyreport.co.uk">info@yorkshirepropertyreport.co.uk</a> for any enquiries about our reports. We aim to respond to all enquiries within one working day.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            Can I share my report with others?
+                        </button>
+                        <div class="faq-answer">
+                            <p>Reports are prepared for your exclusive use and should not be distributed to third parties without our written consent.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How long is my report valid for?
+                        </button>
+                        <div class="faq-answer">
+                            <p>Property markets are dynamic, so reports should be considered current for approximately 3 months from the date of issue. After this period, we recommend purchasing an updated report. We offer discounted rates for report renewals within 6 months of the original purchase.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <!--Zoho Campaigns Web-Optin Form's Header Code Starts Here-->
+            <script type="text/javascript" src="https://zcv2-zcmp.maillist-manage.eu/js/optin.min.js" onload="setupSF('sf3zc8b8ee63f87c5ce90be5cffe472f292566acc0f7c4a29466267f9f0b29000fbd','ZCFORMVIEW',false,'light',false,'0')"></script>
+            <script type="text/javascript">
+                function runOnFormSubmit_sf3zc8b8ee63f87c5ce90be5cffe472f292566acc0f7c4a29466267f9f0b29000fbd(th){
+                    /*Before submit, if you want to trigger your event, "include your code here"*/
+                };
+            </script>
+
+            <style>.quick_form_31_css * { -webkit-box-sizing: border-box !important; -moz-box-sizing: border-box !important; box-sizing: border-box !important; overflow-wrap: break-word }input[type="text"]::placeholder { color: rgb(165, 165, 165) }@media only screen and (max-width: 600px) {.quick_form_31_css[name="SIGNUP_BODY"] { width: 100% !important; min-width: 100% !important; margin: 0px auto !important; padding: 0px !important } .SIGNUP_FLD { width: 90% !important; margin: 10px 5% !important; padding: 0px !important } .SIGNUP_FLD input { margin: 0 !important } }</style>
+
+            <!--Zoho Campaigns Web-Optin Form's Header Code Ends Here--><!--Zoho Campaigns Web-Optin Form Starts Here-->
+
+            <div id="sf3zc8b8ee63f87c5ce90be5cffe472f292566acc0f7c4a29466267f9f0b29000fbd" data-type="signupform" style="opacity: 1;">
+                <div id="customForm">
+                    <div class="quick_form_31_css" style="background-color: rgb(44, 44, 44); width: 600px; max-width: 100%; z-index: 2; font-family: 'Inter', Arial, sans-serif; border-width: 1px; border-style: solid; border-color: rgb(44, 44, 44); overflow: hidden; margin: 0 auto; border-radius: 8px;" name="SIGNUP_BODY">
+                        <div>
+                            <div style="font-size: 18px; font-family: 'Inter', Arial, sans-serif; font-weight: bold; color: rgb(255, 255, 255); text-align: center; padding: 20px 30px 10px; width: 100%; display: block" id="SIGNUP_HEADING">Join Yorkshire Property Report's email community for free articles and offers!</div>
+                            <div style="position:relative;">
+                                <div id="Zc_SignupSuccess" style="display:none;position:absolute;margin-left:4%;width:90%;background-color: white; padding: 3px; border: 3px solid rgb(194, 225, 154);  margin-top: 10px;margin-bottom:10px;word-break:break-all">
+                                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                        <tbody>
+                                            <tr>
+                                                <td width="10%">
+                                                    <img class="successicon" src="https://zcv2-zcmp.maillist-manage.eu/images/challangeiconenable.jpg" align="absmiddle">
+                                                </td>
+                                                <td>
+                                                    <span id="signupSuccessMsg" style="color: rgb(73, 140, 132); font-family: sans-serif; font-size: 14px;word-break:break-word">&nbsp;&nbsp;Thank you for Signing Up</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <form method="POST" id="zcampaignOptinForm" style="margin: 0px; width: 100%; padding: 0px 25px 25px" action="https://zcv2-zcmp.maillist-manage.eu/weboptin.zc" target="_zcSignup">
+                                <div style="background-color: rgb(255, 235, 232); padding: 10px; color: rgb(210, 0, 0); font-size: 11px; margin: 20px 10px 0px; border: 1px solid rgb(255, 217, 211); opacity: 1; display: none" id="errorMsgDiv">Please correct the marked field(s) below.</div>
+                                <div style="position: relative; margin: 15px 0 15px; width: 320px; max-width: 100%; height: 42px; display: inline-block" class="SIGNUP_FLD">
+                                    <input type="text" style="font-size: 16px; border: 2px solid rgb(232, 237, 232); border-radius: 4px; width: 100%; height: 100%; z-index: 4; outline: none; padding: 10px 15px; color: rgb(44, 44, 44); text-align: left; font-family: 'Inter', Arial, sans-serif; background-color: rgb(255, 255, 255); box-sizing: border-box" placeholder="Enter your email address" changeitem="SIGNUP_FORM_FIELD" name="CONTACT_EMAIL" id="EMBED_FORM_EMAIL_LABEL">
+                                </div>
+                                <div style="position: relative; width: 159px; height: 42px; margin: 0px 0px 0px 20px; text-align: left; display: inline-block" class="SIGNUP_FLD">
+                                    <input type="button" style="text-align: center; width: 100%; height: 100%; z-index: 5; border: none; color: rgb(232, 237, 232); cursor: pointer; outline: none; font-size: 16px; font-weight: 600; background-color: rgb(160, 13, 46); border-radius: 4px; font-family: 'Inter', Arial, sans-serif; transition: all 0.3s ease;" name="SIGNUP_SUBMIT_BUTTON" id="zcWebOptin" value="Subscribe">
+                                </div>
+                                <input type="hidden" id="fieldBorder" value="">
+                                <input type="hidden" id="submitType" name="submitType" value="optinCustomView">
+                                <input type="hidden" id="emailReportId" name="emailReportId" value="">
+                                <input type="hidden" id="formType" name="formType" value="QuickForm">
+                                <input type="hidden" name="zx" id="cmpZuid" value="14aec1cd11">
+                                <input type="hidden" name="zcvers" value="2.0">
+                                <input type="hidden" name="oldListIds" id="allCheckedListIds" value="">
+                                <input type="hidden" id="mode" name="mode" value="OptinCreateView">
+                                <input type="hidden" id="zcld" name="zcld" value="13c87e9f464966f7">
+                                <input type="hidden" id="zctd" name="zctd" value="13c87e9f46496541">
+                                <input type="hidden" id="document_domain" value="">
+                                <input type="hidden" id="zc_Url" value="zcv2-zcmp.maillist-manage.eu">
+                                <input type="hidden" id="new_optin_response_in" value="0">
+                                <input type="hidden" id="duplicate_optin_response_in" value="0">
+                                <input type="hidden" name="zc_trackCode" id="zc_trackCode" value="ZCFORMVIEW">
+                                <input type="hidden" id="zc_formIx" name="zc_formIx" value="3zc8b8ee63f87c5ce90be5cffe472f292566acc0f7c4a29466267f9f0b29000fbd">
+                                <input type="hidden" id="viewFrom" value="URL_ACTION">
+                                <span style="display: none" id="dt_CONTACT_EMAIL">1,true,6,Contact Email,2</span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <img src="https://zcv2-zcmp.maillist-manage.eu/images/spacer.gif" id="refImage" onload="referenceSetter(this)" style="display:none;">
+            </div>
+            <input type="hidden" id="signupFormType" value="QuickForm_Horizontal">
+            <div id="zcOptinOverLay" oncontextmenu="return false" style="display:none;text-align: center; background-color: rgb(0, 0, 0); opacity: 0.5; z-index: 100; position: fixed; width: 100%; top: 0px; left: 0px; height: 988px;"></div>
+            <div id="zcOptinSuccessPopup" style="display:none;z-index: 9999;width: 800px; height: 40%;top: 84px;position: fixed; left: 26%;background-color: #FFFFFF;border-color: #E6E6E6; border-style: solid; border-width: 1px;  box-shadow: 0 1px 10px #424242;padding: 35px;">
+                <span style="position: absolute;top: -16px;right:-14px;z-index:99999;cursor: pointer;" id="closeSuccess">
+                    <img src="https://zcv2-zcmp.maillist-manage.eu/images/videoclose.png">
+                </span>
+                <div id="zcOptinSuccessPanel"></div>
+            </div>
+            <!--Zoho Campaigns Web-Optin Form Ends Here-->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-logo">Yorkshire Property Report</div>
+            <ul class="footer-links">
+                <li><a href="terms.html">Terms of Business</a></li>
+            </ul>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Yorkshire Property Report Ltd. All rights reserved.</p>
+                <p style="margin-top: 0.75rem; font-size: 0.85rem; opacity: 0.7;">info@yorkshirepropertyreport.co.uk</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced Stripe Checkout Modal -->
+    <div class="checkout-overlay" id="checkoutOverlay">
+        <div class="checkout-modal">
+            <div class="checkout-header">
+                <h2><img src="icons8-secure-26.png" alt="Secure"> Secure Checkout</h2>
+                <button class="checkout-close" id="checkoutCloseBtn">×</button>
+            </div>
+
+            <div class="checkout-content" id="checkoutContent">
+                <!-- Left Side: Customer and Payment Information -->
+                <div class="checkout-left-side">
+                    <!-- Customer Information -->
+                    <div class="checkout-section">
+                        <h3>Customer Information</h3>
+                        <form class="customer-form" id="customerForm">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required placeholder="John">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required placeholder="Doe">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required placeholder="john@example.com">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="currentAddress">Current Address *</label>
+                                <input type="text" id="currentAddress" name="currentAddress" required placeholder="Your current address">
+                            </div>
+                            <div class="form-group">
+                                <label for="currentCity">City *</label>
+                                <input type="text" id="currentCity" name="currentCity" required placeholder="Leeds">
+                            </div>
+                            <div class="form-group">
+                                <label for="currentPostcode">Postcode *</label>
+                                <input type="text" id="currentPostcode" name="currentPostcode" required placeholder="LS1 1AA">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="propertyAddress">Address of Interested Property *</label>
+                                <input type="text" id="propertyAddress" name="propertyAddress" required placeholder="Property you want a report for">
+                            </div>
+                            <div class="form-group">
+                                <label for="propertyCity">City *</label>
+                                <input type="text" id="propertyCity" name="propertyCity" required placeholder="Leeds">
+                            </div>
+                            <div class="form-group">
+                                <label for="propertyPostcode">Postcode *</label>
+                                <input type="text" id="propertyPostcode" name="propertyPostcode" required placeholder="LS1 1AA">
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Payment Information -->
+                    <div class="checkout-section">
+                        <h3>Payment Information</h3>
+
+                        <div class="form-group">
+                            <label for="cardholderName">Cardholder Name *</label>
+                            <input type="text" id="cardholderName" name="cardholderName" required placeholder="John Doe">
+                        </div>
+                        
+                        <!-- Apple Pay Button -->
+                        <div id="apple-pay-button-container" style="display: none; margin-bottom: 1.5rem;">
+                            <div id="payment-request-button" style="height: 48px; border-radius: 4px; overflow: hidden;">
+                                <!-- Apple Pay button will be inserted here -->
+                            </div>
+                            <div style="text-align: center; margin: 1rem 0; color: #6b7280; font-size: 0.875rem;">
+                                <span style="background: white; padding: 0 0.5rem; position: relative; z-index: 1;">or pay with card</span>
+                                <div style="position: absolute; width: 100%; height: 1px; background: #e5e7eb; top: 50%; left: 0; z-index: 0;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="card-element">Card Details *</label>
+                            <div id="card-element" class="stripe-element">
+                                <!-- Stripe Elements will create form elements here -->
+                            </div>
+                            <div id="card-errors" class="error-message"></div>
+                        </div>
+                        
+                        <h4 style="margin: 2.5rem 0 1.5rem 0; color: #374151; font-size: 1rem; font-weight: 600;">Billing Address</h4>
+
+                        <div class="form-group full-width" style="margin-bottom: 1.5rem;">
+                            <label class="checkbox-label" style="display: flex; align-items: center; cursor: pointer; font-weight: 500; color: #374151;">
+                                <input type="checkbox" id="sameAsCurrentAddress" style="margin-right: 0.75rem; width: 18px; height: 18px; cursor: pointer; accent-color: var(--sage-green);">
+                                <span>Billing address is the same as my current address</span>
+                            </label>
+                        </div>
+
+                        <div class="billing-address-form">
+                            <div class="form-group full-width">
+                                <label for="billingAddress">Address *</label>
+                                <input type="text" id="billingAddress" name="billingAddress" required placeholder="123 Main Street">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="billingCity">City *</label>
+                                <input type="text" id="billingCity" name="billingCity" required placeholder="London">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="billingPostcode">Postcode *</label>
+                                <input type="text" id="billingPostcode" name="billingPostcode" required placeholder="SW1A 1AA">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Order Summary and Pay Button -->
+                <div class="checkout-right-side">
+                    <div class="order-summary-container">
+                        <div class="checkout-section order-summary-section">
+                            <h3>Order Summary</h3>
+                            <div class="order-summary" id="orderSummary">
+                                <!-- Items will be populated by JavaScript -->
+                            </div>
+                            <div class="order-total">
+                                <div class="order-total-line">
+                                    <span>Subtotal</span>
+                                    <span id="orderSubtotal">£0.00</span>
+                                </div>
+                                <div class="order-total-line">
+                                    <span>Digital Delivery in 2-3 working days</span>
+                                    <span>Free</span>
+                                </div>
+                                <div class="order-total-line total">
+                                    <span>Total</span>
+                                    <span id="orderTotal">£0.00</span>
+                                </div>
+                            </div>
+                            <button type="button" class="order-pay-button" id="orderPayButton" disabled>
+                                Pay Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Section - In Main White Container -->
+            <div class="payment-security-section">
+                <div id="payment-errors" class="error-message"></div>
+                <div class="payment-security">
+                    <span class="security-badge">🔒 Secured by Stripe</span>
+                    <span class="security-details">256-bit SSL encryption</span>
+                </div>
+            </div>
+
+            <!-- Success Message (hidden initially) -->
+            <div class="success-message" id="successMessage" style="display: none;">
+                <div style="text-align: center; padding: 3rem 2rem;">
+                    <div class="success-checkmark" id="successCheckmark"></div>
+                    <h3 class="success-title" id="successTitle" style="color: var(--sage-green); font-size: 1.8rem; margin: 1.5rem 0 1rem;">Payment Successful!</h3>
+                    <p class="success-description" id="successDescription" style="color: var(--soft-brown); margin-bottom: 1.5rem; line-height: 1.6;">
+                        Thank you for your purchase. A confirmation email has been sent to your email address. Your property reports will be prepared and sent to your email address within 48 hours.
+                    </p>
+                    <div class="order-id-box" id="orderIdBox">
+                        <strong>Order ID:</strong>
+                        <span id="orderId">ORDER-2024-001</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        
+        // Basket functionality
+        let basket = [];
+        
+        
+        // Optimized Loading Screen - faster page appearance
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loadingScreen');
+                const body = document.body;
+                
+                loadingScreen.classList.add('hidden');
+                body.classList.remove('loading');
+                
+                // Remove loading screen from DOM after animation
+                setTimeout(function() {
+                    loadingScreen.remove();
+                }, 600);
+            }, 400);
+        });
+
+        // Basket functionality
+        const basketBtn = document.getElementById('basketBtn');
+        const basketDropdown = document.getElementById('basketDropdown');
+        const basketClose = document.getElementById('basketClose');
+        const basketCount = document.getElementById('basketCount');
+        const basketItems = document.getElementById('basketItems');
+        const basketTotal = document.getElementById('basketTotal');
+        const totalAmount = document.getElementById('totalAmount');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const addToBasketBtns = document.querySelectorAll('.add-to-basket');
+
+        // Toggle basket dropdown
+        basketBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            basketDropdown.classList.add('show');
+        });
+
+        // Close basket dropdown
+        basketClose.addEventListener('click', function() {
+            basketDropdown.classList.remove('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!basketDropdown.contains(e.target) && !basketBtn.contains(e.target)) {
+                basketDropdown.classList.remove('show');
+            }
+        });
+
+        // Enhanced reversible basket functionality
+        addToBasketBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const name = this.dataset.name;
+                const price = parseInt(this.dataset.price);
+                const emoji = this.dataset.emoji;
+                const icon = this.dataset.icon;
+
+                // Check if item already exists in basket
+                const existingItemIndex = basket.findIndex(item => item.name === name);
+                const isInBasket = existingItemIndex !== -1;
+
+                if (!isInBasket) {
+                    // Add to basket
+                    basket.push({ name, price, emoji, icon });
+                    updateBasket();
+                    
+                    // Trigger success wave animation
+                    this.classList.add('wave-success');
+                    setTimeout(() => {
+                        this.classList.remove('wave-success');
+                        this.classList.add('in-basket'); // Keep golden state
+                    }, 800);
+                    
+                    // Always open basket to show contents when adding
+                    basketDropdown.classList.add('show');
+                } else {
+                    // Remove from basket with reverse animation
+                    this.classList.remove('in-basket', 'wave-success', 'wave-already');
+                    this.classList.add('wave-remove');
+                    
+                    setTimeout(() => {
+                        // Remove from basket array
+                        basket.splice(existingItemIndex, 1);
+                        updateBasket();
+                        
+                        // Reset button to original state
+                        this.classList.remove('wave-remove');
+                    }, 800);
+                }
+            });
+        });
+
+        // Update basket display and sync button states
+        function updateBasket() {
+            basketCount.textContent = basket.length;
+
+            // Sync all button states with basket contents
+            addToBasketBtns.forEach(btn => {
+                const itemName = btn.dataset.name;
+                const isInBasket = basket.some(item => item.name === itemName);
+
+                if (isInBasket) {
+                    if (!btn.classList.contains('in-basket')) {
+                        btn.classList.add('in-basket');
+                    }
+                } else {
+                    btn.classList.remove('in-basket', 'wave-success', 'wave-already', 'wave-remove');
+                }
+            });
+
+            if (basket.length === 0) {
+                basketItems.innerHTML = '<div class="basket-empty">Your basket is empty</div>';
+                basketTotal.style.display = 'none';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            let total = 0;
+            basketItems.innerHTML = '';
+
+            basket.forEach((item, index) => {
+                total += item.price;
+                const itemEl = document.createElement('div');
+                itemEl.className = 'basket-item';
+                itemEl.innerHTML = `
+                    <div class="basket-item-info">
+                        <div class="basket-item-name"><img src="${item.icon}" alt="${item.name}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;"> ${item.name}</div>
+                        <div class="basket-item-price">£${item.price}</div>
+                    </div>
+                    <button class="basket-item-remove" onclick="removeFromBasket(${index}, event)">×</button>
+                `;
+                basketItems.appendChild(itemEl);
+            });
+
+            totalAmount.textContent = total;
+            basketTotal.style.display = 'flex';
+            checkoutBtn.disabled = false;
+        }
+
+        // Enhanced synchronized remove animations for basket item and button
+        function removeFromBasket(index, event) {
+            event.stopPropagation(); // Prevent event bubbling
+            
+            const removedItem = basket[index];
+            
+            // Find the basket item element and add removing animation
+            const basketItemElements = document.querySelectorAll('.basket-item:not(.basket-empty)');
+            const basketItemToRemove = basketItemElements[index];
+            
+            // Find the corresponding button and trigger reverse wave animation
+            const correspondingBtn = Array.from(addToBasketBtns).find(btn => 
+                btn.dataset.name === removedItem.name
+            );
+            
+            // Start both animations simultaneously
+            if (basketItemToRemove) {
+                basketItemToRemove.classList.add('removing');
+            }
+            
+            if (correspondingBtn) {
+                // Trigger the remove animation (same as clicking the button when in basket)
+                correspondingBtn.classList.remove('in-basket', 'wave-success', 'wave-already');
+                correspondingBtn.classList.add('wave-remove');
+            }
+            
+            // Remove from basket array and update display after animation completes
+            setTimeout(() => {
+                basket.splice(index, 1);
+                updateBasket();
+                
+                if (correspondingBtn) {
+                    correspondingBtn.classList.remove('wave-remove');
+                }
+            }, 800); // Match the animation duration
+        }
+
+        
+        // View selected reports - Open checkout modal
+        checkoutBtn.addEventListener('click', function() {
+            if (basket.length > 0) {
+                openCheckoutModal();
+            }
+        });
+
+        // Enhanced smooth scrolling with navbar offset
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                
+                if (target) {
+                    const navbar = document.getElementById('navbar');
+                    const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                    
+                    // Calculate the exact position to scroll to
+                    let scrollPosition;
+                    
+                    if (targetId === '#home') {
+                        // For home, scroll to absolute top
+                        scrollPosition = 0;
+                    } else {
+                        // For other sections, scroll to the top of the section
+                        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+                        scrollPosition = targetPosition;
+                    }
+                    
+                    // Smooth scroll to the calculated position
+                    window.scrollTo({
+                        top: scrollPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // SCROLL-ONLY ANIMATIONS - focused on scroll triggers
+        function initializeScrollAnimations() {
+            console.log('🎯 Initializing scroll-triggered animations only');
+            
+            if (!window.IntersectionObserver) {
+                console.warn('IntersectionObserver not supported');
+                return;
+            }
+
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const element = entry.target;
+                        console.log('📱 Scroll animation triggered for:', element.className);
+                        
+                        // Add the scroll-visible class for CSS transitions
+                        element.classList.add('scroll-visible');
+                        
+                        // Special handling for parent containers
+                        if (element.classList.contains('reports-section')) {
+                            // Animate header first
+                            const header = element.querySelector('.section-header');
+                            if (header) {
+                                setTimeout(() => header.classList.add('scroll-visible'), 100);
+                            }
+                            
+                            // Animate cards with stagger
+                            const cards = element.querySelectorAll('.report-card');
+                            cards.forEach((card, index) => {
+                                setTimeout(() => {
+                                    card.classList.add('scroll-visible');
+                                }, 200 + (index * 150));
+                            });
+                        }
+                        
+                        if (element.classList.contains('features-section')) {
+                            // Animate header first
+                            const header = element.querySelector('.section-header');
+                            if (header) {
+                                setTimeout(() => header.classList.add('scroll-visible'), 100);
+                            }
+                            
+                            // Animate features with stagger
+                            const features = element.querySelectorAll('.feature');
+                            features.forEach((feature, index) => {
+                                setTimeout(() => {
+                                    feature.classList.add('scroll-visible');
+                                }, 200 + (index * 200));
+                            });
+                        }
+                        
+                        if (element.classList.contains('faq-section')) {
+                            // Animate heading first
+                            const heading = element.querySelector('.faq-heading');
+                            if (heading) {
+                                setTimeout(() => heading.classList.add('scroll-visible'), 100);
+                            }
+                            
+                            // Animate columns
+                            const columns = element.querySelectorAll('.faq-column');
+                            columns.forEach((column, colIndex) => {
+                                setTimeout(() => {
+                                    column.classList.add('scroll-visible');
+                                    
+                                    // Animate items within this column
+                                    const items = column.querySelectorAll('.faq-item');
+                                    items.forEach((item, itemIndex) => {
+                                        setTimeout(() => {
+                                            item.classList.add('scroll-visible');
+                                        }, itemIndex * 100);
+                                    });
+                                }, 300 + (colIndex * 200));
+                            });
+                        }
+                        
+                        // Unobserve after triggering
+                        observer.unobserve(element);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe section containers instead of individual elements
+            const sections = document.querySelectorAll('.reports-section, .features-section, .faq-section');
+            console.log('👁️ Observing', sections.length, 'sections for scroll animations');
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        // MULTIPLE INITIALIZATION STRATEGIES
+        let animationsInitialized = false;
+        
+        function safeInitializeAnimations() {
+            if (animationsInitialized) {
+                console.log('⚠️ Animations already initialized, skipping...');
+                return;
+            }
+            
+            console.log('🎬 SAFE INITIALIZE ANIMATIONS - Starting...');
+            animationsInitialized = true;
+            
+            // Wait a bit for the loading screen to finish
+            setTimeout(() => {
+                initializeScrollAnimations();
+            }, 500);
+        }
+        
+        // Strategy 1: DOM Content Loaded
+        if (document.readyState === 'loading') {
+            console.log('📚 Document still loading - waiting for DOMContentLoaded');
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('📚 DOMContentLoaded fired');
+                safeInitializeAnimations();
+            });
+        } else {
+            console.log('📚 Document already loaded');
+            safeInitializeAnimations();
+        }
+        
+        // Strategy 2: Window Load (backup)
+        window.addEventListener('load', function() {
+            console.log('🪟 Window load event fired');
+            if (!animationsInitialized) {
+                console.log('🪟 Animations not yet initialized - initializing now');
+                safeInitializeAnimations();
+            }
+        });
+        
+        // Strategy 3: Immediate timeout (backup backup)
+        setTimeout(() => {
+            if (!animationsInitialized) {
+                console.log('⏰ Timeout backup - force initializing animations');
+                safeInitializeAnimations();
+            }
+        }, 2000);
+        
+
+        // ULTRA SMOOTH Scroll Progress Bar
+        function createScrollProgressBar() {
+            const progressBar = document.getElementById('scroll-progress-bar');
+            
+            if (!progressBar) {
+                console.warn('Progress bar element not found');
+                return;
+            }
+
+            let isVisible = false;
+            let lastScrollTop = 0;
+            let lastUpdate = 0;
+            const updateThreshold = 16; // ~60fps
+            
+            // Use transform instead of width for better performance
+            function updateProgress() {
+                const now = performance.now();
+                
+                // Throttle updates for smoother performance
+                if (now - lastUpdate < updateThreshold) {
+                    return;
+                }
+                
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Only update if scroll changed significantly
+                if (Math.abs(scrollTop - lastScrollTop) < 1) {
+                    return;
+                }
+                
+                const docHeight = document.documentElement.scrollHeight;
+                const winHeight = window.innerHeight;
+                const scrollPercent = Math.min(Math.max((scrollTop / (docHeight - winHeight)), 0), 1);
+                
+                // Use transform scaleX for hardware acceleration
+                const progressElement = progressBar.querySelector('::before') || progressBar;
+                progressBar.style.setProperty('--progress', scrollPercent);
+                
+                // Update visibility smoothly
+                const shouldBeVisible = scrollTop > 50;
+                if (shouldBeVisible !== isVisible) {
+                    isVisible = shouldBeVisible;
+                    progressBar.classList.toggle('visible', isVisible);
+                }
+                
+                lastScrollTop = scrollTop;
+                lastUpdate = now;
+            }
+            
+            // Optimized scroll listener with passive scrolling
+            let rafId = null;
+            
+            function onScroll() {
+                if (rafId) return;
+                
+                rafId = requestAnimationFrame(() => {
+                    updateProgress();
+                    rafId = null;
+                });
+            }
+            
+            // Use passive listener for better performance
+            window.addEventListener('scroll', onScroll, { 
+                passive: true,
+                capture: false 
+            });
+            
+            // Use Intersection Observer for better performance if available
+            if (window.IntersectionObserver) {
+                const observer = new IntersectionObserver(() => {
+                    updateProgress();
+                }, { 
+                    threshold: [0, 0.25, 0.5, 0.75, 1],
+                    rootMargin: '0px 0px -50px 0px'
+                });
+                
+                observer.observe(document.body);
+            }
+            
+            // Initialize
+            updateProgress();
+            console.log('Ultra smooth scroll progress bar initialized');
+        }
+        
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', createScrollProgressBar);
+        } else {
+            createScrollProgressBar();
+        }
+
+        // FAQ accordion functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach((question) => {
+                question.addEventListener('click', function() {
+                    const parentItem = this.closest('.faq-item');
+                    const answer = this.nextElementSibling;
+                    const isOpening = !this.classList.contains('active');
+                    
+                    // Get all items in the same column
+                    const currentColumn = parentItem.closest('.faq-column');
+                    const allQuestionsInColumn = currentColumn.querySelectorAll('.faq-question');
+                    
+                    // Close all other open answers in this column first
+                    if (isOpening) {
+                        allQuestionsInColumn.forEach(q => {
+                            if (q !== this && q.classList.contains('active')) {
+                                const otherParent = q.closest('.faq-item');
+                                const otherAnswer = q.nextElementSibling;
+                                
+                                q.classList.remove('active');
+                                otherParent.classList.remove('active');
+                                otherAnswer.classList.remove('show');
+                            }
+                        });
+                        
+                        // Open this answer
+                        this.classList.add('active');
+                        parentItem.classList.add('active');
+                        answer.classList.add('show');
+                    } else {
+                        // Close this answer
+                        answer.classList.remove('show');
+                        this.classList.remove('active');
+                        parentItem.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Checkout Modal Functionality
+        const checkoutOverlay = document.getElementById('checkoutOverlay');
+        const checkoutCloseBtn = document.getElementById('checkoutCloseBtn');
+        const orderSummary = document.getElementById('orderSummary');
+        const orderItems = document.getElementById('orderItems');
+        const orderTotal = document.getElementById('orderTotal');
+        
+        // Stripe Configuration
+        let stripe;
+        let cardElement = null;
+        let cardElementComplete = false; // Track card completion state
+        let elementsInstance = null; // Track elements instance
+        let paymentRequest = null; // Apple Pay payment request
+
+        function initializeApplePay() {
+            if (!stripe) {
+                console.error('Stripe not initialized');
+                return;
+            }
+
+            // Calculate total from basket
+            const total = basket.reduce((sum, item) => sum + item.price, 0);
+
+            // Create payment request
+            paymentRequest = stripe.paymentRequest({
+                country: 'GB',
+                currency: 'gbp',
+                total: {
+                    label: 'Yorkshire Property Report',
+                    amount: total * 100, // Convert to pence
+                },
+                requestPayerName: true,
+                requestPayerEmail: true,
+            });
+
+            // Check if Apple Pay is available
+            const prButton = elementsInstance.create('paymentRequestButton', {
+                paymentRequest: paymentRequest,
+                style: {
+                    paymentRequestButton: {
+                        type: 'buy', // 'buy', 'donate', 'book', or 'default'
+                        theme: 'dark', // 'dark', 'light', or 'light-outline'
+                        height: '48px',
+                    },
+                },
+            });
+
+            paymentRequest.canMakePayment().then(function(result) {
+                if (result) {
+                    console.log('✅ Apple Pay is available on this device');
+                    console.log('Available payment methods:', result);
+                    const container = document.getElementById('apple-pay-button-container');
+                    if (container) {
+                        container.style.display = 'block';
+                        prButton.mount('#payment-request-button');
+                        console.log('✅ Apple Pay button mounted successfully');
+                    }
+                } else {
+                    console.log('❌ Apple Pay not available on this device/browser');
+                    console.log('ℹ️ Apple Pay requires Safari browser on Mac/iPhone/iPad with Apple Pay configured');
+                    console.log('ℹ️ Current browser:', navigator.userAgent.includes('Safari') ? 'Safari' : navigator.userAgent.includes('Chrome') ? 'Chrome' : 'Other');
+                    document.getElementById('apple-pay-button-container').style.display = 'none';
+                }
+            }).catch(function(error) {
+                console.error('Error checking Apple Pay availability:', error);
+            });
+
+            // Handle payment method creation
+            paymentRequest.on('paymentmethod', async function(ev) {
+                console.log('Apple Pay payment method created');
+
+                try {
+                    // Get form data
+                    const formData = {
+                        firstName: document.getElementById('firstName')?.value || ev.payerName?.split(' ')[0] || '',
+                        lastName: document.getElementById('lastName')?.value || ev.payerName?.split(' ').slice(1).join(' ') || '',
+                        email: document.getElementById('email')?.value || ev.payerEmail || '',
+                        currentAddress: document.getElementById('currentAddress')?.value || '',
+                        currentCity: document.getElementById('currentCity')?.value || '',
+                        currentPostcode: document.getElementById('currentPostcode')?.value || '',
+                        propertyAddress: document.getElementById('propertyAddress')?.value || '',
+                        propertyCity: document.getElementById('propertyCity')?.value || '',
+                        propertyPostcode: document.getElementById('propertyPostcode')?.value || ''
+                    };
+
+                    // Validate required fields
+                    if (!formData.currentAddress || !formData.propertyAddress) {
+                        ev.complete('fail');
+                        showError('Please fill in all required address fields before using Apple Pay');
+                        return;
+                    }
+
+                    // Create payment intent on backend
+                    const intentResponse = await fetch(`${CONFIG.API_BASE_URL}/api/payment/create-intent`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (!intentResponse.ok) {
+                        throw new Error('Failed to create payment intent');
+                    }
+
+                    const { clientSecret, paymentIntentId } = await intentResponse.json();
+
+                    // Confirm payment
+                    const { error, paymentIntent } = await stripe.confirmCardPayment(
+                        clientSecret,
+                        { payment_method: ev.paymentMethod.id },
+                        { handleActions: false }
+                    );
+
+                    if (error) {
+                        ev.complete('fail');
+                        showError('Payment failed: ' + error.message);
+                        return;
+                    }
+
+                    ev.complete('success');
+
+                    // Confirm with backend
+                    const confirmResponse = await fetch(`${CONFIG.API_BASE_URL}/api/payment/confirm`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            ...formData,
+                            paymentIntentId: paymentIntent.id,
+                            stripeCustomerId: paymentIntent.customer
+                        })
+                    });
+
+                    const confirmData = await confirmResponse.json();
+
+                    // Redirect to confirmation
+                    redirectToConfirmation(confirmData.orderNumber, ev.paymentMethod, formData);
+
+                } catch (error) {
+                    console.error('Apple Pay error:', error);
+                    ev.complete('fail');
+                    showError('Payment failed. Please try again.');
+                }
+            });
+        }
+
+        function initializeStripeElements() {
+            // Prevent duplicate initialization
+            if (cardElement) {
+                console.log('Stripe Elements already initialized');
+                return;
+            }
+
+            // Initialize Stripe if not already done
+            if (!stripe) {
+                console.log('Initializing Stripe...');
+                if (typeof Stripe === 'undefined') {
+                    console.error('Stripe library not loaded');
+                    showError('Payment system not loaded. Please refresh the page and try again.');
+                    return;
+                }
+                if (!window.CONFIG?.STRIPE_PUBLISHABLE_KEY) {
+                    console.error('Stripe publishable key not found');
+                    showError('Payment configuration error. Please contact support.');
+                    return;
+                }
+                try {
+                    stripe = Stripe(window.CONFIG.STRIPE_PUBLISHABLE_KEY);
+                    console.log('Stripe initialized successfully');
+                } catch (error) {
+                    console.error('Error initializing Stripe:', error);
+                    showError('Failed to initialize payment system. Please refresh the page and try again.');
+                    return;
+                }
+            }
+
+            try {
+                console.log('Initializing Stripe Elements...');
+                elementsInstance = stripe.elements();
+
+                // Custom styling to match your theme
+                const style = {
+                    base: {
+                        fontSize: '16px',
+                        color: '#424770',
+                        '::placeholder': {
+                            color: '#aab7c4',
+                        },
+                    },
+                    invalid: {
+                        color: '#9e2146',
+                    },
+                };
+
+                cardElement = elementsInstance.create('card', {
+                    style: style,
+                    hidePostalCode: true,
+                    disableLink: true
+                });
+                cardElement.mount('#card-element');
+
+                console.log('Stripe Card Element mounted successfully');
+            } catch (error) {
+                console.error('Error initializing Stripe Elements:', error);
+                showError('Error loading payment form. Please refresh the page and try again.');
+                return;
+            }
+
+            cardElement.on('change', function(event) {
+                const cardContainer = document.getElementById('card-element');
+                const cardErrorsElement = document.getElementById('card-errors');
+
+                console.log('Card element change:', { complete: event.complete, error: event.error });
+
+                // Track card completion state
+                cardElementComplete = event.complete && !event.error;
+
+                // Clear previous states
+                cardContainer.classList.remove('stripe-element--invalid', 'stripe-element--complete');
+
+                if (event.error) {
+                    cardElementComplete = false;
+                    // Add error styling to card container
+                    cardContainer.classList.add('stripe-element--invalid');
+
+                    // Show error message with smooth animation
+                    if (cardErrorsElement) {
+                        cardErrorsElement.textContent = event.error.message;
+                        cardErrorsElement.style.display = 'block';
+                        cardErrorsElement.classList.add('show');
+
+                        // Auto-hide after 5 seconds
+                        setTimeout(() => {
+                            cardErrorsElement.classList.remove('show');
+                        }, 5000);
+                    }
+
+                    // Also show in main error area for consistency
+                    showError('Card details: ' + event.error.message);
+
+                } else if (event.complete) {
+                    cardElementComplete = true;
+                    // Add success styling when card is complete and valid
+                    cardContainer.classList.add('stripe-element--complete');
+                    
+                    // Hide card-specific errors
+                    if (cardErrorsElement) {
+                        cardErrorsElement.style.display = 'none';
+                        cardErrorsElement.classList.remove('show');
+                    }
+                    
+                    // Clear main error if it was about card details
+                    const mainError = document.getElementById('payment-errors');
+                    if (mainError && mainError.textContent.includes('Card details:')) {
+                        mainError.textContent = '';
+                        mainError.style.display = 'none';
+                        mainError.classList.remove('show');
+                    }
+                } else {
+                    // Card is in progress but not complete
+                    if (cardErrorsElement) {
+                        cardErrorsElement.style.display = 'none';
+                        cardErrorsElement.classList.remove('show');
+                    }
+                }
+            });
+        }
+
+        // Clear form field styles and add input listeners
+        function initializeFormStyling() {
+            // Clear all field styles - including fields outside customerForm
+            document.querySelectorAll('input, textarea, select').forEach(field => {
+                field.classList.remove('error', 'success');
+                field.style.borderColor = '';
+                field.style.backgroundColor = 'white';
+                field.style.background = 'white';
+                
+                // Add input listener to clear error state when typing
+                field.addEventListener('input', function() {
+                    this.classList.remove('error');
+                    this.style.borderColor = '';
+                });
+            });
+        }
+        
+        function openCheckoutModal() {
+            // Populate order summary
+            populateOrderSummary();
+
+            // Show modal
+            checkoutOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+
+            // Initialize Stripe Elements if not already done
+            if (!cardElement) {
+                initializeStripeElements();
+                // Initialize Apple Pay after Elements are ready
+                setTimeout(() => {
+                    if (elementsInstance) {
+                        initializeApplePay();
+                    }
+                }, 100);
+            } else {
+                // Re-initialize Apple Pay with updated basket total
+                if (elementsInstance) {
+                    initializeApplePay();
+                }
+            }
+
+            // Initialize form styling
+            setTimeout(initializeFormStyling, 100);
+
+            // Setup billing address auto-fill
+            setupBillingAddressAutoFill();
+        }
+        
+        function closeCheckoutModal() {
+            // Add smooth closing animation
+            checkoutOverlay.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            checkoutOverlay.classList.remove('show');
+            document.body.style.overflow = 'auto';
+            
+            // SECURITY: Clear and reset Stripe card element to prevent data persistence
+            if (cardElement) {
+                try {
+                    cardElement.clear();
+                    cardElementComplete = false; // Reset state
+                    const cardContainer = document.getElementById('card-element');
+                    if (cardContainer) {
+                        cardContainer.classList.remove('stripe-element--invalid', 'stripe-element--complete');
+                    }
+                } catch (error) {
+                    console.warn('Error clearing card element:', error);
+                }
+            }
+            
+            // Reset all forms completely
+            const form = document.getElementById('customerForm');
+            if (form) {
+                form.reset();
+            }
+            
+            // Clear all billing inputs manually (extra security)
+            const billingInputs = ['billingAddress', 'billingCity', 'billingPostcode', 'cardholderName'];
+            billingInputs.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.value = '';
+                    input.classList.remove('error', 'success');
+                    input.disabled = false;
+                    input.style.backgroundColor = '';
+                    input.style.cursor = '';
+                }
+            });
+
+            // Reset billing address checkbox
+            const sameAddressCheckbox = document.getElementById('sameAsCurrentAddress');
+            if (sameAddressCheckbox) {
+                sameAddressCheckbox.checked = false;
+            }
+            
+            // Clear all other form inputs and remove validation states
+            document.querySelectorAll('#customerForm input, .form-group input').forEach(input => {
+                input.value = '';
+                input.classList.remove('error', 'success');
+            });
+            
+            // Clear all errors
+            const errorElement = document.getElementById('payment-errors');
+            if (errorElement) {
+                errorElement.textContent = '';
+                errorElement.style.display = 'none';
+                errorElement.classList.remove('show');
+            }
+            
+            const cardErrors = document.getElementById('card-errors');
+            if (cardErrors) {
+                cardErrors.textContent = '';
+                cardErrors.style.display = 'none';
+                cardErrors.classList.remove('show');
+            }
+            
+            // Reset button state
+            const orderPayButton = document.getElementById('orderPayButton');
+            if (orderPayButton) {
+                orderPayButton.disabled = false;
+                orderPayButton.textContent = 'Pay Now';
+            }
+            
+            // Reset success message and restore proper checkout content layout
+            const successMessage = document.getElementById('successMessage');
+            const checkoutContent = document.getElementById('checkoutContent');
+            if (successMessage && checkoutContent) {
+                // Reset all animation classes
+                successMessage.classList.remove('animate-in');
+                document.getElementById('successCheckmark')?.classList.remove('animate-circle', 'animate-tick');
+                document.getElementById('successTitle')?.classList.remove('animate-in');
+                document.getElementById('successDescription')?.classList.remove('animate-in');
+                document.getElementById('orderIdBox')?.classList.remove('animate-in');
+                
+                successMessage.style.display = 'none';
+                
+                // Restore proper grid layout for checkout content
+                checkoutContent.style.display = 'grid';
+                checkoutContent.style.gridTemplateColumns = '1fr';
+                checkoutContent.style.gap = '2rem';
+                
+                // Ensure left and right sides are properly displayed with correct styles
+                const leftSide = document.querySelector('.checkout-left-side');
+                const rightSide = document.querySelector('.checkout-right-side');
+                
+                if (leftSide) {
+                    leftSide.style.display = 'flex';
+                    leftSide.style.flexDirection = 'column';
+                }
+                if (rightSide) {
+                    rightSide.style.display = 'block';
+                }
+            }
+            
+            // Always clear basket when modal closes (successful or cancelled)
+            if (basket.length > 0) {
+                basket = [];
+                updateBasket();
+            }
+        }
+        
+        function populateOrderSummary() {
+            const orderSummary = document.getElementById('orderSummary');
+            const orderSubtotal = document.getElementById('orderSubtotal');
+            const orderTotal = document.getElementById('orderTotal');
+            const orderPayButton = document.getElementById('orderPayButton');
+            
+            orderSummary.innerHTML = '';
+            let total = 0;
+            
+            basket.forEach(item => {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'order-item';
+                orderItem.style.cssText = `
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0.75rem 0;
+                    border-bottom: 1px solid #f0f0f0;
+                    font-size: 0.875rem;
+                `;
+                orderItem.innerHTML = `
+                    <span style="color: #374151;"><img src="${item.icon}" alt="${item.name}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;"> ${item.name}</span>
+                    <span style="font-weight: 600; color: #1a1a1a;">£${item.price}</span>
+                `;
+                orderSummary.appendChild(orderItem);
+                total += item.price;
+            });
+            
+            // Update totals
+            orderSubtotal.textContent = `£${total}.00`;
+            orderTotal.textContent = `£${total}.00`;
+            
+            // Enable the pay button
+            orderPayButton.disabled = false;
+        }
+        
+        // Event Listeners
+        checkoutCloseBtn.addEventListener('click', closeCheckoutModal);
+        
+        checkoutOverlay.addEventListener('click', function(e) {
+            if (e.target === checkoutOverlay) {
+                closeCheckoutModal();
+            }
+        });
+
+        // Order Pay Button functionality - Handle payment directly
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'orderPayButton') {
+                handlePaymentSubmission(e);
+            }
+        });
+        
+        // Comprehensive field validation function
+        function validateAllFields() {
+            let hasErrors = false;
+            const errors = [];
+            
+            // Clear all previous error states
+            document.querySelectorAll('.form-group input').forEach(field => {
+                field.classList.remove('error');
+            });
+            
+            // Define validation rules for each field
+            const validationRules = {
+                firstName: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'First Name'
+                },
+                lastName: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'Last Name'
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    label: 'Email Address'
+                },
+                currentAddress: {
+                    required: true,
+                    minLength: 10,
+                    label: 'Current Address'
+                },
+                currentCity: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'Current City'
+                },
+                currentPostcode: {
+                    required: true,
+                    postcode: true,
+                    label: 'Current Postcode'
+                },
+                propertyAddress: {
+                    required: true,
+                    minLength: 10,
+                    label: 'Property Address'
+                },
+                propertyCity: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'Property City'
+                },
+                propertyPostcode: {
+                    required: true,
+                    postcode: true,
+                    label: 'Property Postcode'
+                },
+                cardholderName: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'Cardholder Name'
+                },
+                billingAddress: {
+                    required: true,
+                    minLength: 10,
+                    label: 'Billing Address'
+                },
+                billingCity: {
+                    required: true,
+                    minLength: 2,
+                    noNumbers: true,
+                    label: 'Billing City'
+                },
+                billingPostcode: {
+                    required: true,
+                    postcode: true,
+                    label: 'Billing Postcode'
+                }
+            };
+            
+            // Validate each field
+            for (const [fieldName, rules] of Object.entries(validationRules)) {
+                const field = document.getElementById(fieldName);
+                if (!field) continue;
+                
+                const value = field.value.trim();
+                let fieldErrors = [];
+                
+                // Check if required field is empty
+                if (rules.required && !value) {
+                    fieldErrors.push(`${rules.label} is required`);
+                }
+                
+                // Only validate format if field has content
+                if (value) {
+                    // Check minimum length
+                    if (rules.minLength && value.length < rules.minLength) {
+                        fieldErrors.push(`${rules.label} must be at least ${rules.minLength} characters`);
+                    }
+                    
+                    // Check for numbers in name fields
+                    if (rules.noNumbers && /\d/.test(value)) {
+                        fieldErrors.push(`${rules.label} cannot contain numbers`);
+                    }
+                    
+                    // Email validation
+                    if (rules.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+                        fieldErrors.push('Please enter a valid email address');
+                    }
+                    
+                    // UK Postcode validation
+                    if (rules.postcode && !/^[A-Z]{1,2}[0-9R][0-9A-Z]?\s?[0-9][A-Z]{2}$/i.test(value.replace(/\s/g, ''))) {
+                        fieldErrors.push(`${rules.label} must be a valid UK postcode (e.g., SW1A 1AA)`);
+                    }
+                }
+                
+                // Mark field as error if validation failed, success if valid
+                if (fieldErrors.length > 0) {
+                    field.classList.add('error');
+                    field.classList.remove('success');
+                    hasErrors = true;
+                    errors.push(...fieldErrors);
+                } else if (value) {
+                    field.classList.remove('error');
+                    field.classList.add('success');
+                }
+            }
+            
+            // Check if card element is complete and valid
+            console.log('Validating card element. cardElement:', !!cardElement, 'cardElementComplete:', cardElementComplete);
+
+            if (!cardElement || !cardElementComplete) {
+                hasErrors = true;
+                errors.push('Please enter valid card details');
+
+                // Add error styling to card container
+                const cardContainer = document.getElementById('card-element');
+                if (cardContainer && !cardContainer.classList.contains('stripe-element--invalid')) {
+                    cardContainer.classList.add('stripe-element--invalid');
+                }
+            }
+            
+            return { hasErrors, errors };
+        }
+
+        // Real-time validation for better UX
+        function setupRealTimeValidation() {
+            const fields = document.querySelectorAll('#customerForm input, input[id*="billing"], input[id="cardholderName"]');
+            
+            fields.forEach(field => {
+                field.addEventListener('blur', function() {
+                    validateSingleField(this);
+                });
+                
+                field.addEventListener('input', function() {
+                    // Remove error state when user starts typing
+                    if (this.classList.contains('error')) {
+                        this.classList.remove('error');
+                    }
+                    
+                    // Also clear main error message if it's showing
+                    const mainError = document.getElementById('payment-errors');
+                    if (mainError && mainError.classList.contains('show')) {
+                        setTimeout(() => {
+                            mainError.classList.remove('show');
+                        }, 1000);
+                    }
+                });
+            });
+        }
+
+        function validateSingleField(field) {
+            const validationRules = {
+                firstName: { required: true, minLength: 2, noNumbers: true, label: 'First Name' },
+                lastName: { required: true, minLength: 2, noNumbers: true, label: 'Last Name' },
+                email: { required: true, email: true, label: 'Email Address' },
+                currentAddress: { required: true, minLength: 10, label: 'Current Address' },
+                currentCity: { required: true, minLength: 2, noNumbers: true, label: 'Current City' },
+                currentPostcode: { required: true, postcode: true, label: 'Current Postcode' },
+                propertyAddress: { required: true, minLength: 10, label: 'Property Address' },
+                propertyCity: { required: true, minLength: 2, noNumbers: true, label: 'Property City' },
+                propertyPostcode: { required: true, postcode: true, label: 'Property Postcode' },
+                cardholderName: { required: true, minLength: 2, noNumbers: true, label: 'Cardholder Name' },
+                billingAddress: { required: true, minLength: 10, label: 'Billing Address' },
+                billingCity: { required: true, minLength: 2, noNumbers: true, label: 'Billing City' },
+                billingPostcode: { required: true, postcode: true, label: 'Billing Postcode' }
+            };
+            
+            const rules = validationRules[field.id];
+            if (!rules) return;
+            
+            const value = field.value.trim();
+            let isValid = true;
+            
+            field.classList.remove('error');
+            
+            if (rules.required && !value) {
+                isValid = false;
+            } else if (value) {
+                if (rules.minLength && value.length < rules.minLength) isValid = false;
+                if (rules.noNumbers && /\d/.test(value)) isValid = false;
+                if (rules.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) isValid = false;
+                if (rules.postcode && !/^[A-Z]{1,2}[0-9R][0-9A-Z]?\s?[0-9][A-Z]{2}$/i.test(value.replace(/\s/g, ''))) isValid = false;
+            }
+            
+            if (!isValid) {
+                field.classList.add('error');
+                field.classList.remove('success');
+            } else if (value) {
+                field.classList.remove('error');
+                field.classList.add('success');
+            }
+        }
+
+        // Setup billing address auto-fill functionality
+        function setupBillingAddressAutoFill() {
+            const checkbox = document.getElementById('sameAsCurrentAddress');
+            const billingFields = {
+                address: document.getElementById('billingAddress'),
+                city: document.getElementById('billingCity'),
+                postcode: document.getElementById('billingPostcode')
+            };
+            const currentFields = {
+                address: document.getElementById('currentAddress'),
+                city: document.getElementById('currentCity'),
+                postcode: document.getElementById('currentPostcode')
+            };
+
+            if (!checkbox) return;
+
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // Copy values from current address to billing address
+                    billingFields.address.value = currentFields.address.value;
+                    billingFields.city.value = currentFields.city.value;
+                    billingFields.postcode.value = currentFields.postcode.value;
+
+                    // Disable billing fields and add visual indication
+                    Object.values(billingFields).forEach(field => {
+                        field.disabled = true;
+                        field.style.backgroundColor = '#f3f4f6';
+                        field.style.cursor = 'not-allowed';
+                        // Trigger success styling if field has value
+                        if (field.value) {
+                            field.classList.add('success');
+                            field.classList.remove('error');
+                        }
+                    });
+
+                    // Also update when current address fields change
+                    Object.keys(currentFields).forEach(key => {
+                        currentFields[key].addEventListener('input', function updateBillingOnCurrentChange() {
+                            if (checkbox.checked) {
+                                billingFields[key].value = this.value;
+                                if (billingFields[key].value) {
+                                    billingFields[key].classList.add('success');
+                                }
+                            }
+                        });
+                    });
+                } else {
+                    // Clear billing fields and re-enable them
+                    Object.values(billingFields).forEach(field => {
+                        field.value = '';
+                        field.disabled = false;
+                        field.style.backgroundColor = '';
+                        field.style.cursor = '';
+                        field.classList.remove('success', 'error');
+                    });
+                }
+            });
+        }
+
+        // Handle payment submission function
+        async function handlePaymentSubmission(e) {
+            e.preventDefault();
+            e.stopPropagation(); // Prevent event bubbling
+            
+            const orderPayButton = document.getElementById('orderPayButton');
+            
+            // Disable button and show loading
+            orderPayButton.disabled = true;
+            orderPayButton.textContent = 'Processing...';
+            
+            // Clear previous errors
+            const errorElement = document.getElementById('payment-errors');
+            errorElement.textContent = '';
+            errorElement.style.display = 'none';
+            
+            // Comprehensive form validation
+            const { hasErrors, errors } = validateAllFields();
+            
+            if (hasErrors) {
+                orderPayButton.disabled = false;
+                orderPayButton.textContent = 'Pay Now';
+                
+                // Show the first few most important errors
+                const priorityErrors = errors.slice(0, 3);
+                showError(priorityErrors.join('. ') + '.');
+                
+                // Scroll to first error field and focus it
+                const firstErrorField = document.querySelector('.form-group input.error');
+                if (firstErrorField) {
+                    firstErrorField.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    setTimeout(() => firstErrorField.focus(), 300);
+                }
+                
+                return;
+            }
+            
+            try {
+                // Double-check card element is ready (extra safety)
+                console.log('Double-checking before payment. cardElement:', !!cardElement, 'cardElementComplete:', cardElementComplete);
+
+                if (!cardElement || !cardElementComplete) {
+                    orderPayButton.disabled = false;
+                    orderPayButton.textContent = 'Pay Now';
+                    showError('Please ensure your card details are complete and valid.');
+                    return;
+                }
+                
+                // Get values directly from form fields
+                const cardholderNameValue = document.getElementById('cardholderName')?.value || '';
+                const emailValue = document.getElementById('email')?.value || '';
+                const billingAddressValue = document.getElementById('billingAddress')?.value || '';
+                const billingCityValue = document.getElementById('billingCity')?.value || '';
+                const billingPostcodeValue = document.getElementById('billingPostcode')?.value || '';
+                
+                // Create payment method
+                const {error, paymentMethod} = await stripe.createPaymentMethod({
+                    type: 'card',
+                    card: cardElement,
+                    billing_details: {
+                        name: cardholderNameValue,
+                        email: emailValue,
+                        address: {
+                            line1: billingAddressValue,
+                            city: billingCityValue,
+                            postal_code: billingPostcodeValue,
+                            country: 'GB',
+                        },
+                    },
+                });
+                
+                if (error) {
+                    orderPayButton.disabled = false;
+                    orderPayButton.textContent = 'Pay Now';
+                    showError('Payment failed: ' + error.message);
+                    
+                    // Also add error styling to card element
+                    if (cardContainer) {
+                        cardContainer.classList.add('stripe-element--invalid');
+                        cardContainer.classList.remove('stripe-element--complete');
+                    }
+                    return;
+                }
+                
+                // Here you would normally send the payment to your backend
+                // For now, simulate successful payment
+                const customerData = {
+                    firstName: document.getElementById('firstName')?.value || '',
+                    lastName: document.getElementById('lastName')?.value || '',
+                    email: document.getElementById('email')?.value || '',
+                    propertyAddress: document.getElementById('propertyAddress')?.value || ''
+                };
+                await processStripePayment(paymentMethod, customerData);
+                
+            } catch (error) {
+                orderPayButton.disabled = false;
+                orderPayButton.textContent = 'Pay Now';
+                showError('An unexpected error occurred. Please try again.');
+                console.error('Payment error:', error);
+            }
+        }
+        
+        // Real Stripe payment processing
+        async function processStripePayment(paymentMethod, customerData) {
+            try {
+                console.log('Processing payment...', { paymentMethod: paymentMethod.id, customerData });
+
+                // Get all form data for backend
+                const formData = {
+                    firstName: document.getElementById('firstName')?.value || '',
+                    lastName: document.getElementById('lastName')?.value || '',
+                    email: document.getElementById('email')?.value || '',
+                    phone: '', // Add if you have phone field
+                    currentAddress: document.getElementById('currentAddress')?.value || '',
+                    currentCity: document.getElementById('currentCity')?.value || '',
+                    currentPostcode: document.getElementById('currentPostcode')?.value || '',
+                    propertyAddress: document.getElementById('propertyAddress')?.value || '',
+                    propertyCity: document.getElementById('propertyCity')?.value || '',
+                    propertyPostcode: document.getElementById('propertyPostcode')?.value || ''
+                };
+
+                console.log('Creating payment intent with backend...');
+
+                // Step 1: Create payment intent on backend
+                const intentResponse = await fetch(`${CONFIG.API_BASE_URL}/api/payment/create-intent`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!intentResponse.ok) {
+                    const errorData = await intentResponse.json();
+                    throw new Error(errorData.error || 'Failed to create payment intent');
+                }
+
+                const { clientSecret, paymentIntentId } = await intentResponse.json();
+                console.log('Payment intent created:', paymentIntentId);
+
+                // Step 2: Confirm payment with Stripe
+                console.log('Confirming payment with Stripe...');
+                const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: paymentMethod.id
+                });
+
+                if (error) {
+                    console.error('Payment confirmation error:', error);
+                    throw error;
+                }
+
+                if (paymentIntent.status === 'succeeded') {
+                    console.log('✅ Payment succeeded:', paymentIntent.id);
+
+                    // Step 3: Confirm with backend to save order and send email
+                    const confirmResponse = await fetch(`${CONFIG.API_BASE_URL}/api/payment/confirm`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            ...formData,
+                            paymentIntentId: paymentIntent.id,
+                            stripeCustomerId: paymentIntent.customer
+                        })
+                    });
+
+                    if (!confirmResponse.ok) {
+                        console.warn('Payment succeeded but order confirmation failed');
+                    }
+
+                    const confirmData = await confirmResponse.json();
+                    console.log('Order confirmed:', confirmData.orderNumber);
+
+                    // Redirect to confirmation page
+                    redirectToConfirmation(confirmData.orderNumber, paymentMethod, formData);
+
+                } else {
+                    throw new Error('Payment was not successful');
+                }
+
+            } catch (error) {
+                console.error('Payment error:', error);
+                throw error;
+            }
+        }
+        
+        // Redirect to payment confirmation page with loading animation
+        function redirectToConfirmation(orderId, paymentMethod, customerData) {
+            // Store order details in localStorage for the confirmation page
+            const orderData = {
+                orderNumber: orderId,
+                customerName: `${customerData.firstName} ${customerData.lastName}`,
+                customerEmail: customerData.email,
+                propertyAddress: customerData.propertyAddress,
+                paymentMethod: 'card',
+                orderDate: new Date().toISOString(),
+                orderItems: [...basket], // Copy current basket items BEFORE any clearing
+                orderTotal: calculateTotal()
+            };
+            
+            // Store in localStorage FIRST before any DOM manipulation
+            localStorage.setItem('orderData', JSON.stringify(orderData));
+            console.log('Order data stored:', orderData); // Debug log
+            
+            // Prevent any other navigation or form submission
+            window.onbeforeunload = null;
+            
+            // Show loading screen IMMEDIATELY without closing modal first
+            showPaymentLoadingScreen();
+        }
+
+        // Show YPR loading screen during payment processing
+        function showPaymentLoadingScreen() {
+            console.log('Showing payment loading screen'); // Debug log
+            
+            // Prevent any other navigation or page reloads
+            window.onbeforeunload = null;
+            
+            // Create loading screen element that covers everything
+            const loadingScreen = document.createElement('div');
+            loadingScreen.className = 'loading-screen';
+            loadingScreen.id = 'paymentLoadingScreen';
+            loadingScreen.style.zIndex = '15000'; // Well above checkout modal (10000)
+            loadingScreen.style.position = 'fixed';
+            loadingScreen.style.top = '0';
+            loadingScreen.style.left = '0';
+            loadingScreen.style.width = '100%';
+            loadingScreen.style.height = '100%';
+            loadingScreen.style.background = 'linear-gradient(135deg, var(--warm-cream) 0%, #d8ddd8 100%)';
+            loadingScreen.style.display = 'flex';
+            loadingScreen.style.flexDirection = 'column';
+            loadingScreen.style.alignItems = 'center';
+            loadingScreen.style.justifyContent = 'center';
+            loadingScreen.style.opacity = '1'; // Show immediately
+            
+            loadingScreen.innerHTML = `
+                <div class="loading-logo">YPR</div>
+                <div class="loading-animation">
+                    <div class="loading-circle"></div>
+                    <div class="loading-inner-circle"></div>
+                    <div class="loading-center-dot"></div>
+                </div>
+                <div id="loadingText" style="margin-top: 2rem; color: var(--sage-green); font-weight: 500; text-align: center; opacity: 0; animation: fadeInUp 1s ease-out 0.8s forwards; min-height: 24px;">
+                    Processing your order...
+                </div>
+            `;
+            
+            // Add to document
+            document.body.appendChild(loadingScreen);
+            
+            // Progressive loading text updates
+            const loadingText = loadingScreen.querySelector('#loadingText');
+            const messages = [
+                'Processing your order...',
+                'Securing payment details...',
+                'Generating reports...',
+                'Almost ready!'
+            ];
+            
+            let messageIndex = 0;
+            const textInterval = setInterval(() => {
+                messageIndex++;
+                if (messageIndex < messages.length) {
+                    loadingText.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingText.textContent = messages[messageIndex];
+                        loadingText.style.opacity = '1';
+                    }, 200);
+                } else {
+                    clearInterval(textInterval);
+                }
+            }, 600);
+            
+            // Show loading for 2.5 seconds then redirect DIRECTLY to confirmation
+            setTimeout(() => {
+                clearInterval(textInterval);
+                console.log('Redirecting to confirmation page'); // Debug log
+                
+                // Clean up checkout modal while loading screen is still visible
+                const checkoutOverlay = document.getElementById('checkoutOverlay');
+                if (checkoutOverlay) {
+                    checkoutOverlay.style.display = 'none';
+                }
+                
+                // Direct redirect without fade for reliability
+                window.location.replace('payment-confirmation.html');
+            }, 2500);
+        }
+
+        // Calculate total from current basket
+        function calculateTotal() {
+            return basket.reduce((total, item) => total + item.price, 0);
+        }
+        
+        // Show error message
+        function showError(message) {
+            const errorElement = document.getElementById('payment-errors');
+            const orderPayButton = document.getElementById('orderPayButton');
+            
+            // Clear any existing timeout
+            if (window.errorTimeout) {
+                clearTimeout(window.errorTimeout);
+            }
+            
+            // Remove any existing show class first for re-animation
+            errorElement.classList.remove('show');
+            
+            // Small delay to ensure CSS transitions work properly
+            setTimeout(() => {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                errorElement.classList.add('show');
+                
+                // Reset button state
+                if (orderPayButton) {
+                    orderPayButton.disabled = false;
+                    orderPayButton.textContent = 'Pay Now';
+                }
+                
+                // Auto-hide after 6 seconds with smooth transition
+                window.errorTimeout = setTimeout(() => {
+                    errorElement.classList.remove('show');
+                    setTimeout(() => {
+                        if (!errorElement.classList.contains('show')) {
+                            errorElement.style.display = 'none';
+                        }
+                    }, 400); // Wait for fade-out animation
+                }, 6000);
+            }, 50);
+        }
+
+        // Initialize real-time validation when checkout section is ready
+        function initializeCheckoutValidation() {
+            if (document.querySelector('#customerForm')) {
+                setupRealTimeValidation();
+                console.log('✅ Real-time form validation initialized');
+            }
+        }
+
+        // Wait for DOM to be ready and initialize validation
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeCheckoutValidation);
+        } else {
+            initializeCheckoutValidation();
+        }
+
+        // Slideshow Functionality
+        function initializeSlideshow() {
+            const slideshowContainer = document.querySelector('.slideshow-container');
+            if (!slideshowContainer) return;
+
+            const slides = slideshowContainer.querySelectorAll('.slide');
+            const indicators = slideshowContainer.querySelectorAll('.indicator');
+            let currentSlide = 0;
+
+            // If there's only one slide, no slideshow needed
+            if (slides.length <= 1) {
+                console.log('✅ Single slide detected - static display');
+                return;
+            }
+
+            function showSlide(index) {
+                // Validate index is within bounds
+                if (index < 0 || index >= slides.length) return;
+
+                // Remove active class from all slides and indicators
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+
+                // Add active class to current slide and indicator
+                slides[index].classList.add('active');
+                if (indicators[index]) {
+                    indicators[index].classList.add('active');
+                }
+                currentSlide = index;
+            }
+
+            function nextSlide() {
+                const nextIndex = (currentSlide + 1) % slides.length;
+                showSlide(nextIndex);
+            }
+
+            // Click on slideshow container to advance
+            slideshowContainer.addEventListener('click', (e) => {
+                // Don't advance if clicking on an indicator
+                if (!e.target.classList.contains('indicator')) {
+                    nextSlide();
+                }
+            });
+
+            // Click on indicators to jump to specific slide
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent the container click from firing
+                    showSlide(index);
+                });
+            });
+
+            console.log('✅ Slideshow initialized with', slides.length, 'slides');
+        }
+
+        // Initialize slideshow when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeSlideshow);
+        } else {
+            initializeSlideshow();
+        }
+    </script>
+</body>
+</html>
