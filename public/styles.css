@@ -113,6 +113,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-y: scroll;
 }
 
 body {
@@ -171,6 +172,8 @@ nav.scrolled {
     text-decoration: none;
     letter-spacing: -0.02em;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
 }
 
 .logo:hover {

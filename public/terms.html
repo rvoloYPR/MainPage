@@ -12,15 +12,15 @@
         }
 
         :root {
-            --midnight: #0a0a0a;
+            --midnight: #202320;
             --charcoal: #2c2c2c;
             --warm-charcoal: #3a3a3a;
-            --warm-cream: #f0ede6;
-            --sage-green: #6b8657;
-            --muted-sage: #5a7249;
-            --accent-gold: #b8965f;
-            --soft-brown: #75624a;
-            --paper-white: #fafafa;
+            --warm-cream: #e8ede8;
+            --sage-green: #a00d2e;
+            --muted-sage: #850b27;
+            --accent-gold: #a00d2e;
+            --soft-brown: #5e615e;
+            --paper-white: #f5f7f5;
             --subtle-shadow: rgba(0, 0, 0, 0.12);
         }
 
@@ -34,21 +34,22 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: var(--charcoal);
-            background-color: var(--warm-cream);
+            background: linear-gradient(135deg, var(--warm-cream) 0%, #d8ddd8 100%);
             display: flex;
             flex-direction: column;
         }
 
         /* Navigation */
         nav {
-            background: rgba(250, 248, 243, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 1.5rem 0;
+            background: rgba(232, 237, 232, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
-            border-bottom: 1px solid rgba(139, 115, 85, 0.1);
+            border-bottom: 1px solid rgba(94, 97, 94, 0.1);
+            transition: all 0.3s ease;
         }
 
         .nav-container {
@@ -61,16 +62,24 @@
         }
 
         .logo {
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             color: var(--charcoal);
             font-weight: 700;
             text-decoration: none;
             letter-spacing: -0.02em;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
         }
 
         .logo:hover {
             color: var(--sage-green);
+        }
+
+        .logo img {
+            height: 40px;
+            vertical-align: middle;
+            margin-right: 10px;
         }
 
         .back-link {
@@ -145,7 +154,7 @@
         }
 
         .confidence-item h3 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: var(--sage-green);
             margin-bottom: 0.75rem;
             font-weight: 600;
@@ -177,7 +186,7 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--sage-green), var(--accent-gold));
+            background: var(--sage-green);
         }
 
         .section h2 {
@@ -220,13 +229,13 @@
         .subsection {
             margin: 1.5rem 0;
             padding-left: 1.5rem;
-            border-left: 3px solid rgba(107, 134, 87, 0.3);
+            border-left: 3px solid rgba(160, 13, 46, 0.3);
         }
 
         .numbered-clause {
             margin: 1.5rem 0;
             padding: 1.5rem;
-            background: rgba(107, 134, 87, 0.05);
+            background: rgba(160, 13, 46, 0.03);
             border-radius: 8px;
             border-left: 4px solid var(--sage-green);
         }
@@ -239,7 +248,7 @@
 
         /* Services pricing */
         .services-pricing {
-            background: linear-gradient(135deg, rgba(107, 134, 87, 0.08), rgba(184, 150, 95, 0.08));
+            background: rgba(160, 13, 46, 0.03);
             padding: 2rem;
             border-radius: 12px;
             margin: 2rem 0;
@@ -252,7 +261,7 @@
             align-items: center;
             margin: 0.75rem 0;
             padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(107, 134, 87, 0.15);
+            border-bottom: 1px solid rgba(160, 13, 46, 0.15);
         }
 
         .price-item:last-child {
@@ -261,7 +270,7 @@
 
         .price {
             font-weight: 700;
-            color: var(--accent-gold);
+            color: var(--sage-green);
             font-size: 1.1rem;
         }
 
@@ -308,7 +317,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border: 3px solid rgba(107, 134, 87, 0.3);
+            border: 3px solid rgba(160, 13, 46, 0.3);
             border-radius: 50%;
             border-top: 3px solid var(--sage-green);
             animation: loadingSpin 1s linear infinite;
@@ -320,9 +329,9 @@
             left: 15px;
             width: 50px;
             height: 50px;
-            border: 2px solid rgba(184, 150, 95, 0.3);
+            border: 2px solid rgba(160, 13, 46, 0.2);
             border-radius: 50%;
-            border-right: 2px solid var(--accent-gold);
+            border-right: 2px solid var(--muted-sage);
             animation: loadingSpin 1.5s linear infinite reverse;
         }
 
@@ -414,20 +423,13 @@
         }
 
         .footer-links {
-    display: grid;
-    grid-template-columns: 1fr; /* Change this line */
-    align-items: center;
-    justify-items: center;
-    margin-bottom: 2.5rem;
-    list-style: none;
-    gap: 1rem;
-    width: 100%;
-    max-width: 450px;
-    margin-left: auto;
-    margin-right: auto;
-}
-        .footer-links li:nth-child(1) {
-            justify-self: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            list-style: none;
+            gap: 2rem;
+            flex-wrap: wrap;
         }
 
         .footer-links a {
@@ -450,8 +452,8 @@
 
         /* Legal emphasis */
         .legal-emphasis {
-            background: rgba(184, 150, 95, 0.1);
-            border: 2px solid var(--accent-gold);
+            background: rgba(160, 13, 46, 0.05);
+            border: 2px solid var(--sage-green);
             padding: 1.5rem;
             border-radius: 8px;
             margin: 1.5rem 0;
@@ -496,13 +498,8 @@
             }
 
             .footer-links {
-                grid-template-columns: 1fr;
+                flex-direction: column;
                 gap: 1rem;
-                text-align: center;
-            }
-
-            .footer-links li {
-                justify-self: center !important;
             }
         }
     </style>
@@ -521,8 +518,11 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="ypr-websiteV24.html" class="logo">Yorkshire Property Report</a>
-            <a href="ypr-websiteV24.html" class="back-link">← Back to Home</a>
+            <a href="index.html" class="logo">
+                <img src="LOGO ONLY.PNG" alt="Yorkshire Property Report">
+                Yorkshire Property Report
+            </a>
+            <a href="index.html" class="back-link">← Back to Home</a>
         </div>
     </nav>
 
@@ -739,6 +739,8 @@
         <div class="footer-content">
             <div class="footer-logo">Yorkshire Property Report</div>
             <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="real-house-prices-yorkshire.html">Articles</a></li>
                 <li><a href="terms.html">Terms of Business</a></li>
             </ul>
             <div class="footer-bottom">
@@ -795,17 +797,17 @@
 
         // Add loading effect to navigation links
         document.addEventListener('DOMContentLoaded', function() {
-            const homeLinks = document.querySelectorAll('a[href="ypr-websiteV24.html"]');
-            
+            const homeLinks = document.querySelectorAll('a[href="index.html"]');
+
             homeLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    
+
                     // Add loading class to clicked link
                     this.classList.add('nav-link-loading');
-                    
+
                     // Navigate with loading animation
-                    navigateWithLoading('ypr-websiteV24.html');
+                    navigateWithLoading('index.html');
                 });
             });
         });

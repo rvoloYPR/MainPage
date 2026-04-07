@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Real House Prices of Yorkshire | Yorkshire Property Report</title>
+    
+    <!-- Meta Description -->
+    <meta name="description" content="We analysed 35,453 Yorkshire home sales. In Dewsbury, homes sold for 8% above asking. In Ilkley, 3% below. Discover what buyers are actually paying in your postcode.">
+    
+    <!-- Keywords -->
+    <meta name="keywords" content="Yorkshire house prices, asking price vs sold price, Yorkshire property market, house price analysis, Bradford, Dewsbury, Ilkley, Sheffield, Leeds property">
+    
+    <!-- Author and Brand -->
+    <meta name="author" content="Yorkshire Property Report Ltd">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.yorkshirepropertyreport.co.uk/real-house-prices-yorkshire.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.yorkshirepropertyreport.co.uk/real-house-prices-yorkshire.html">
+    <meta property="og:title" content="The Real House Prices of Yorkshire - Data Analysis of 35,453 Sales">
+    <meta property="og:description" content="In Dewsbury, homes sold for 8% above asking. In Ilkley, 3% below. We analysed every sale to show you what buyers are actually paying.">
+    <meta property="og:image" content="https://www.yorkshirepropertyreport.co.uk/yorkshire-logo-website-red.webp">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Real House Prices of Yorkshire">
+    <meta name="twitter:description" content="Analysis of 35,453 Yorkshire home sales reveals massive price gaps between asking and sold prices.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V85T93K4DG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-V85T93K4DG');
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --midnight: #202320;
+            --charcoal: #2c2c2c;
+            --warm-charcoal: #3a3a3a;
+            --warm-cream: #E8EDE8;
+            --sage-green: #a00d2e;
+            --muted-sage: #850b27;
+            --accent-gold: #a00d2e;
+            --soft-brown: #5e615e;
+            --paper-white: #f5f7f5;
+            --subtle-shadow: rgba(0, 0, 0, 0.12);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-y: scroll;
+        }
+
+        /* YPR branding for page */
+        body {
+            background: linear-gradient(135deg, var(--warm-cream) 0%, #d8ddd8 100%);
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: var(--charcoal);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar styling to match YPR */
+        nav {
+            background: rgba(232, 237, 232, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(94, 97, 94, 0.1);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        nav.scrolled {
+            padding: 1rem 0;
+            background: rgba(232, 237, 232, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 4vw, 4rem);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            color: var(--charcoal);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo:hover {
+            color: var(--sage-green);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-size: 0.95rem;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--sage-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--sage-green);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Clean article container with YPR spacing */
+        .article-container {
+            max-width: 700px;
+            margin: 120px auto 80px;
+            padding: 60px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .article-header {
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            color: #000;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            font-family: Georgia, serif;
+        }
+
+        .article-subtitle {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: 400;
+            line-height: 1.5;
+            margin: 15px 0;
+        }
+
+        .article-meta {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #666;
+            font-family: Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .article-content {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #222;
+            font-family: Georgia, serif;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+        }
+
+        .article-content strong {
+            font-weight: 600;
+            color: #000;
+        }
+
+        .article-content h2 {
+            font-size: 1.6rem;
+            color: #000;
+            margin: 40px 0 20px;
+            font-weight: 700;
+            font-family: Georgia, serif;
+        }
+
+        .article-content h3 {
+            font-size: 1.2rem;
+            color: #000;
+            margin: 30px 0 15px;
+            font-weight: 600;
+            font-family: Georgia, serif;
+        }
+
+        /* Clean, simple table styling */
+        .data-table {
+            width: 100%;
+            margin: 30px 0;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .data-table thead {
+            border-bottom: 2px solid #000;
+        }
+
+        .data-table th {
+            padding: 10px 12px 10px 0;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .data-table td {
+            padding: 12px 12px 12px 0;
+            color: #333;
+        }
+
+        .data-table td:first-child {
+            font-weight: 600;
+            color: #000;
+        }
+
+        .positive-gap {
+            color: #000;
+            font-weight: 600;
+        }
+
+        .negative-gap {
+            color: #000;
+            font-weight: 600;
+        }
+
+        /* Simple highlight box */
+        .insight-box {
+            border-left: 3px solid #000;
+            padding-left: 20px;
+            margin: 30px 0;
+        }
+
+        .insight-box p {
+            margin: 0;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #222;
+            font-style: italic;
+        }
+
+        /* Clean CTA */
+        .cta-box {
+            padding: 30px 0;
+            margin: 40px 0;
+            border-top: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .cta-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .cta-box p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--sage-green);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            font-family: Arial, sans-serif;
+            transition: background 0.2s ease;
+        }
+
+        .cta-button:hover {
+            background: var(--muted-sage);
+        }
+
+        /* Data source */
+        .data-source {
+            margin-top: 50px;
+            padding: 20px 0;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.6;
+            font-family: Arial, sans-serif;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--sage-green);
+            text-decoration: none;
+            font-weight: 600;
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-container {
+                margin-top: 90px;
+                padding: 30px 20px;
+            }
+
+            .data-table {
+                font-size: 0.8rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 8px 8px 8px 0;
+            }
+
+            .nav-links {
+                display: none; /* Hide on mobile for simplicity */
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="LOGO ONLY.PNG" alt="Yorkshire Property Report" style="height: 40px; vertical-align: middle; margin-right: 10px;">Yorkshire Property Report</a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#reports">Reports</a></li>
+                <li><a href="articles.html">Articles</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+            </ul>
+            <div style="width: 50px; height: 50px;"></div>
+        </div>
+    </nav>
+
+    <!-- Article Container -->
+    <div class="article-container">
+        <a href="articles.html" class="back-link">← Back to Articles</a>
+        
+        <article>
+            <header class="article-header">
+                <h1 class="article-title">The Real House Prices of Yorkshire</h1>
+                <p class="article-subtitle">We compared the listing price and sold price for over 35,000 homes in Yorkshire.</p>
+                <div class="article-meta">
+                </div>
+            </header>
+
+            <div class="article-content">
+                <p>Here's a number that might surprise you: in Dewsbury, homes sold for almost <strong>8% more than their asking price</strong> last year. Sellers were naming their price, and buyers were topping it. Fifteen miles away in Ilkley, the opposite was happening. Homes there were selling for nearly 3% less than asking, an average of £13,000 off, as sellers adjusted to a market that simply wouldn't meet their expectations.</p>
+
+                <p>We analysed <strong>35,453 completed house sales</strong> across Yorkshire: every freehold, second-hand home that changed hands with both an asking price and a final sold price on record. The results paint a picture of a region pulling in two directions at once. Over half of all homes sold below asking price. But nearly one in four sold above it. Same county, same year, wildly different outcomes depending on where you're looking.</p>
+
+                <h2>How did we get here?</h2>
+
+                <p>Cast your mind back to 2021. Mortgage rates were hovering around 2%, homes were flying off the market, and sellers could name almost any price. Then interest rates climbed (and kept climbing) until monthly repayments on a typical Yorkshire home had jumped by hundreds of pounds. That didn't stop people buying, but it completely changed what they could afford to buy.</p>
+
+                <p>Buyers who'd been eyeing a £250,000 semi suddenly found themselves competing for £130,000 terraces instead. Areas like Bradford, Dewsbury, and Doncaster, where you could still buy a decent home without needing a six-figure household income, became battlegrounds. Sellers in those postcodes found themselves fielding multiple offers, often above asking.</p>
+
+                <p>Meanwhile, at the other end of the market, a very different story was playing out. Our research shows a clear pattern: <strong>the higher the price tag, the bigger the discount buyers are walking away with.</strong></p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Price Bracket</th>
+                            <th>Avg Asking</th>
+                            <th>Avg Sold</th>
+                            <th>Gap</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Under £150k</td>
+                            <td>£113,655</td>
+                            <td>£113,536</td>
+                            <td class="positive-gap">+0.89%</td>
+                        </tr>
+                        <tr>
+                            <td>£150k–£250k</td>
+                            <td>£194,230</td>
+                            <td>£191,147</td>
+                            <td class="negative-gap">-1.56%</td>
+                        </tr>
+                        <tr>
+                            <td>£250k–£400k</td>
+                            <td>£306,501</td>
+                            <td>£301,467</td>
+                            <td class="negative-gap">-1.62%</td>
+                        </tr>
+                        <tr>
+                            <td>£400k–£600k</td>
+                            <td>£470,299</td>
+                            <td>£460,915</td>
+                            <td class="negative-gap">-1.97%</td>
+                        </tr>
+                        <tr>
+                            <td>£600k+</td>
+                            <td>£789,169</td>
+                            <td>£761,895</td>
+                            <td class="negative-gap">-2.94%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>In the under-£150k bracket, nearly a third of buyers paid more than the listed price. Above £600k, the kind of detached home you'd find in parts of Harrogate, York, or Ilkley, fewer than one in five buyers paid what was asked, and <strong>sellers lost an average of £27,274</strong> from their asking price. So if you're shopping in that bracket, you almost certainly have more negotiating power than you think.</p>
+
+                <p>Zoom in further, and the differences become even sharper. These are the ten Yorkshire postcodes where buyers paid the most above asking, and the ten where they negotiated the hardest.</p>
+
+                <h3>Sold ABOVE asking:</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Postcode</th>
+                            <th>Area</th>
+                            <th>Avg Asking</th>
+                            <th>Avg Sold</th>
+                            <th>Gap</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>WF13</strong></td>
+                            <td>Dewsbury</td>
+                            <td>£185,396</td>
+                            <td>£188,810</td>
+                            <td class="positive-gap">+8.0%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>BD3</strong></td>
+                            <td>Bradford</td>
+                            <td>£131,607</td>
+                            <td>£134,903</td>
+                            <td class="positive-gap">+6.9%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DN1</strong></td>
+                            <td>Doncaster</td>
+                            <td>£101,307</td>
+                            <td>£101,864</td>
+                            <td class="positive-gap">+4.3%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>S4</strong></td>
+                            <td>Sheffield (Burngreave)</td>
+                            <td>£126,666</td>
+                            <td>£129,583</td>
+                            <td class="positive-gap">+4.2%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>S6</strong></td>
+                            <td>Sheffield (Hillsborough)</td>
+                            <td>£241,782</td>
+                            <td>£247,278</td>
+                            <td class="positive-gap">+3.1%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DN12</strong></td>
+                            <td>Doncaster (Edlington)</td>
+                            <td>£137,688</td>
+                            <td>£138,117</td>
+                            <td class="positive-gap">+2.8%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>S7</strong></td>
+                            <td>Sheffield (Nether Edge)</td>
+                            <td>£399,793</td>
+                            <td>£406,427</td>
+                            <td class="positive-gap">+2.5%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HX1</strong></td>
+                            <td>Halifax</td>
+                            <td>£142,175</td>
+                            <td>£141,829</td>
+                            <td class="positive-gap">+2.1%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>S10</strong></td>
+                            <td>Sheffield (Crosspool)</td>
+                            <td>£386,985</td>
+                            <td>£390,880</td>
+                            <td class="positive-gap">+1.8%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>S9</strong></td>
+                            <td>Sheffield (Darnall)</td>
+                            <td>£157,411</td>
+                            <td>£159,537</td>
+                            <td class="positive-gap">+1.8%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Sold BELOW asking:</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Postcode</th>
+                            <th>Area</th>
+                            <th>Avg Asking</th>
+                            <th>Avg Sold</th>
+                            <th>Gap</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>YO15</strong></td>
+                            <td>Bridlington</td>
+                            <td>£258,649</td>
+                            <td>£248,217</td>
+                            <td class="negative-gap">-3.6%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HU12</strong></td>
+                            <td>Hull outskirts</td>
+                            <td>£241,714</td>
+                            <td>£233,315</td>
+                            <td class="negative-gap">-3.6%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TS4</strong></td>
+                            <td>Middlesbrough</td>
+                            <td>£152,437</td>
+                            <td>£147,563</td>
+                            <td class="negative-gap">-3.2%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>OL14</strong></td>
+                            <td>Todmorden</td>
+                            <td>£265,304</td>
+                            <td>£257,145</td>
+                            <td class="negative-gap">-3.0%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HU17</strong></td>
+                            <td>Beverley</td>
+                            <td>£310,474</td>
+                            <td>£301,605</td>
+                            <td class="negative-gap">-3.0%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HU19</strong></td>
+                            <td>Withernsea</td>
+                            <td>£164,548</td>
+                            <td>£159,418</td>
+                            <td class="negative-gap">-3.0%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>BD20</strong></td>
+                            <td>Keighley</td>
+                            <td>£261,695</td>
+                            <td>£253,343</td>
+                            <td class="negative-gap">-2.9%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DL2</strong></td>
+                            <td>Darlington</td>
+                            <td>£262,198</td>
+                            <td>£254,185</td>
+                            <td class="negative-gap">-2.9%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>YO16</strong></td>
+                            <td>Bridlington</td>
+                            <td>£203,478</td>
+                            <td>£197,660</td>
+                            <td class="negative-gap">-2.9%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>LS29</strong></td>
+                            <td>Ilkley</td>
+                            <td>£464,427</td>
+                            <td>£451,396</td>
+                            <td class="negative-gap">-2.8%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>Look at the average asking price in Sheffield's S6 (£241,782) and Hull's HU12 (£241,714). On Rightmove, those two homes look almost identical in price. But the Sheffield home sold for £247,000. The Hull home sold for £233,000. <strong>That's a £14,000 difference hidden behind the same asking price.</strong></p>
+
+                <p>It's not a one-off either. In Dewsbury and Pontefract, homes were listed at similar prices, but Dewsbury sellers banked nearly 8% above asking while Pontefract sellers accepted nearly 2% below.</p>
+
+                <p>The gap between what sellers ask for and what buyers actually pay is wider than most people realise.</p>
+
+                <h2>So what does this mean for you?</h2>
+
+                <p>If you're house hunting in Yorkshire right now, whether that's competing for a terrace in Bradford or negotiating on a detached in Ilkley, the question is the same: <strong>what are homes actually selling for in this postcode?</strong> The asking price won't tell you, the sold price data will. That's the difference between guessing and knowing. And in a market this divided, it's a difference worth thousands.</p>
+
+                <div class="cta-box">
+                    <h3>Let us evaluate the asking price for you.</h3>
+                    <p>Our 'Asking Price Evaluation' Report (£64) will show you what buyers are actually paying in the neighbourhood you are looking to move to.</p>
+                    <a href="index.html#reports" class="cta-button">View reports</a>
+                </div>
+
+                <div class="data-source">
+                    Data: HM Land Registry<br>
+                    © Yorkshire Property Report 2026. If you reference this data, please credit Yorkshire Property Report and link to <a href="https://www.yorkshirepropertyreport.co.uk" style="color: #666; text-decoration: none;">www.yorkshirepropertyreport.co.uk</a>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <!-- Footer (if you have one from index.html, copy it here) -->
+    
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

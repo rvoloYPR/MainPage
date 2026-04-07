@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Form Test</title>
+    <script src="config.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #card-element {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        button {
+            background: #5469d4;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .error {
+            color: #df1b41;
+            margin: 10px 0;
+        }
+        .success {
+            color: #28a745;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Payment Form Test</h1>
+
+    <div id="status"></div>
+
+    <form id="payment-form">
+        <label for="card-element">Card Details</label>
+        <div id="card-element"></div>
+        <div id="card-errors" class="error"></div>
+        <button type="submit">Pay £100</button>
+    </form>
+
+    <div id="debug"></div>
+
+    <script>
+        const statusDiv = document.getElementById('status');
+        const debugDiv = document.getElementById('debug');
+
+        function log(message, isError = false) {
+            console.log(message);
+            const p = document.createElement('p');
+            p.textContent = message;
+            p.className = isError ? 'error' : 'success';
+            debugDiv.appendChild(p);
+        }
+
+        // Wait for everything to load
+        window.addEventListener('load', function() {
+            log('✅ Page loaded');
+
+            // Check if config is loaded
+            if (window.CONFIG) {
+                log('✅ Config loaded');
+                log('Stripe Key: ' + window.CONFIG.STRIPE_PUBLISHABLE_KEY.substring(0, 20) + '...');
+            } else {
+                log('❌ Config NOT loaded', true);
+                return;
+            }
+
+            // Check if Stripe is loaded
+            if (typeof Stripe === 'undefined') {
+                log('❌ Stripe library NOT loaded', true);
+                return;
+            } else {
+                log('✅ Stripe library loaded');
+            }
+
+            // Initialize Stripe
+            let stripe;
+            try {
+                stripe = Stripe(window.CONFIG.STRIPE_PUBLISHABLE_KEY);
+                log('✅ Stripe initialized');
+            } catch (error) {
+                log('❌ Stripe initialization error: ' + error.message, true);
+                return;
+            }
+
+            // Create Stripe Elements
+            let elements;
+            try {
+                elements = stripe.elements();
+                log('✅ Stripe Elements created');
+            } catch (error) {
+                log('❌ Elements creation error: ' + error.message, true);
+                return;
+            }
+
+            // Create card element
+            let cardElement;
+            try {
+                const style = {
+                    base: {
+                        fontSize: '16px',
+                        color: '#424770',
+                        '::placeholder': {
+                            color: '#aab7c4',
+                        },
+                    },
+                    invalid: {
+                        color: '#9e2146',
+                    },
+                };
+
+                cardElement = elements.create('card', { style: style });
+                log('✅ Card element created');
+            } catch (error) {
+                log('❌ Card element creation error: ' + error.message, true);
+                return;
+            }
+
+            // Mount card element
+            try {
+                cardElement.mount('#card-element');
+                log('✅ Card element mounted successfully!');
+                statusDiv.innerHTML = '<p class="success">✅ Payment form is working! You should be able to enter card details below.</p>';
+            } catch (error) {
+                log('❌ Card element mount error: ' + error.message, true);
+                statusDiv.innerHTML = '<p class="error">❌ Failed to mount card element</p>';
+                return;
+            }
+
+            // Handle card errors
+            cardElement.on('change', function(event) {
+                const cardErrors = document.getElementById('card-errors');
+                if (event.error) {
+                    cardErrors.textContent = event.error.message;
+                } else {
+                    cardErrors.textContent = '';
+                }
+
+                if (event.complete) {
+                    log('✅ Card details are complete and valid');
+                }
+            });
+
+            // Handle form submission
+            document.getElementById('payment-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                log('Form submitted (test - not processing payment)');
+            });
+        });
+    </script>
+</body>
+</html>
