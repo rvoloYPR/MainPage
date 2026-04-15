@@ -91,7 +91,12 @@
     <nav id="navbar">
         <div class="nav-container">
             <a href="#" class="logo"><img src="LOGO ONLY.PNG" alt="Yorkshire Property Report" style="height: 40px; vertical-align: middle; margin-right: 10px;">Yorkshire Property Report</a>
-            <ul class="nav-links">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#reports">Reports</a></li>
                 <li><a href="articles.html">Articles</a></li>
@@ -784,6 +789,23 @@
             } else {
                 navbar.classList.remove('scrolled');
             }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
         });
 
         // SCROLL-ONLY ANIMATIONS - focused on scroll triggers
