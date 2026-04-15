@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles | Yorkshire Property Report</title>
+
+    <!-- Meta Description -->
+    <meta name="description" content="Read the latest property market analysis and insights from Yorkshire Property Report.">
+
+    <!-- Keywords -->
+    <meta name="keywords" content="Yorkshire property articles, property market analysis, house price analysis, Yorkshire housing market">
+
+    <!-- Author and Brand -->
+    <meta name="author" content="Yorkshire Property Report Ltd">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.yorkshirepropertyreport.co.uk/articles.html">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V85T93K4DG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-V85T93K4DG');
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --midnight: #202320;
+            --charcoal: #2c2c2c;
+            --warm-charcoal: #3a3a3a;
+            --warm-cream: #E8EDE8;
+            --sage-green: #a00d2e;
+            --muted-sage: #850b27;
+            --accent-gold: #a00d2e;
+            --soft-brown: #5e615e;
+            --paper-white: #f5f7f5;
+            --subtle-shadow: rgba(0, 0, 0, 0.12);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-y: scroll;
+        }
+
+        /* Page styling */
+        body {
+            background: linear-gradient(135deg, var(--warm-cream) 0%, #d8ddd8 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--charcoal);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar styling */
+        nav {
+            background: rgba(232, 237, 232, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(94, 97, 94, 0.1);
+        }
+
+        nav.scrolled {
+            padding: 1rem 0;
+            background: rgba(232, 237, 232, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 4vw, 4rem);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            color: var(--charcoal);
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo:hover {
+            color: var(--sage-green);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-size: 0.95rem;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--sage-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--sage-green);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Articles container */
+        .articles-container {
+            max-width: 1200px;
+            margin: 120px auto 80px;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 50px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            color: #000;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        /* Articles grid */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .article-card {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #e8ede8 0%, #d8ddd8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-title {
+            font-size: 1.3rem;
+            color: #000;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .article-excerpt {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .article-meta {
+            font-size: 0.85rem;
+            color: #999;
+            font-family: Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--sage-green);
+            text-decoration: none;
+            font-weight: 600;
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .articles-container {
+                margin-top: 90px;
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .articles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="LOGO ONLY.PNG" alt="Yorkshire Property Report" style="height: 40px; vertical-align: middle; margin-right: 10px;">Yorkshire Property Report</a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#reports">Reports</a></li>
+                <li><a href="articles.html">Articles</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+            </ul>
+            <div style="width: 50px; height: 50px;"></div>
+        </div>
+    </nav>
+
+    <!-- Articles Container -->
+    <div class="articles-container">
+        <header class="page-header">
+            <h1 class="page-title">Articles</h1>
+        </header>
+
+        <!-- Articles Grid -->
+        <div class="articles-grid">
+            <!-- Article 1 -->
+            <a href="real-house-prices-yorkshire.html" class="article-card">
+                <div class="article-image">
+                    <img src="real-house-prices-cover.avif" alt="The Real House Prices of Yorkshire">
+                </div>
+                <div class="article-content">
+                    <h2 class="article-title">The Real House Prices of Yorkshire</h2>
+                    <p class="article-excerpt">We compared the listing price and sold price for over 35,000 homes in Yorkshire.</p>
+                    <div class="article-meta">April 2026</div>
+                </div>
+            </a>
+
+            <!-- Add more articles here as needed -->
+        </div>
+    </div>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
