@@ -13,8 +13,8 @@ const config = {
     // Product Pricing (in GBP)
     products: {
         'Asking Price Evaluation': 80,
-        'Property Check': 100,
-        'Triple Report': 149
+        'Crime Level Comparison': 90,
+        'Nearest Affordable House': 64
     },
 
     // Server Configuration
