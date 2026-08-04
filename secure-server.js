@@ -439,25 +439,62 @@ app.post('/api/payment/create-intent',
                 phone,
                 propertyAddress,
                 propertyCity,
-                propertyPostcode
+                propertyPostcode,
+                basketItems
             } = req.body;
 
-            // Create Stripe payment intent
+            // Validate and calculate total from basket items
+            let calculatedTotal = 0;
+            const itemsList = [];
+
+            for (const item of basketItems) {
+                // Validate that the item exists in our products config
+                const expectedPrice = config.products[item.name];
+
+                if (!expectedPrice) {
+                    throw new Error(`Invalid product: ${item.name}`);
+                }
+
+                // Validate that the price matches what we expect
+                if (item.price !== expectedPrice) {
+                    console.warn(`⚠️ Price mismatch for ${item.name}: expected £${expectedPrice}, got £${item.price}`);
+                    authSystem.addAuditLog('PRICE_MISMATCH_DETECTED', {
+                        product: item.name,
+                        expectedPrice,
+                        receivedPrice: item.price,
+                        customerEmail: email,
+                        ip: req.ip,
+                        severity: 'HIGH'
+                    });
+                    throw new Error('Price validation failed');
+                }
+
+                calculatedTotal += expectedPrice;
+                itemsList.push(item.name);
+            }
+
+            // Convert to pence for Stripe
+            const amountInPence = calculatedTotal * 100;
+
+            // Create Stripe payment intent with calculated amount
             const paymentIntent = await stripe.paymentIntents.create({
-                amount: config.stripe.priceInPence,
+                amount: amountInPence,
                 currency: config.stripe.currency,
                 metadata: {
                     firstName,
                     lastName,
                     email,
-                    propertyAddress: `${propertyAddress}, ${propertyCity}, ${propertyPostcode}`
+                    propertyAddress: `${propertyAddress}, ${propertyCity}, ${propertyPostcode}`,
+                    items: itemsList.join(', ')
                 }
             });
 
             authSystem.addAuditLog('PAYMENT_INTENT_CREATED', {
                 paymentIntentId: paymentIntent.id,
-                amount: config.stripe.priceInPence,
+                amount: amountInPence,
+                amountGBP: calculatedTotal,
                 currency: config.stripe.currency,
+                items: itemsList,
                 customerEmail: email,
                 ip: req.ip,
                 severity: 'INFO'
@@ -470,7 +507,7 @@ app.post('/api/payment/create-intent',
 
         } catch (error) {
             console.error('Payment intent creation failed:', error);
-            
+
             authSystem.addAuditLog('PAYMENT_INTENT_FAILED', {
                 error: error.message,
                 ip: req.ip,
@@ -478,7 +515,7 @@ app.post('/api/payment/create-intent',
             });
 
             res.status(500).json({
-                error: 'Payment processing failed',
+                error: error.message || 'Payment processing failed',
                 code: 'PAYMENT_INTENT_ERROR'
             });
         }

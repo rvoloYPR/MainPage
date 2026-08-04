@@ -1165,7 +1165,8 @@
                         currentPostcode: document.getElementById('currentPostcode')?.value || '',
                         propertyAddress: document.getElementById('propertyAddress')?.value || '',
                         propertyCity: document.getElementById('propertyCity')?.value || '',
-                        propertyPostcode: document.getElementById('propertyPostcode')?.value || ''
+                        propertyPostcode: document.getElementById('propertyPostcode')?.value || '',
+                        basketItems: basket // Send basket items for price validation
                     };
 
                     // Validate required fields
@@ -1963,7 +1964,8 @@
                     currentPostcode: document.getElementById('currentPostcode')?.value || '',
                     propertyAddress: document.getElementById('propertyAddress')?.value || '',
                     propertyCity: document.getElementById('propertyCity')?.value || '',
-                    propertyPostcode: document.getElementById('propertyPostcode')?.value || ''
+                    propertyPostcode: document.getElementById('propertyPostcode')?.value || '',
+                    basketItems: basket // Send basket items for price validation
                 };
 
                 console.log('Creating payment intent with backend...');

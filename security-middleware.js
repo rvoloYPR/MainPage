@@ -203,6 +203,20 @@ class SecurityMiddleware {
                     .required()
                     .messages({
                         'string.pattern.base': 'Invalid UK postcode format'
+                    }),
+                basketItems: Joi.array()
+                    .items(
+                        Joi.object({
+                            name: Joi.string().required(),
+                            price: Joi.number().positive().required(),
+                            emoji: Joi.string().optional(),
+                            icon: Joi.string().optional()
+                        })
+                    )
+                    .min(1)
+                    .required()
+                    .messages({
+                        'array.min': 'Basket must contain at least one item'
                     })
             }),
 
